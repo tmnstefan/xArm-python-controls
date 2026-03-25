@@ -9,4 +9,4 @@ The xArm python SDK,  which can be installed through:
 ```
 python3 -m pip install xarm-python-sdk
 ```
-alternative download methods can be found in the xarm's sdk github page: https://github.com/xArm-Developer/xArm-Python-SDK
+Alternative download methods can be found in xArm's SDK page: https://github.com/xArm-Developer/xArm-Python-SDK

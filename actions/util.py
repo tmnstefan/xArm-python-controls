@@ -8,10 +8,10 @@ class arm_utilities():
         """
         Connect to arm
 
-        :param port: port name or ip address, default is the value when initializing an instance
-        :param baudrate: baudrate, only available in serial, default is the value when initializing an instance
-        :param timeout: timeout, only available in serial, default is the value when initializing an instance
-        :param axis: number of axes, only required when using a serial port connection, default is 7
+        \n:param port: port name or ip address, default is the value when initializing an instance
+        \n:param baudrate: baudrate, only available in serial, default is the value when initializing an instance
+        \n:param timeout: timeout, only available in serial, default is the value when initializing an instance
+        \n:param axis: number of axes, only required when using a serial port connection, default is 7
         """
         self.arm.connect(port=port, baudrate=baudrate, timeout=timeout, axis=axis, **kwargs)
 
@@ -25,13 +25,13 @@ class arm_utilities():
         """
         Attach the servo
 
-        :param servo_id: 1-(Number of axes), 8, if servo_id is 8, will attach all servo
-            1. 1-(Number of axes): attach only one joint
-                ex: arm.set_servo_attach(servo_id=1)
-            2: 8: attach all joints
-                ex: arm.set_servo_attach(servo_id=8)
-        :return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        \n:param servo_id: 1-(Number of axes), 8, if servo_id is 8, will attach all servo
+        \n    1. 1-(Number of axes): attach only one joint
+        \n        ex: arm.set_servo_attach(servo_id=1)
+        \n    2: 8: attach all joints
+        \n        ex: arm.set_servo_attach(servo_id=8)
+        \n:return: code
+        \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_attach(servo_id=servo_id)
 
@@ -39,12 +39,12 @@ class arm_utilities():
         """
         Detaches the servo, be sure to do protective work before unlocking to avoid injury or damage.
 
-        :param servo_id: 1-(Number of axes), 8, if servo_id is 8, will detach all servo
-            1. 1-(Number of axes): detach only one joint
-                ex: arm.set_servo_detach(servo_id=1)
-            2: 8: detach all joints, please
-                ex: arm.set_servo_detach(servo_id=8)
-        :return: code
+        \n:param servo_id: 1-(Number of axes), 8, if servo_id is 8, will detach all servo
+        \n    1. 1-(Number of axes): detach only one joint
+        \n        ex: arm.set_servo_detach(servo_id=1)
+        \n    2: 8: detach all joints, please
+        \n        ex: arm.set_servo_detach(servo_id=8)
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_detach(servo_id=servo_id)
@@ -53,12 +53,12 @@ class arm_utilities():
         """
         Set the xArm state
 
-        :param state: default 0
-            0: motion state
-            3: pause state
-            4: stop state
-            6: deceleration stop state
-        :return: code
+        \n:param state: default 0
+        \n    0: motion state
+        \n    3: pause state
+        \n    4: stop state
+        \n    6: deceleration stop state
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_state(state=state)
@@ -67,25 +67,25 @@ class arm_utilities():
         """
         Set the xArm mode
 
-        :param mode: default 0
-            0: position control
-            1: servo motion
-                \nNote: the use of the set_servo_angle_j interface must first be set to this
-                \nNote: the use of the set_servo_cartesian interface must first be set to this
-            2: joint teaching
-                \nNote: use this mode to ensure that the arm has been identified and the control box and arm used for identification are one-to-one.
-            3: cartesian teaching (invalid)
-            4: joint velocity control
-            5: cartesian velocity control
-            6: joint online trajectory planning
-            7: cartesian online trajectory planning
-        :param detection_param: Teaching detection parameters, default is 0
-            0: motion detection on
-            1: motion detection off
-            \nNote:
-                1. only available if firmware_version >= 1.10.1
-                2. only available if set_mode(2)
-        :return: code
+        \n:param mode: default 0
+        \n    0: position control
+        \n    1: servo motion
+        \n        Note: the use of the set_servo_angle_j interface must first be set to this
+        \n        Note: the use of the set_servo_cartesian interface must first be set to this
+        \n    2: joint teaching
+        \n        Note: use this mode to ensure that the arm has been identified and the control box and arm used for identification are one-to-one.
+        \n    3: cartesian teaching (invalid)
+        \n    4: joint velocity control
+        \n    5: cartesian velocity control
+        \n    6: joint online trajectory planning
+        \n    7: cartesian online trajectory planning
+        \n:param detection_param: Teaching detection parameters, default is 0
+        \n    0: motion detection on
+        \n    1: motion detection off
+        \n    Note:
+        \n        1. only available if firmware_version >= 1.10.1
+        \n        2. only available if set_mode(2)
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_mode(mode=mode, detection_param=detection_param)
@@ -94,9 +94,9 @@ class arm_utilities():
         """
         Enable motion
 
-        :param enable:True/False
-        :param servo_id: 1-(Number of axes), None(8)
-        :return: code
+        \n:param enable: True/False
+        \n:param servo_id: 1-(Number of axes), None(8)
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.motion_enable(servo_id=servo_id, enable=enable)
@@ -105,9 +105,9 @@ class arm_utilities():
         """
         Set the arm pause time, xArm will pause sltime second
 
-        :param sltime: sleep time,unit:(s)second
-        :param wait: wait or not, default is False
-        :return: code
+        \n:param sltime: sleep time,unit:(s)second
+        \n:param wait: wait or not, default is False
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_pause_time(sltime=sltime, wait=wait)
@@ -116,7 +116,7 @@ class arm_utilities():
         """
         Get the xArm firmware version
 
-        :return: tuple((code, version)), returned result is only corrent when code is 0.
+        \n:return: tuple((code, version)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_version()
@@ -125,27 +125,29 @@ class arm_utilities():
         """
         Get state
 
-        :return: tuple((code, state)), returned result is only corrent when code is 0.
+        \n:return: tuple((code, state)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            state:
-                1: in motion
-                2: sleeping
-                3: suspended
-                4: stopping
+            \nstate:
+            \n1: in motion
+            \n2: sleeping
+            \n3: suspended
+            \n4: stopping
         """
         return self.arm.get_state()
     
     def get_is_moving(self):
         """
         Check if the arm is moving or not
-        :return: True/False
+
+        \n:return: True/False
         """
         return self.arm.get_is_moving()
     
     def get_cmdnum(self):
         """
         Get the cmd count in cache
-        :return: tuple((code, cmd_num)), returned result is only corrent when code is 0.
+
+        \n:return: tuple((code, cmd_num)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_cmdnum()
@@ -154,12 +156,12 @@ class arm_utilities():
         """
         Get the controller error and warn code
 
-        :param show: show the detail info if True
-        :param lang: show language, en/cn, degault is en, only available if show is True
-        :return: tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.
+        \n:param show: show the detail info if True
+        \n:param lang: show language, en/cn, degault is en, only available if show is True
+        \n:return: tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            error_code: See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.
-            warn_code: See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.
+            \nerror_code: See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.
+            \nwarn_code: See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.
         """
         return self.arm.get_err_warn_code(show=show, lang=lang)
     
@@ -167,7 +169,7 @@ class arm_utilities():
         """
         Clean the error, need to manually enable motion(arm.motion_enable(True)) and set state(arm.set_state(state=0)) after error cleaned
 
-        :return: code
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_error()
@@ -176,7 +178,7 @@ class arm_utilities():
         """
         Clean the warn
 
-        :return: code
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_warn()
@@ -184,12 +186,13 @@ class arm_utilities():
     def get_position(self, is_radian=None):
         """
         Get the cartesian position
-        \nNote:
-            1. If the value(roll/pitch/yaw) you want returned should be in radians, set is_radian to True
-                ex: code, pos = arm.get_position(is_radian=True)
 
-        :param is_radian: if the returned value (only roll/pitch/yaw) is in radians or not, defaults to self.default_is_radian
-        :return: tuple((code, [x, y, z, roll, pitch, yaw])), returned result is only corrent when code is 0.
+        \nNote:
+        \n1. If the value(roll/pitch/yaw) you want returned should be in radians, set is_radian to True
+        \n ex: code, pos = arm.get_position(is_radian=True)
+
+        \n:param is_radian: if the returned value (only roll/pitch/yaw) is in radians or not, defaults to self.default_is_radian
+        \n:return: tuple((code, [x, y, z, roll, pitch, yaw])), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_position(is_radian=is_radian)
@@ -204,9 +207,9 @@ class arm_utilities():
         \n  ex: code, angle = arm.get_servo_angle(servo_id=2)
         \n3. This interface is only used in the base coordinate system.
 
-        :param servo_id: 1-(Number of axes), None(8), default is None
-        :param is_radian: the returned value is in radians or not, defaults to self.default_is_radian
-        :return: tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
+        \n:param servo_id: 1-(Number of axes), None(8), default is None
+        \n:param is_radian: the returned value is in radians or not, defaults to self.default_is_radian
+        \n:return: tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_servo_angle(servo_id=servo_id, is_radian=is_radian, is_real=is_real)
@@ -215,8 +218,8 @@ class arm_utilities():
         """
         Get the pose represented by the axis angle pose
         
-        :param is_radian: if the returned value (only rx/ry/rz) is in radians or not, defaults to self.default_is_radian
-        :return: tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
+        \n:param is_radian: if the returned value (only rx/ry/rz) is in radians or not, defaults to self.default_is_radian
+        \n:return: tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_position_aa(is_radian=is_radian)
@@ -224,35 +227,37 @@ class arm_utilities():
     def get_pose_offset(self, pose1, pose2, orient_type_in=0, orient_type_out=0, is_radian=None):
         """
         Calculate the pose offset of two given points
+
         \nNote:
         \n1. x, y, z are all in mm
-        \n2. roll/rx, pitch/ry, yaw/rz are either degrees or radians, can be selected by changing parameter is_radian
+        \n2. roll/rx, pitch/ry, yaw/rz are in either degrees or radians, can be selected by changing parameter is_radian
         
-        :param pose1: [x, y, z, roll/rx, pitch/ry, yaw/rz]
-        :param pose2: [x, y, z, roll/rx, pitch/ry, yaw/rz]
-        :param orient_type_in: input attitude notation, 0 is RPY(roll/pitch/yaw) (default), 1 is axis angle(rx/ry/rz)
-        :param orient_type_out: notation of output attitude, 0 is RPY (default), 1 is axis angle
-        :param is_radian: if the roll/rx/pitch/ry/yaw/rz of pose1/pose2/return_pose is in radians or not
-        :return: tuple((code, pose)), returned result is only corrent when code is 0.
+        \n:param pose1: [x, y, z, roll/rx, pitch/ry, yaw/rz]
+        \n:param pose2: [x, y, z, roll/rx, pitch/ry, yaw/rz]
+        \n:param orient_type_in: input attitude notation, 0 is RPY(roll/pitch/yaw) (default), 1 is axis angle(rx/ry/rz)
+        \n:param orient_type_out: notation of output attitude, 0 is RPY (default), 1 is axis angle
+        \n:param is_radian: if the roll/rx/pitch/ry/yaw/rz of pose1/pose2/return_pose is in radians or not
+        \n:return: tuple((code, pose)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            pose: [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
+            \npose: [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
         """
         return self.arm.get_pose_offset(pose1, pose2, orient_type_in=orient_type_in, orient_type_out=orient_type_out, is_radian=is_radian)
     
     def set_tcp_offset(self, offset, is_radian=None, wait=True, **kwargs):
         """
         Set the tool coordinate system offset at the end
-        \nNote:
-            1. Do not use if not required
-            2. If not saved and you want to revert to the last saved value, please reset the offset by set_tcp_offset([0, 0, 0, 0, 0, 0])
-            3. If not saved, it will be lost after reboot
-            4. The save_conf interface can record the current settings and will not be lost after the restart.
-            5. The clean_conf interface can restore system default settings
 
-        :param offset: [x, y, z, roll, pitch, yaw]
-        :param is_radian: the roll/pitch/yaw in radians or not, defaults to self.default_is_radian
-        :param wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
-        :return: code
+        \nNote:
+        \n1. Do not use if not required
+        \n2. If not saved and you want to revert to the last saved value, please reset the offset by set_tcp_offset([0, 0, 0, 0, 0, 0])
+        \n3. If not saved, it will be lost after reboot
+        \n4. The save_conf interface can record the current settings and will not be lost after the restart.
+        \n5. The clean_conf interface can restore system default settings
+
+        \n:param offset: [x, y, z, roll, pitch, yaw]
+        \n:param is_radian: the roll/pitch/yaw in radians or not, defaults to self.default_is_radian
+        \n:param wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_offset(offset, is_radian=is_radian, wait=wait, **kwargs)
@@ -260,14 +265,15 @@ class arm_utilities():
     def set_tcp_jerk(self, jerk):
         """
         Set the translational jerk of Cartesian space
+        
         \nNote:
-            1. Do not use if not required
-            2. If not saved, it will be lost after reboot
-            3. The save_conf interface can record the current settings and will not be lost after the restart.
-            4. The clean_conf interface can restore system default settings
+        \n1. Do not use if not required
+        \n2. If not saved, it will be lost after reboot
+        \n3. The save_conf interface can record the current settings and will not be lost after the restart.
+        \n4. The clean_conf interface can restore system default settings
 
-        :param jerk: jerk (mm/s^3)
-        :return: code
+        \n:param jerk: jerk (mm/s^3)
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_jerk(jerk)
@@ -275,13 +281,14 @@ class arm_utilities():
     def set_tcp_maxacc(self, acc):
         """
         Set the max translational acceleration of Cartesian space
+        
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param acc: max acceleration (mm/s^2)
-        :return: code
+        \n:param acc: max acceleration (mm/s^2)
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_maxacc(acc)
@@ -289,14 +296,15 @@ class arm_utilities():
     def set_joint_jerk(self, jerk, is_radian=None):
         """
         Set the jerk of Joint space
-        \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
 
-        :param jerk: jerk (°/s^3 or rad/s^3)
-        :param is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
-        :return: code
+        \nNote:
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
+
+        \n:param jerk: jerk (°/s^3 or rad/s^3)
+        \n:param is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_joint_jerk(jerk, is_radian=is_radian)
@@ -306,13 +314,13 @@ class arm_utilities():
         Set the max acceleration of Joint space
 
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param acc: max acceleration (°/s^2 or rad/s^2)
-        :param is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
-        :return: code
+        \n:param acc: max acceleration (°/s^2 or rad/s^2)
+        \n:param is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_joint_maxacc(acc, is_radian=is_radian)
@@ -322,14 +330,14 @@ class arm_utilities():
         Set the end load of xArm
 
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param weight: load weight (unit: kg)
-        :param center_of_gravity: load center of gravity, such as [x(mm), y(mm), z(mm)]
-        :param wait: whether to wait for the command to be executed or for the robotic arm to stop
-        :return: code
+        \n:param weight: load weight (unit: kg)
+        \n:param center_of_gravity: load center of gravity, such as [x(mm), y(mm), z(mm)]
+        \n:param wait: whether to wait for the command to be executed or for the robotic arm to stop
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_load(weight, center_of_gravity, wait=wait, **kwargs)
@@ -339,13 +347,13 @@ class arm_utilities():
         Set the sensitivity to collision
 
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param value: sensitivity value, 0~5
-        :param wait: reversed
-        :return: code
+        \n:param value: sensitivity value, 0~5
+        \n:param wait: reversed
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_collision_sensitivity(value, wait=wait)
@@ -355,13 +363,13 @@ class arm_utilities():
         Set the sensitivity of drag and teach
 
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param value: sensitivity value, 1~5
-        :param wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
-        :return: code
+        \n:param value: sensitivity value, 1~5
+        \n:param wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_teach_sensitivity(value, wait=wait)
@@ -371,13 +379,13 @@ class arm_utilities():
         Set the gravity direction for proper torque compensation and collision detection.
 
         \nNote:
-            1. Use only if necessary. Incorrect settings may affect torque compensation.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
+        \n1. Use only if necessary. Incorrect settings may affect torque compensation.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
 
-        :param direction: Gravity direction vector [x, y, z], e.g., [0, 0, -1] for a floor-mounted arm.
-        :param wait: Whether to wait for the robotic arm to stop or clear all previous queued commands before applying the setting.
-        :return: code
+        \n:param direction: Gravity direction vector [x, y, z], e.g., [0, 0, -1] for a floor-mounted arm.
+        \n:param wait: Whether to wait for the robotic arm to stop or clear all previous queued commands before applying the setting.
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gravity_direction(direction=direction, wait=wait)
@@ -387,13 +395,13 @@ class arm_utilities():
         Set the mount direction
 
         \nNote:
-            1. Use only if necessary.
-            2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
-            3. Use clean_conf() to restore the system default settings.
-        :param base_tilt_deg: tilt degree
-        :param rotation_deg: rotation degree
-        :param is_radian: if the base_tilt_deg/rotation_deg is in radians or not, defaults to self.default_is_radian
-        :return: code
+        \n1. Use only if necessary.
+        \n2. Changes are not saved automatically. Call save_conf() to save the settings, otherwise they will be lost after a reboot.
+        \n3. Use clean_conf() to restore the system default settings.
+        \n:param base_tilt_deg: tilt degree
+        \n:param rotation_deg: rotation degree
+        \n:param is_radian: if the base_tilt_deg/rotation_deg is in radians or not, defaults to self.default_is_radian
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_mount_direction(base_tilt_deg, rotation_deg, is_radian=is_radian)
@@ -401,10 +409,11 @@ class arm_utilities():
     def clean_conf(self):
         """
         Clean current config and restore system default settings
-        \nNote:
-            1. This interface will clear the current settings and restore to the system default settings
 
-        :return: code
+        \nNote:
+        \n1. This interface will clear the current settings and restore to the system default settings
+
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_conf()
@@ -412,11 +421,12 @@ class arm_utilities():
     def save_conf(self):
         """
         Save config
-        \nNote:
-            1. This interface can record the current settings and will not be lost after the restart.
-            2. The clean_conf interface can restore system default settings
 
-        :return: code
+        \nNote:
+        \n1. This interface can record the current settings and will not be lost after the restart.
+        \n2. The clean_conf interface can restore system default settings
+
+        \n:return: code
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.save_conf()
@@ -427,14 +437,14 @@ class arm_utilities():
 
         \nNote: the roll/pitch/yaw unit is radian if input_is_radian is True, else °
 
-        :param pose: [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)]
-        :param input_is_radian: if the param pose value(only roll/pitch/yaw) is in radians or not, defaults to self.default_is_radian
-        :param return_is_radian: if the returned value should be in radians or not, defaults to self.default_is_radian
-        :param limited: if the result is limited to within ±180° or not, default is True(only available if firmware_version >= 2.7.103)
-        :param ref_angles: reference values for joint angles
+        \n:param pose: [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)]
+        \n:param input_is_radian: if the param pose value(only roll/pitch/yaw) is in radians or not, defaults to self.default_is_radian
+        \n:param return_is_radian: if the returned value should be in radians or not, defaults to self.default_is_radian
+        \n:param limited: if the result is limited to within ±180° or not, default is True(only available if firmware_version >= 2.7.103)
+        \n:param ref_angles: reference values for joint angles
             \nNote: unit is radian if input_is_radian is True, else °
             \nNote: only available if firmware_version >= 2.7.103
-        :return: tuple((code, angles)), returned result is only corrent when code is 0.
+        \n:return: tuple((code, angles)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
             \nangles: [angle-1(rad or °), angle-2, ..., angle-(Number of axes)] or []
                 \nNote: the returned angle value is radians if return_is_radian is True, else °
@@ -445,13 +455,13 @@ class arm_utilities():
         """
         Get forward kinematics
 
-        :param angles: [angle-1, angle-2, ..., angle-n], n is the number of axes of the arm
-        :param input_is_radian: the param angles value is in radians or not, defaults to self.default_is_radian
-        :param return_is_radian: the returned value is in radians or not, defaults to self.default_is_radian
-        :return: tuple((code, pose)), returned result is only corrent when code is 0.
+        \n:param angles: [angle-1, angle-2, ..., angle-n], n is the number of axes of the arm
+        \n:param input_is_radian: the param angles value is in radians or not, defaults to self.default_is_radian
+        \n:param return_is_radian: the returned value is in radians or not, defaults to self.default_is_radian
+        \n:return: tuple((code, pose)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
             \npose: [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)] or []
-                \nNote: the roll/pitch/yaw value is radians if return_is_radian is True, else °
+            \nNote: the roll/pitch/yaw value is radians if return_is_radian is True, else °
         """
         return self.arm.get_forward_kinematics(angles, input_is_radian=input_is_radian, return_is_radian=return_is_radian)
     
@@ -1367,7 +1377,7 @@ class arm_utilities():
         \n   4: linear motor
         \n:return: tuple((code, baud))
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            baud: the checkset baud value
+            \nbaud: the checkset baud value
         """
         return self.arm.get_checkset_default_baud(type_)
     
@@ -1416,7 +1426,7 @@ class arm_utilities():
         :param return_is_radian: if the roll/pitch/yaw value of the result should be in radians or not, defaults to self.default_is_radian
         :return: tuple((code, rpy_offset)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            rpy_offset: calculated rpy user offset, [roll, pitch, yaw]
+            \nrpy_offset: calculated rpy user offset, [roll, pitch, yaw]
         """
         return self.arm.calibrate_user_orientation_offset(three_points, mode=mode, trust_ind=trust_ind, input_is_radian=input_is_radian, return_is_radian=return_is_radian)
     
@@ -1431,7 +1441,7 @@ class arm_utilities():
         :param is_radian: if the roll/pitch/yaw value of rpy_ub is in radians or not, defaults to self.default_is_radian
         :return: tuple((code, xyz_offset)), returned result is only corrent when code is 0.
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            xyz_offset: calculated xyz(mm) user offset, [x, y, z] 
+            \nxyz_offset: calculated xyz(mm) user offset, [x, y, z] 
         """
         return self.arm.calibrate_user_coordinate_offset(rpy_ub, pos_b_uorg, is_radian=is_radian)
     

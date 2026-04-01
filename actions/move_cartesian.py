@@ -1,13 +1,9 @@
-from xarm import XArmAPI
-
-def reset(arm:XArmAPI):
-    arm.reset()
+from xarm.wrapper import XArmAPI
 
 class cartesian_control():
 
     def __init__(self, arm:XArmAPI):
         self.arm = arm
-        pass
 
     def reset(self, speed=None, mvacc=None, mvtime=None, is_radian=None, wait=False, timeout=None):
         """

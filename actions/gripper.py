@@ -1,4 +1,4 @@
-from xarm import XArmAPI
+from xarm.wrapper import XArmAPI
 
 class gripper_control():
 

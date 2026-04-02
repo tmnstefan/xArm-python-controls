@@ -129,3 +129,18 @@ class trajectory_recording():
             \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm._studio.delete_trajectory(name)
+    
+    def get_traj_speeding(self, rate):
+        """
+        Obtain the joint and velocity values of joint overspeed during trajectory recording
+
+        :param rate: speed rate, only 1/2/4
+
+        :return: tuple((code, speed_info)), returned result is only corrent when code is 0.
+            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            \nspeed_info: [result_code, servo_id, servo_speed]
+            \n           result_code: 0: Pass, -1: Fail, >0: abnormal(1:Trajectory not loaded or incorrect status;2:The input magnification is incorrect)
+            \n           servo_id: Effective only when result_code is -1
+            \n           servo_speed: Effective only when result_code is -1
+        """
+        return self.arm.get_traj_speeding(self, rate)

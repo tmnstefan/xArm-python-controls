@@ -1,0 +1,15 @@
+site_name: xArm Python Controls Docs
+plugins:
+  - mkdocstrings
+nav:
+- Home: index.md
+- API Codes: xarm_api_code.md
+- Errors: error.md
+- Gripper: gripper.md
+- Cartesian movement: move_cartesian.md
+- Registers: read_write.md
+- Callback: register_release.md
+- Settings: settings.md
+- Trajectories: trajectory_recording.md
+- Utilities: util.md
+theme: "material"

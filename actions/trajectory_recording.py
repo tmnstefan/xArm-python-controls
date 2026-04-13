@@ -8,12 +8,16 @@ class trajectory_recording():
     def get_record_seconds(self):
         """
         Get record seconds
-        \nNote:
+
+        Note:
             1. Only available if firmware_version >= 2.4.0
             2. Only valid during recording or after recording but before saving
 
-        :return: tuple((code, seconds)), returned result is only corrent when code is 0.
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Returns:
+            out: tuple((code, seconds)), returned result is only corrent when code is 0.
+
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
             seconds: The actual duration of the recorded trajectory
         """
         ret = self.arm.get_common_info(50, return_val=True)
@@ -23,18 +27,26 @@ class trajectory_recording():
         """
         Save the trajectory you just recorded
 
-        \nNote:
+        Note:
             1. This interface relies on Firmware 1.2.0 or above
 
-        :param filename: The name to save
-        \n    1. Only strings consisting of standard English characters or numbers are supported, with a maximum length of 50.
-        \n    2. The trajectory will be saved in the controller box.
-        \n    3. This action will overwrite a trajectory with the same name
-        \n    4. Empty the trajectory in memory after saving, so repeated calls will cause the recorded trajectory to be covered by an empty trajectory.
-        \n:param wait: Whether to wait for saving, default is True
-        \n:param timeout: Timeout waiting for saving to complete
-        \n:return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Args:
+            filename: The name to save
+
+                1. Only strings consisting of standard English characters or numbers are supported, with a maximum length of 50.
+
+                2. The trajectory will be saved in the controller box.
+
+                3. This action will overwrite a trajectory with the same name
+                
+                4. Empty the trajectory in memory after saving, so repeated calls will cause the recorded trajectory to be covered by an empty trajectory.
+
+            wait: Whether to wait for saving, default is True
+
+            timeout: Timeout waiting for saving to complete
+
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.save_record_trajectory(filename, wait=wait, timeout=timeout, **kwargs)
     
@@ -42,12 +54,12 @@ class trajectory_recording():
         """
         Start trajectory recording, only in teach mode, so joint teaching mode must already be set.
 
-        \nNote:
+        Note:
             1. This interface relies on Firmware 1.2.0 or above
             2. set joint teaching mode: set_mode(2);set_state(0)
 
-        :return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.start_record_trajectory()
 
@@ -55,17 +67,24 @@ class trajectory_recording():
         """
         Stop trajectory recording
 
-        \nNote:
+        Note:
             1. This interface relies on Firmware 1.2.0 or above
 
-        :param filename: The name to save
-        \n    1. Only strings consisting of standard English characters or numbers are supported, with a maximum length of 50.
-        \n    2. The trajectory will be saved in the controller box.
-        \n    3. If the filename is None stop recording and do not save, you need to manually call `save_record_trajectory` save before changing the mode. otherwise the recording will be lost
-        \n    4. This action will overwrite a trajectory with the same name
-        \n    5. Empty the trajectory in memory after saving
-        \n:return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Args:
+            filename: The name to save
+
+                1. Only strings consisting of standard English characters or numbers are supported, with a maximum length of 50.
+
+                2. The trajectory will be saved in the controller box.
+
+                3. If the filename is None stop recording and do not save, you need to manually call `save_record_trajectory` save before changing the mode. otherwise the recording will be lost
+
+                4. This action will overwrite a trajectory with the same name
+
+                5. Empty the trajectory in memory after saving
+    
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.stop_record_trajectory(filename=filename, **kwargs)
     
@@ -73,14 +92,18 @@ class trajectory_recording():
         """
         Load a trajectory
 
-        \nNote:
+        Note:
             1. This interface relies on Firmware 1.2.0 or above
 
-        :param filename: The name of the trajectory to load
-        :param wait: Whether to wait for loading, default is True
-        :param timeout: Timeout waiting for loading to complete
-        :return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Args:
+            filename: The name of the trajectory to load
+
+            wait: Whether to wait for loading, default is True
+
+            timeout: Timeout waiting for loading to complete
+
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.load_trajectory(filename, wait=wait, timeout=timeout, **kwargs)
     
@@ -88,17 +111,24 @@ class trajectory_recording():
         """
         Playback trajectory
 
-        \nNote:
+        Note:
             1. This interface relies on Firmware 1.2.0 or above
 
-        \n:param times: Number of playbacks,
-        \n    1. Only valid when the current position of the arm is the end position of the trajectory, otherwise it will only be played once.
-        \n:param filename: The name of the trajectory to play back
-        \n    1. If filename is None, you will need to manually call `load_trajectory` to load the trajectory.
-        \n:param wait: whether to wait for the arm to complete, default is False
-        \n:param double_speed: double speed, only support 1/2/4, default is 1, only available if version > 1.2.11
-        \n:return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Args:
+            times: Number of playbacks,
+
+                1. Only valid when the current position of the arm is the end position of the trajectory, otherwise it will only be played once.
+
+            filename: The name of the trajectory to play back
+
+                1. If filename is None, you will need to manually call `load_trajectory` to load the trajectory.
+
+            wait: whether to wait for the arm to complete, default is False
+
+            double_speed: double speed, only support 1/2/4, default is 1, only available if version > 1.2.11
+
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.playback_trajectory(times=times, filename=filename, wait=wait, double_speed=double_speed, **kwargs)
     
@@ -106,16 +136,24 @@ class trajectory_recording():
         """
         Get trajectory read/write status
 
-        :return: (code, status)
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            \nstatus:
-            \n0: no read/write
-            \n1: loading
-            \n2: load success
-            \n3: load failed
-            \n4: saving
-            \n5: save success
-            \n6: save failed
+        Returns: (code, status)
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            status:
+
+                0: no read/write
+
+                1: loading
+
+                2: load success
+
+                3: load failed
+
+                4: saving
+
+                5: save success
+
+                6: save failed
         """
         return self.arm.get_trajectory_rw_status()
     
@@ -123,10 +161,11 @@ class trajectory_recording():
         """
         Delete trajectory
         
-        :param name: trajectory name
+        Args:
+            name: trajectory name
         
-        :return: code
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Returns:
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm._studio.delete_trajectory(name)
     
@@ -134,13 +173,20 @@ class trajectory_recording():
         """
         Obtain the joint and velocity values of joint overspeed during trajectory recording
 
-        :param rate: speed rate, only 1/2/4
+        Args:
+            rate: speed rate, only 1/2/4
 
-        :return: tuple((code, speed_info)), returned result is only corrent when code is 0.
-            \ncode: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-            \nspeed_info: [result_code, servo_id, servo_speed]
-            \n           result_code: 0: Pass, -1: Fail, >0: abnormal(1:Trajectory not loaded or incorrect status;2:The input magnification is incorrect)
-            \n           servo_id: Effective only when result_code is -1
-            \n           servo_speed: Effective only when result_code is -1
+        Returns:
+            out: tuple((code, speed_info)), returned result is only corrent when code is 0.
+            
+            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            speed_info: [result_code, servo_id, servo_speed]
+
+                result_code: 0: Pass, -1: Fail, >0: abnormal(1:Trajectory not loaded or incorrect status;2:The input magnification is incorrect)
+
+                servo_id: Effective only when result_code is -1
+                
+                servo_speed: Effective only when result_code is -1
         """
         return self.arm.get_traj_speeding(self, rate)

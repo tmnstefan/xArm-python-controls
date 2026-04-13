@@ -228,4 +228,4 @@ class arm_utilities():
         Returns: 
             code: returned result is only corrent when code is 0.
         """
-        return self.arm.run_gcode_app(self, path, **kwargs)
+        return self.arm.run_gcode_app(path, **kwargs)

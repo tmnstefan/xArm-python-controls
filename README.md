@@ -9,4 +9,6 @@ The xArm python SDK,  which can be installed through:
 ```
 python3 -m pip install xarm-python-sdk
 ```
+Note: the pip package currently contains an earlier version of the get_inverse_kinematics function which conflicts with this code, it is recommended to use the alternative methods
+
 Alternative download methods can be found in xArm's SDK page: https://github.com/xArm-Developer/xArm-Python-SDK

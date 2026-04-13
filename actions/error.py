@@ -48,7 +48,7 @@ class arm_errors():
             
             err_info: [servo_id, theoratival tau, actual tau]
         """
-        return self.arm.get_c31_error_info(self)
+        return self.arm.get_c31_error_info()
     
     def get_c37_error_info(self, is_radian=None):
         """
@@ -64,7 +64,7 @@ class arm_errors():
 
             err_info: [servo_id, angle]
         """
-        return self.arm.get_c37_error_info(self, is_radian)
+        return self.arm.get_c37_error_info(is_radian)
     
     def get_c23_error_info(self, is_radian=None):
         """
@@ -80,7 +80,7 @@ class arm_errors():
 
             err_info (tuple): [(servo_id, angle), ...]
         """
-        return self.get_c23_error_info(self, is_radian)
+        return self.get_c23_error_info(is_radian)
     
     def get_c24_error_info(self, is_radian=None):
         """
@@ -96,7 +96,7 @@ class arm_errors():
 
             err_info: [servo_id, speed]
         """
-        return self.arm.get_c24_error_info(self, is_radian)
+        return self.arm.get_c24_error_info(is_radian)
     
     def get_c60_error_info(self):
         """
@@ -113,7 +113,7 @@ class arm_errors():
 
             err_info: [max_linear_speed, curr_linear_speed]
         """
-        return self.arm.get_c60_error_info(self)
+        return self.arm.get_c60_error_info()
     
     def get_c38_error_info(self, is_radian=None):
         """
@@ -129,7 +129,7 @@ class arm_errors():
 
             err_info: [(servo_id, angle), ...]
         """
-        return self.arm.get_c38_error_info(self, is_radian)
+        return self.arm.get_c38_error_info(is_radian)
     
     def get_c54_error_info(self):
         """
@@ -145,4 +145,4 @@ class arm_errors():
 
             err_info: [dir, tau threshold, actual tau]
         """
-        return self.arm.get_c54_error_info(self)
+        return self.arm.get_c54_error_info()

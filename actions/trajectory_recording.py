@@ -189,4 +189,4 @@ class trajectory_recording():
                 
                 servo_speed: Effective only when result_code is -1
         """
-        return self.arm.get_traj_speeding(self, rate)
+        return self.arm.get_traj_speeding(rate)

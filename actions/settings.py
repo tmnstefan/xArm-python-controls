@@ -1418,7 +1418,7 @@ class arm_settings():
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
-        return self.arm.set_linear_spd_limit_factor(self, factor)
+        return self.arm.set_linear_spd_limit_factor(factor)
     
     def set_cmd_mat_history_num(self, num):
         """
@@ -1433,7 +1433,7 @@ class arm_settings():
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
-        return self.arm.set_cmd_mat_history_num(self, num)
+        return self.arm.set_cmd_mat_history_num(num)
     
     def set_fdb_mat_history_num(self, num):
         """
@@ -1448,7 +1448,7 @@ class arm_settings():
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
-        return self.arm.set_fdb_mat_history_num(self, num)
+        return self.arm.set_fdb_mat_history_num(num)
     
     def get_linear_spd_limit_factor(self):
         """
@@ -1464,7 +1464,7 @@ class arm_settings():
 
             factor: linear speed limit factor
         """
-        return self.arm.get_linear_spd_limit_factor(self)
+        return self.arm.get_linear_spd_limit_factor()
     
     def get_cmd_mat_history_num(self):
         """
@@ -1480,7 +1480,7 @@ class arm_settings():
 
             num: cmd mat history num
         """
-        return self.arm.get_cmd_mat_history_num(self)
+        return self.arm.get_cmd_mat_history_num()
     
     def get_fdb_mat_history_num(self):
         """
@@ -1496,7 +1496,7 @@ class arm_settings():
 
             num: fdb mat history num
         """
-        return self.arm.get_fdb_mat_history_num(self)
+        return self.arm.get_fdb_mat_history_num()
     
     def get_poe_status(self):
         """
@@ -1512,7 +1512,7 @@ class arm_settings():
 
             status: 1 means poe is valid, 0 means poe is invalid
         """
-        return self.arm.get_poe_status(self)
+        return self.arm.get_poe_status()
     
     def get_iden_status(self):
         """
@@ -1528,7 +1528,7 @@ class arm_settings():
 
             status: 1 means in identifying, 0 means not in identifying
         """
-        return self.arm.get_iden_status(self)    
+        return self.arm.get_iden_status()    
     
     def set_external_device_monitor_params(self, dev_type, frequency):
         """
@@ -1552,7 +1552,7 @@ class arm_settings():
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
-        return self.arm.set_external_device_monitor_params(self, dev_type, frequency)
+        return self.arm.set_external_device_monitor_params(dev_type, frequency)
     
     def get_external_device_monitor_params(self):
         """
@@ -1568,4 +1568,4 @@ class arm_settings():
 
             params: [dev_type, frequency]
         """
-        return self.arm.get_external_device_monitor_params(self)
+        return self.arm.get_external_device_monitor_params()

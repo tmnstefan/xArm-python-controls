@@ -308,7 +308,7 @@ class cartesian_control():
 
                 code >= 0: the last_used_tcp_speed/last_used_tcp_acc will be modified
         """
-        return self._arm.move_circle(pose1, pose2, percent, speed=speed, mvacc=mvacc, mvtime=mvtime,
+        return self.arm.move_circle(pose1, pose2, percent, speed=speed, mvacc=mvacc, mvtime=mvtime,
                                      is_radian=is_radian, wait=wait, timeout=timeout,
                                      is_tool_coord=is_tool_coord, is_axis_angle=is_axis_angle, **kwargs)
 

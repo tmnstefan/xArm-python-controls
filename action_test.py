@@ -32,7 +32,6 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
     signed_angle_deg = np.degrees(signed_angle_rad)
     current_angle = arm_movement.get_servo_angle(servo_id=1)[1]
     if signed_angle_deg > 45 or signed_angle_deg < -45:
-        print("\nlarge angle change")
         if current_angle + signed_angle_deg > 360:
             arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg - 360, is_radian=False, relative=True, wait=True, timeout=20)
         elif current_angle + signed_angle_deg < -360:

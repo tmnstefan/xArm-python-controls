@@ -80,7 +80,7 @@ class arm_errors():
 
             err_info (tuple): [(servo_id, angle), ...]
         """
-        return self.get_c23_error_info(is_radian)
+        return self.arm.get_c23_error_info(is_radian)
     
     def get_c24_error_info(self, is_radian=None):
         """

@@ -193,8 +193,7 @@ class cartesian_control():
 
                 code >= 0: the last_used_angles/last_used_joint_speed/last_used_joint_acc will be modified
         """
-        return self.arm.set_servo_angle(servo_id=servo_id, angle=angle, speed=speed, mvacc=mvacc, mvtime=mvtime,
-                                         relative=relative, is_radian=is_radian, wait=wait, timeout=timeout, radius=radius, **kwargs)
+        return self.arm.set_servo_angle(servo_id=servo_id, angle=angle, speed=speed, mvacc=mvacc, mvtime=mvtime,relative=relative, is_radian=is_radian, wait=wait, timeout=timeout, radius=radius, **kwargs)
     
     def get_servo_angle(self, servo_id=None, is_radian=None, is_real=False):
         """

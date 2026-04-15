@@ -10,6 +10,7 @@ from actions.trajectory_recording import trajectory_recording
 from actions.util import arm_utilities
 from xarm.wrapper import XArmAPI
 import numpy as np
+import time
 
 arm = XArmAPI('127.0.0.1')
 def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
@@ -19,14 +20,10 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
     errors = arm_errors(arm)
     arm_util.connect()
     setting.set_state(0)
-    #setting.set_collision_rebound(on=True)
+    setting.set_collision_rebound(on=True)
     current_pos = setting.get_position(is_radian=False)[1]
-    #if current_pos[0] < 200:
-    #    arm_movement.set_position(x=200, y=current_pos[1], z=current_pos[2], roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False)
-    #if current_pos[1] < 200:
-    #    arm_movement.set_position(x=current_pos[0], y=200, z=current_pos[2], roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False)
     if current_pos[2] < 200:
-        arm_movement.set_position(x=current_pos[0], y=current_pos[1], z=200, roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False)
+        arm_movement.set_position(x=current_pos[0], y=current_pos[1], z=200, roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False, wait=True)
     current_xy = np.array([current_pos[0], current_pos[1]])
     desired_xy = np.array([x, y])
     # https://wumbo.net/formulas/angle-between-two-vectors-2d/
@@ -35,18 +32,27 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
     signed_angle_deg = np.degrees(signed_angle_rad)
     current_angle = arm_movement.get_servo_angle(servo_id=1)[1]
     if signed_angle_deg > 45 or signed_angle_deg < -45:
+        print("\nlarge angle change")
         if current_angle + signed_angle_deg > 360:
-            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg - 360, is_radian=False, relative=True)
+            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg - 360, is_radian=False, relative=True, wait=True, timeout=20)
         elif current_angle + signed_angle_deg < -360:
-            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg + 360, is_radian=False, relative=True)
+            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg + 360, is_radian=False, relative=True, wait=True, timeout=20)
         else:
-            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg, is_radian=False, relative=True)
+            arm_movement.set_servo_angle(servo_id=1, angle=signed_angle_deg, is_radian=False, relative=True, wait=True, timeout=20)
 
-    arm_movement.set_position(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw, is_radian=False, wait=True)
+    arm_movement.set_position(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw, is_radian=False, wait=True, timeout=20)
 
     if errors.get_err_warn_code(show=True)[1] == [23, 0]:
+        print(errors.get_c23_error_info(is_radian=False))
         errors.clean_error()
-        arm_movement.reset(wait=True)
+        setting.set_state(0)
+        current_angle = arm_movement.get_servo_angle(servo_id=1)[1]
+        # Handle case where current_angle might be a list
+        angle_val = current_angle[0] if isinstance(current_angle, list) else current_angle
+        move_angle = 0 - int(angle_val)
+        arm_movement.set_servo_angle(servo_id=1, angle=move_angle, is_radian=False, relative=True, wait=True, timeout=20) # doesnt work in absolute coordinate system so using relative for now
+        arm_movement.move_gohome(wait=True, timeout=20)
+        time.sleep(5) # i dont know why this works but its the only way to stop the arm trying to go through itself once it's reset
         simple_move(arm, x, y, z, roll, pitch, yaw)
 
 
@@ -56,15 +62,20 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
 
 #test for dealing with going over angle limits
 simple_move(arm, x=0, y=200, z=200, roll=180, pitch=0, yaw=0)
+time.sleep(0.5)
 simple_move(arm, x=-200, y=0, z=200, roll=180, pitch=0, yaw=0)
+time.sleep(0.5)
 simple_move(arm, x=0, y=-200, z=200, roll=180, pitch=0, yaw=0)
+time.sleep(0.5)
 simple_move(arm, x=200, y=0, z=200, roll=180, pitch=0, yaw=0)
+time.sleep(0.5)
 simple_move(arm, x=0, y=200, z=200, roll=180, pitch=0, yaw=0)
-
+time.sleep(0.5)
 
 # tests for dealing with large angle changes
-simple_move(arm, x=-200, y=-400, z=0, roll=180, pitch=0, yaw=0)
-simple_move(arm, x=50, y=400, z=350, roll=180, pitch=0, yaw=0)
+simple_move(arm, x=-200, y=-300, z=-50, roll=180, pitch=0, yaw=0)
+time.sleep(0.5)
+simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)
 
 current_xy = np.array([0, 200])
 desired_xy = np.array([200, 0])

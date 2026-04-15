@@ -55,9 +55,38 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
         simple_move(arm, x, y, z, roll, pitch, yaw)
 
 
+def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int): # move to above a given vial index, spacing is currently hardcoded to a 20mmx20mm grid
+    arm_util = arm_utilities(arm)
+    setting = arm_settings(arm)
+    arm_util.connect()
+    setting.set_state(0)
+    setting.set_collision_rebound(on=True)
+    column_pos = tray_y + 10 + (column_num - 1) * 20
+    row_pos = tray_x + 10 + (row_num - 1) * 20
+    simple_move(arm, x=row_pos, y=column_pos, z=tray_z + 100, roll=180, pitch=0, yaw=0)
 
-#basic motion test
-#simple_move(arm, x=0, y=-200, z=200, roll=180, pitch=0, yaw=0)
+def plus_draw(arm:XArmAPI, draw_z:int, tool_length:int): # very crude way of drawing a cross onto a surface that makes a few too many assumptions
+    arm_movement = cartesian_control(arm)
+    arm_movement.set_position(z=draw_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
+    arm_movement.set_position(z=draw_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=-10, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
+    arm_movement.set_position(z=draw_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=5, y=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
+    arm_movement.set_position(z=draw_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(y=-10, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
+    arm_movement.set_position(z=draw_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(y=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
+
+
+def draw_vial_grid(arm:XArmAPI, tray_x:int, tray_y:int, tray_z:int, row_num:int, column_num:int, tool_length:int=100):
+    for row in range(1, row_num + 1):
+        for column in range(1, column_num + 1):
+            move_to_vial(arm, tray_x=tray_x, tray_y=tray_y, tray_z=tray_z, row_num=row, column_num=column)
+            time.sleep(1)
+            plus_draw(arm, draw_z=tray_z, tool_length=tool_length)
+
+draw_vial_grid(arm, tray_x=0, tray_y=200, tray_z=100, row_num=2, column_num=4, tool_length=80)
 
 #test for dealing with going over angle limits
 simple_move(arm, x=0, y=200, z=200, roll=180, pitch=0, yaw=0)
@@ -75,28 +104,6 @@ time.sleep(0.5)
 simple_move(arm, x=-200, y=-300, z=-50, roll=180, pitch=0, yaw=0)
 time.sleep(0.5)
 simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)
-
-current_xy = np.array([0, 200])
-desired_xy = np.array([200, 0])
-
-unit_x = current_xy / np.linalg.norm(current_xy)
-unit_y = desired_xy / np.linalg.norm(desired_xy)
-angle_rad = np.arccos(np.dot(unit_x, unit_y))
-angle_deg = np.degrees(angle_rad)
-# https://wumbo.net/formulas/angle-between-two-vectors-2d/
-# currently finds the signed angle between given 2d vectors, positive if anticlockwise from current to desired, negative if clockwise
-signed_angle_rad = np.atan2(current_xy[0]*desired_xy[1] - current_xy[1]*desired_xy[0], current_xy[0]*desired_xy[0] + current_xy[1]*desired_xy[1])
-signed_angle_deg = np.degrees(signed_angle_rad)
-print("signed angle is \n \n \n \n")
-print(signed_angle_deg)
-print(signed_angle_rad)
-
-#angle = np.arccos(np.clip(np.dot(current_xy, desired_xy), -1.0, 1.0))
-print("angle is \n \n \n \n")
-#print(angle)
-#print(np.degrees(angle))
-print(angle_deg)
-print(angle_rad)
 
 
 #arm_util = arm_utilities(arm)

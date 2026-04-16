@@ -444,7 +444,9 @@ class gripper_control():
             
         Note: 
             register 0x07D0: Register GRIPPER STATUS
+
             register 0x07D1: Register FAULT STATUS and register POSITION REQUEST ECHO
+            
             register 0x07D2: Register POSITION and register CURRENT
 
         Returns:
@@ -480,7 +482,7 @@ class gripper_control():
 
                 1: Object picked by vacuum gripper
         """
-        return self.arm.get_vacuum_gripper(hardware_version=hardware_version, check_on=True)
+        return self.arm.get_vacuum_gripper(hardware_version=hardware_version)
 
     def set_vacuum_gripper(self, on, wait=False, timeout=3, delay_sec=None, sync=True, hardware_version=1):
         """

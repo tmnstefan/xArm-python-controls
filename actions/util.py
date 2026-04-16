@@ -31,9 +31,13 @@ class arm_utilities():
 
         Args: 
             servo_id: 1-(Number of axes), 8, if servo_id is 8, will attach all servo
+
                 1. 1-(Number of axes): attach only one joint
+
                     ex: arm.set_servo_attach(servo_id=1)
+
                 2: 8: attach all joints
+
                     ex: arm.set_servo_attach(servo_id=8)
 
         Returns:
@@ -47,9 +51,13 @@ class arm_utilities():
 
         Args:
             servo_id: 1-(Number of axes), 8, if servo_id is 8, will detach all servo
+
                 1. 1-(Number of axes): detach only one joint
+
                     ex: arm.set_servo_detach(servo_id=1)
+                    
                 2: 8: detach all joints, please
+                
                     ex: arm.set_servo_detach(servo_id=8)
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.

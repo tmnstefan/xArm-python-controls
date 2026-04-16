@@ -10,9 +10,13 @@ class arm_settings():
 
         Args:
             state: default 0
+                
                 - 0: motion state
+                
                 - 3: pause state
+                
                 - 4: stop state
+                
                 - 6: deceleration stop state
 
         Returns:
@@ -31,13 +35,13 @@ class arm_settings():
 
                 1: servo motion
 
-                    Note: the use of the set_servo_angle_j interface must first be set to this
+                Note: the use of the set_servo_angle_j interface must first be set to this
 
-                    Note: the use of the set_servo_cartesian interface must first be set to this
+                Note: the use of the set_servo_cartesian interface must first be set to this
 
                 2: joint teaching
 
-                    Note: use this mode to ensure that the arm has been identified and the control box and arm used for identification are one-to-one.
+                Note: use this mode to ensure that the arm has been identified and the control box and arm used for identification are one-to-one.
 
                 3: cartesian teaching (invalid)
 
@@ -57,9 +61,9 @@ class arm_settings():
 
                 Note:
 
-                    1. only available if firmware_version >= 1.10.1
+                1. only available if firmware_version >= 1.10.1
 
-                    2. only available if set_mode(2)
+                2. only available if set_mode(2)
 
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
@@ -424,7 +428,8 @@ class arm_settings():
         """
         Get inverse kinematics
 
-        Note: the roll/pitch/yaw unit is radian if input_is_radian is True, else °
+        Note:
+            1. the roll/pitch/yaw unit is radian if input_is_radian is True, else °
 
         Args:
             pose: [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)]
@@ -597,33 +602,61 @@ class arm_settings():
          
         Args:
             tool_type: the geometric model type
+
                 - 0: No end effector, no additional parameters required
+
                 - 1: xArm Gripper, no additional parameters required
+
                 - 2: xArm Vacuum Gripper, no additional parameters required
+                
                 - 3: xArm Bio Gripper, no additional parameters required
+                
                 - 4: Robotiq-2F-85 Gripper, no additional parameters required
+                
                 - 5: Robotiq-2F-140 Gripper, no additional parameters required
+                
                 - 7: Lite Gripper, no additional parameters required
+                
                 - 8: Lite Vacuum Gripper, no additional parameters required
+                
                 - 9: xArm Gripper G2, no additional parameters required
+                
                 - 10: PGC-140-50 of the DH-ROBOTICS, no additional parameters required
+                
                 - 11: RH56DFX-2L of the INSPIRE-ROBOTS, no additional parameters required
+                
                 - 12: RH56DFX-2R of the INSPIRE-ROBOTS, no additional parameters required
+                
                 - 13: xArm Bio Gripper G2, no additional parameters required
+                
                 - 21: Cylinder, need additional parameters radius, height 
+                    
                     - ex: self.set_collision_tool_model(21, radius=45, height=137)
+                    
                     - radius: the radius of cylinder, (mm)
+                    
                     - height: the height of cylinder, (mm)
+                    
                     - x_offset: offset in the x direction, (mm)
+                    
                     - y_offset: offset in the y direction, (mm)
+                    
                     - z_offset: offset in the z direction, (mm)
+                
                 - 22: Cuboid, need additional parameters x, y, z
+                    
                     - ex: self.set_collision_tool_model(22, x=234, y=323, z=23)
+                    
                     - x: the length of the cuboid in the x coordinate direction, (mm)
+                    
                     - y: the length of the cuboid in the y coordinate direction, (mm)
+                    
                     - z: the length of the cuboid in the z coordinate direction, (mm)
+                    
                     - x_offset: offset in the x direction, (mm)
+                    
                     - y_offset: offset in the y direction, (mm)
+                    
                     - z_offset: offset in the z direction, (mm)
             
             args: additional parameters
@@ -678,25 +711,41 @@ class arm_settings():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
             states: [....]
-            ```
+    
                 if version > 1.2.11:
-                    states: [
-                       reduced_mode_is_on,
-                       [reduced_x_max, reduced_x_min, reduced_y_max, reduced_y_min, reduced_z_max, reduced_z_min],
-                       reduced_max_tcp_speed,
-                       reduced_max_joint_speed,
-                       joint_ranges([joint-1-min, joint-1-max, ..., joint-7-min, joint-7-max]),
-                       safety_boundary_is_on,
-                       collision_rebound_is_on,
-                    ]
+                
+                states: [
+
+                   reduced_mode_is_on,
+                       
+                   [reduced_x_max, reduced_x_min, reduced_y_max, reduced_y_min, reduced_z_max, reduced_z_min],
+                       
+                   reduced_max_tcp_speed,
+                       
+                   reduced_max_joint_speed,
+                       
+                   joint_ranges([joint-1-min, joint-1-max, ..., joint-7-min, joint-7-max]),
+                       
+                   safety_boundary_is_on,
+                       
+                   collision_rebound_is_on,
+                    
+                ]
+                
                 if version <= 1.2.11:
-                    states: [
-                       reduced_mode_is_on,
-                       [reduced_x_max, reduced_x_min, reduced_y_max, reduced_y_min, reduced_z_max, reduced_z_min],
-                       reduced_max_tcp_speed,
-                       reduced_max_joint_speed,
-                    ]
-            ```
+                    
+                states: [
+                       
+                reduced_mode_is_on,
+                       
+                [reduced_x_max, reduced_x_min, reduced_y_max, reduced_y_min, reduced_z_max, reduced_z_min],
+                       
+                reduced_max_tcp_speed,
+                       
+                reduced_max_joint_speed,
+                    
+                ]
+    
         """
         return self.arm.get_reduced_states(is_radian=is_radian)
 
@@ -1026,6 +1075,7 @@ class arm_settings():
     def calibrate_tcp_coordinate_offset(self, four_points, is_radian=None):
         """
         Four-point method to calibrate tool coordinate system position offset
+
         Note:
             1. only available if firmware_version >= 1.6.9
 
@@ -1098,6 +1148,7 @@ class arm_settings():
     def calibrate_user_coordinate_offset(self, rpy_ub, pos_b_uorg, is_radian=None):
         """
         An additional teaching point determines the position offset of the user coordinate system.
+
         Note:
             1. only available if firmware_version >= 1.6.9
 
@@ -1301,37 +1352,64 @@ class arm_settings():
             5. If only_check_type is set to be greater than 0, and the return value of calling the motion interface is not 0, you can view arm.only_check_result to view the specific error code
         
         Example: (Common scenarios, here is an example of the set_position interface)
-            1. Check whether the process from point A to point B is normal (no self-collision and overspeed triggered)
-                1.1 Move to point A
-                    arm.set_only_check_type(0)
-                    code = arm.set_position(A)
-                1.2 Check if the process from point A to point B is normal (no self-collision and overspeed triggered)
-                    arm.set_only_check_type(1)
-                    code = arm.set_position(B)
-                    If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
-                    arm.set_only_check_type(0)
+            - 1. Check whether the process from point A to point B is normal (no self-collision and overspeed triggered)
+                
+                - 1.1 Move to point A
                     
-            2. Check whether the process from point A to point B, C, and D to point E is normal (no self-collision and overspeed are triggered)
-                2.1 Move to point A
-                    arm.set_only_check_type(0)
-                    code = arm.set_position(A)
-                2.2 Check whether the process of point A passing through points B, C, D to point E is normal (no self-collision and overspeed are triggered)
-                    arm.set_only_check_type(3)
-                    code = arm.set_position(B)
-                    If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
-                    code = arm.set_position(C)
-                    If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
-                    code = arm.set_position(D)
-                    If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
-                    code = arm.set_position(E)
-                    If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
-                    arm.set_only_check_type(0)
+                    - arm.set_only_check_type(0)
+                    
+                    - code = arm.set_position(A)
+                
+                - 1.2 Check if the process from point A to point B is normal (no self-collision and overspeed triggered)
+                    
+                    - arm.set_only_check_type(1)
+                    
+                    - code = arm.set_position(B)
+                    
+                    - If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
+                    
+                    - arm.set_only_check_type(0)
+                    
+            
+            - 2. Check whether the process from point A to point B, C, and D to point E is normal (no self-collision and overspeed are triggered)
+                
+                - 2.1 Move to point A
+                    
+                    - arm.set_only_check_type(0)
+                    
+                    - code = arm.set_position(A)
+                
+                - 2.2 Check whether the process of point A passing through points B, C, D to point E is normal (no self-collision and overspeed are triggered)
+                    
+                    - arm.set_only_check_type(3)
+                    
+                    - code = arm.set_position(B)
+                    
+                    - If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
+                    
+                    - code = arm.set_position(C)
+                    
+                    - If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
+                    
+                    - code = arm.set_position(D)
+                    
+                    - If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
+                    
+                    - code = arm.set_position(E)
+                    
+                    - If code is not equal to 0, it means that the path does not pass. You can check the specific error code through arm.only_check_result
+                    
+                    - arm.set_only_check_type(0)
 
         Args:
             only_check_type: Motion Detection Type
+                
                 - only_check_type == 0: Restore the original function of the motion interface, it will move, the default is 0
+                
                 - only_check_type == 1: Only check the self-collision without moving, take the actual state of the manipulator as the initial planned path, and check whether the path has self-collision (the intermediate state will be updated at this time)
+                
                 - only_check_type == 2: Only check the self-collision without moving, use the intermediate state as the starting planning path, check whether the path has self-collision (the intermediate state will be updated at this time), and restore the intermediate state to the actual state after the end
+                
                 - only_check_type == 3: Only check the self-collision without moving, use the intermediate state as the starting planning path, and check whether the path has self-collision (the intermediate state will be updated at this time)
 
         Returns:
@@ -1352,9 +1430,13 @@ class arm_settings():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
             dh_params: DH parameters
+
                - dh_params[0:4]: DH parameters of Joint-1
+
                - dh_params[4:8]: DH parameters of Joint-2
+
                - ...
+
                - dh_params[24:28]: DH parameters of Joint-7
         """
         return self.arm.get_dh_params()
@@ -1541,10 +1623,15 @@ class arm_settings():
 
         Args:
             dev_type: the type of the external device
+                
                 - 0: Turn off monitoring
+                
                 - 1: xArm Gripper
+                
                 - 2: xArm Gripper G2
+                
                 - 3: BIO Gripper G2
+                
                 - 4: Robotiq 2F-85/Robotiq 2F-140
             
             frequency: the frequency of communication with the external device

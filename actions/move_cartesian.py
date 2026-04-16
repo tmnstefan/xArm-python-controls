@@ -315,7 +315,8 @@ class cartesian_control():
         """
         Move to go home (Back to zero)
 
-        Warning: without limit detection
+        Warning:
+        without limit detection
 
         Note:
             1. If you want to wait for the robot to complete it's current action and then return, set wait to True.

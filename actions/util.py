@@ -57,7 +57,7 @@ class arm_utilities():
                     ex: arm.set_servo_detach(servo_id=1)
                     
                 2: 8: detach all joints, please
-                
+
                     ex: arm.set_servo_detach(servo_id=8)
         Returns:
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
@@ -222,7 +222,7 @@ class arm_utilities():
             out: Hexadecimal data_list or code
             
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
-                Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](../UF_ModbusTCP_Manual.md)
+                Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
         return self.arm.send_hex_cmd(datas, **kwargs)
     

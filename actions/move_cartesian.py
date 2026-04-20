@@ -594,9 +594,9 @@ class cartesian_control():
 
             status:
 
-               0: linear motor is not enabled
+                0: linear motor is not enabled
 
-               1: linear motor is enabled
+                1: linear motor is enabled
         """
         return self.arm.get_linear_motor_is_enabled()
 

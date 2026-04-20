@@ -12,4 +12,8 @@ nav:
 - Settings: settings.md
 - Trajectories: trajectory_recording.md
 - Utilities: util.md
-theme: "material"
+- UF Modbus Manual: UF_ModbusTCP_Manual.md
+theme:
+  name: material
+
+

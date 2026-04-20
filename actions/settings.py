@@ -1431,13 +1431,13 @@ class arm_settings():
 
             dh_params: DH parameters
 
-               - dh_params[0:4]: DH parameters of Joint-1
+                - dh_params[0:4]: DH parameters of Joint-1
 
-               - dh_params[4:8]: DH parameters of Joint-2
+                - dh_params[4:8]: DH parameters of Joint-2
 
-               - ...
+                - ...
 
-               - dh_params[24:28]: DH parameters of Joint-7
+                - dh_params[24:28]: DH parameters of Joint-7
         """
         return self.arm.get_dh_params()
     

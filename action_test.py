@@ -55,17 +55,17 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
         simple_move(arm, x, y, z, roll, pitch, yaw)
 
 
-def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int): # move to above a given vial index, spacing is currently hardcoded to a 20mmx20mm grid
+def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int): # move to above a given vial index, spacing is currently hardcoded
     arm_util = arm_utilities(arm)
     setting = arm_settings(arm)
     arm_util.connect()
     setting.set_state(0)
     setting.set_collision_rebound(on=True)
-    column_pos = tray_y + 10 + (column_num - 1) * 20
-    row_pos = tray_x + 10 + (row_num - 1) * 20
+    column_pos = tray_y + 17.46 + (column_num - 1) * 19.3
+    row_pos = tray_x + 13.78 + (row_num - 1) * 19.3
     simple_move(arm, x=row_pos, y=column_pos, z=tray_z + 100, roll=180, pitch=0, yaw=0)
 
-def plus_draw(arm:XArmAPI, draw_z:int, tool_length:int): # very crude way of drawing a cross onto a surface that makes a few too many assumptions
+def plus_draw(arm:XArmAPI, draw_z:float, tool_length:float): # very crude way of drawing a cross onto a surface that makes a few too many assumptions
     arm_movement = cartesian_control(arm)
     arm_movement.set_position(z=draw_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
     arm_movement.set_position(x=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
@@ -79,16 +79,15 @@ def plus_draw(arm:XArmAPI, draw_z:int, tool_length:int): # very crude way of dra
     arm_movement.set_position(y=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
 
 
-def draw_vial_grid(arm:XArmAPI, tray_x:int, tray_y:int, tray_z:int, row_num:int, column_num:int, tool_length:int=100):
+def draw_vial_grid(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int, tool_length:int=100):
     for row in range(1, row_num + 1):
         for column in range(1, column_num + 1):
             move_to_vial(arm, tray_x=tray_x, tray_y=tray_y, tray_z=tray_z, row_num=row, column_num=column)
             time.sleep(1)
             plus_draw(arm, draw_z=tray_z, tool_length=tool_length)
 
-draw_vial_grid(arm, tray_x=0, tray_y=200, tray_z=100, row_num=2, column_num=4, tool_length=80)
-
 #test for dealing with going over angle limits
+
 simple_move(arm, x=0, y=200, z=200, roll=180, pitch=0, yaw=0)
 time.sleep(0.5)
 simple_move(arm, x=-200, y=0, z=200, roll=180, pitch=0, yaw=0)
@@ -105,23 +104,29 @@ simple_move(arm, x=-200, y=-300, z=-50, roll=180, pitch=0, yaw=0)
 time.sleep(0.5)
 simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)
 
+# attempt to use set_servo_angle for movement, does not work
+'''def move_to_safe_position(arm:XArmAPI):
+    arm_movement = cartesian_control(arm)
+    settings = arm_settings(arm)
+    settings.set_mode(1)
+    arm_movement.move_gohome(wait=True, timeout=20)
+    current_angle = arm_movement.get_servo_angle(servo_id=1)[1]
+    # Handle case where current_angle might be a list
+    angle_val = current_angle[0] if isinstance(current_angle, list) else current_angle
+    move_angle = 0 - int(angle_val)
+    arm_movement.set_servo_angle(servo_id=1, angle=move_angle, is_radian=False, relative=True, wait=True, timeout=20) # doesnt work in absolute coordinate system so using relative for now
+    settings.set_mode(1)
+    safe_angles = settings.get_inverse_kinematics(pose = [0, 200, 200, 180, 0, 0, False])
+    
+    try:
+        arm.set_servo_angle_j(angles=[90, 10, 32, 0, 22, 0], is_radian=False, wait=True, timeout=20)
+    except Exception as e:
+        print(f"Error occurred while setting servo angle: {e}")
+        print(f"Safe angles were: {safe_angles[1]}")
+    
+    arm.set_servo_angle(angle=[90, 10, 32, 0, 22, 0], is_radian=False)
 
-#arm_util = arm_utilities(arm)
-#arm_movement = cartesian_control(arm)
-#setting=arm_settings(arm)
-#arm_util.connect(port='127.0.0.1')
-#setting.set_collision_rebound(on=True)
-#print("\n \n using tool position")
-#arm_movement.set_tool_position(x=200, y=0, z=200, roll=0, pitch=0, yaw=0, is_radian=False, wait=True)
-#arm_movement.reset()
-#print(arm_movement.get_servo_angle())
-#arm_movement.set_position(x=-100, y=-300, z=200, roll=180, pitch=0, yaw=0, is_radian=False, wait=True, radius=300)
-#arm_movement.set_position(x=100, y=300, z=200, roll=180, pitch=0, yaw=0, is_radian=False, wait=True, radius=300)
-#current_pos = setting.get_position(is_radian=False)[1]
-#print(current_pos)
-#arm_movement.set_position(x=current_pos[0], y=current_pos[1], z=current_pos[2] + 100, roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False)
-#arm_movement.set_position_aa(axis_angle_pose=[0, 0, 100, 0, 0, 0], is_radian=False, relative=True)
-#arm_movement.set_position(x=-300, y=0, z=200, roll=180, pitch=0, yaw=0, is_radian=False, wait=True, radius=300)
-#print(arm_movement.get_servo_angle())
+#draw_vial_grid(arm, tray_x=0, tray_y=200, tray_z=20.27, row_num=4, column_num=6, tool_length=80)
 
-
+simple_move(arm, x=-100, y=-200, z=200, roll=180, pitch=0, yaw=0)
+move_to_safe_position(arm)'''

@@ -15,13 +15,13 @@ class read_write_control():
             quantity: number of registers
         
         Returns:
-            out: tuple((code, bits)) returned result is only corrent when code is 0.
+            out (tuple[int, list[int]]): tuple((code, bits)) returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
 
-            bits: values read from the registers
+            bits (list[int]): values read from the registers
         """
         return self.arm.read_coil_bits(addr, quantity)
 
@@ -35,13 +35,13 @@ class read_write_control():
             quantity: number of registers
 
         Returns:
-            out: tuple((code, bits)) returned result is only corrent when code is 0.
+            out (tuple[int, list[int]]): tuple((code, bits)) returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
 
-            bits: values read from the registers
+            bits (list[int]): values read from the registers
         """
         return self.arm.read_input_bits(addr, quantity)
     
@@ -57,13 +57,13 @@ class read_write_control():
             is_signed: whether to convert the read register value into a signed form
 
         Returns:
-            out: tuple((code, bits)) returned result is only corrent when code is 0.
+            out (tuple[int, list[int]]): tuple((code, bits)) returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
             
-            bits: values read from the registers
+            bits (list[int]): values read from the registers
         """
         return self.arm.read_holding_registers(addr, quantity, is_signed)
     
@@ -79,13 +79,13 @@ class read_write_control():
             is_signed: whether to convert the read register value into a signed form
 
         Returns:
-            out: tuple((code, bits)) returned result is only corrent when code is 0.
+            out (tuple[int, list[int]]): tuple((code, bits)) returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
 
-            bits: values read from the registers
+            bits (list[int]): values read from the registers
         """
         return self.arm.read_input_registers(addr, quantity, is_signed)
     
@@ -99,7 +99,7 @@ class read_write_control():
             bit_val: the value to write (0/1)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
@@ -115,7 +115,7 @@ class read_write_control():
             bit_val: the value to write
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
@@ -131,7 +131,7 @@ class read_write_control():
             bits: array of values to write
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
@@ -147,7 +147,7 @@ class read_write_control():
             regs: array of values to write
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
@@ -165,7 +165,7 @@ class read_write_control():
             or_mask: mask to be OR with
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
@@ -187,12 +187,12 @@ class read_write_control():
             is_signed: whether to convert the read register value into a signed form
 
         Returns:
-            out: tuple((code, regs)) returned result is only corrent when code is 0.
+            out (tuple[int, tuple]): tuple((code, regs)) returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
 
-            regs:
+            regs (tuple): register values
         """
         return self.arm.write_and_read_holding_registers(r_addr, r_quantity, w_addr, w_regs, is_signed)

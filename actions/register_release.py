@@ -53,7 +53,7 @@ class register_release_control():
             report_cmd_num: report cmdnum or not, default is True
                 
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_report_callback(callback=callback,
                                                   report_cartesian=report_cartesian,
@@ -87,7 +87,7 @@ class register_release_control():
             report_joints: report or not, True/False, default is True
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_report_location_callback(callback=callback,
                                                            report_cartesian=report_cartesian,
@@ -111,7 +111,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_connect_changed_callback(callback=callback)
 
@@ -132,7 +132,7 @@ class register_release_control():
 
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_state_changed_callback(callback=callback)
 
@@ -152,7 +152,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_mode_changed_callback(callback=callback)
 
@@ -174,7 +174,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_mtable_mtbrake_changed_callback(callback=callback)
 
@@ -196,7 +196,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_error_warn_changed_callback(callback=callback)
 
@@ -216,7 +216,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_cmdnum_changed_callback(callback=callback)
 
@@ -236,7 +236,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_temperature_changed_callback(callback=callback)
 
@@ -256,7 +256,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_count_changed_callback(callback=callback)
 
@@ -276,7 +276,7 @@ class register_release_control():
                 }
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_iden_progress_changed_callback(callback=callback)
     
@@ -288,7 +288,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_report_callback(callback)
     
@@ -301,7 +301,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_report_location_callback(callback)
     
@@ -313,7 +313,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_connect_changed_callback(callback)
 
@@ -325,7 +325,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_state_changed_callback(callback)
 
@@ -337,7 +337,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_mode_changed_callback(callback)
 
@@ -349,7 +349,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_mtable_mtbrake_changed_callback(callback)
 
@@ -361,7 +361,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_error_warn_changed_callback(callback)
 
@@ -373,7 +373,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_cmdnum_changed_callback(callback)
 
@@ -385,7 +385,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_temperature_changed_callback(callback=callback)
 
@@ -397,7 +397,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_count_changed_callback(callback=callback)
 
@@ -409,7 +409,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_iden_progress_changed_callback(callback=callback)
     
@@ -452,7 +452,7 @@ class register_release_control():
                     Note: this time is the corresponding controller system time when the feedback is triggered
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.register_feedback_callback(callback=callback)
 
@@ -467,7 +467,7 @@ class register_release_control():
             callback:
         
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.release_feedback_callback(callback=callback)
 

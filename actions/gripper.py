@@ -16,7 +16,7 @@ class gripper_control():
                 Note: such as code = arm.set_gripper_enable(True) to turn on the Gripper
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gripper_enable(enable, **kwargs)
 
@@ -30,7 +30,7 @@ class gripper_control():
                 Note: such as code = arm.set_gripper_mode(0)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gripper_mode(mode, **kwargs)
     
@@ -42,7 +42,7 @@ class gripper_control():
             speed: speed
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gripper_speed(speed, **kwargs)
     
@@ -62,7 +62,7 @@ class gripper_control():
             timeout: wait time, unit: second, default is 10s
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gripper_position(pos, wait=wait, speed=speed, auto_enable=auto_enable, timeout=timeout, **kwargs)
     
@@ -71,9 +71,11 @@ class gripper_control():
         Get the gripper position (pulse)
 
         Returns:
-            out: tuple((code, pos)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            pos (int): gripper position
         """
         return self.arm.get_gripper_position(**kwargs)
     
@@ -82,11 +84,11 @@ class gripper_control():
         Get the gripper error code
 
         Returns:
-            out: tuple((code, err_code)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, err_code)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            err_code: See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.
+            err_code (int): See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.
         """
         return self.arm.get_gripper_err_code(**kwargs)
     
@@ -95,7 +97,7 @@ class gripper_control():
         Clean the gripper error
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_gripper_error(**kwargs)
     
@@ -107,11 +109,11 @@ class gripper_control():
             1. Only available if gripper_version >= 3.4.3
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
             
-            status:
+            status (int):
                 status & 0x03 == 0: stop state
 
                 status & 0x03 == 1: move state 
@@ -125,9 +127,11 @@ class gripper_control():
         Get the position (mm) of the xArm Gripper G2
 
         Returns:
-            out: tuple((code, pos)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            pos (int): gripper position (mm)
         """
         return self.arm.get_gripper_g2_position(**kwargs)
     
@@ -147,7 +151,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 10s, only valid if wait is True
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gripper_g2_position(pos, speed=speed, force=force, wait=wait, timeout=timeout, **kwargs)
     
@@ -163,7 +167,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 3, only available if wait=True
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_bio_gripper_enable(enable, wait=wait, timeout=timeout)
 
@@ -175,7 +179,7 @@ class gripper_control():
             speed: speed
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_bio_gripper_speed(speed)
 
@@ -194,7 +198,7 @@ class gripper_control():
                 1: position loop mode
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         
         return self.arm.set_bio_gripper_control_mode(mode)
@@ -210,7 +214,7 @@ class gripper_control():
             force: gripper force between 10 and 100
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
 
         return self.arm.set_bio_gripper_force(force)
@@ -220,9 +224,11 @@ class gripper_control():
         Get the position (mm) of the BIO Gripper G2
 
         Returns:
-            out: tuple((code, pos)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            pos (int): bio gripper g2 position (mm)
         """
         return self.arm.get_bio_gripper_g2_position(**kwargs)
 
@@ -262,7 +268,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 5, only available if wait=True
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.open_bio_gripper(speed=speed, wait=wait, timeout=timeout, **kwargs)
 
@@ -278,7 +284,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 5, only available if wait=True
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.close_bio_gripper(speed=speed, wait=wait, timeout=timeout, **kwargs)
 
@@ -287,11 +293,11 @@ class gripper_control():
         Get the status of the bio gripper
         
         Returns:
-            out: tuple((code, status))
+            out (tuple[int, int]): tuple((code, status))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status: status
+            status (int): status
                 status & 0x03 == 0: stop
 
                 status & 0x03 == 1: motion
@@ -313,11 +319,11 @@ class gripper_control():
         Get the error code of the bio gripper
         
         Returns:
-            out: tuple((code, error_code))
+            out (tuple[int, int]): tuple((code, error_code))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            error_code: See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. 
+            error_code (int): See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. 
         """
         return self.arm.get_bio_gripper_error()
 
@@ -326,7 +332,7 @@ class gripper_control():
         Clean the error code of the bio gripper
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_bio_gripper_error()
     
@@ -335,11 +341,11 @@ class gripper_control():
         Reset the robotiq gripper (clear previous activation if any)
         
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            robotiq_response: See the robotiq documentation
+            robotiq_response (int): See the robotiq documentation
         """
         return self.arm.robotiq_reset()
 
@@ -353,11 +359,11 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 3, only available if wait=True
         
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
             
-            robotiq_response: See the robotiq documentation 
+            robotiq_response (int): See the robotiq documentation 
         """
         return self.arm.robotiq_set_activate(wait=wait, timeout=timeout)
 
@@ -377,11 +383,11 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 5, only available if wait=True
         
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            robotiq_response: See the robotiq documentation 
+            robotiq_response (int): See the robotiq documentation 
         """
         return self.arm.robotiq_set_position(pos, speed=speed, force=force, wait=wait, timeout=timeout, **kwargs)
 
@@ -399,11 +405,11 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 5, only available if wait=True
         
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            robotiq_response: See the robotiq documentation 
+            robotiq_response (int): See the robotiq documentation 
         """
         return self.arm.robotiq_open(speed=speed, force=force, wait=wait, timeout=timeout, **kwargs)
 
@@ -421,11 +427,11 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 3, only available if wait=True
         
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            robotiq_response: See the robotiq documentation
+            robotiq_response (int): See the robotiq documentation
         """
         return self.arm.robotiq_close(speed=speed, force=force, wait=wait, timeout=timeout, **kwargs)
 
@@ -450,11 +456,11 @@ class gripper_control():
             register 0x07D2: Register POSITION and register CURRENT
 
         Returns:
-            out: tuple((code, robotiq_response))
+            out (tuple[int, int]): tuple((code, robotiq_response))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            robotiq_response: See the robotiq documentation
+            robotiq_response (int): See the robotiq documentation
         """
         return self.arm.robotiq_get_status(number_of_registers=number_of_registers)
     
@@ -470,11 +476,11 @@ class gripper_control():
                 2: Contact Connection
 
         Returns:
-            out: tuple((code, state)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, state)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            state: state of the Vacuum Gripper
+            state (int): state of the Vacuum Gripper
 
                 -1: Vacuum Gripper is off  
 
@@ -514,7 +520,7 @@ class gripper_control():
                 2: Contact Connection
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_vacuum_gripper(on, wait=wait, timeout=timeout, delay_sec=delay_sec, sync=sync, hardware_version=hardware_version)
     
@@ -528,7 +534,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 3, only available if wait=True
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_dhpgc_gripper_activate(wait=wait, timeout=timeout)
         
@@ -548,7 +554,7 @@ class gripper_control():
             timeout: maximum waiting time(unit: second), default is 5s, only available if wait=True
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_dhpgc_gripper_position(pos, speed=speed, force=force, wait=wait, timeout=timeout, **kwargs)
     
@@ -566,7 +572,7 @@ class gripper_control():
                 1. only available if firmware_version >= 2.4.101
             
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
         """
         return self.arm.open_lite6_gripper(sync=sync)
 
@@ -584,7 +590,7 @@ class gripper_control():
                 1. only available if firmware_version >= 2.4.101
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.close_lite6_gripper(sync=sync)
 
@@ -602,6 +608,6 @@ class gripper_control():
                 1. only available if firmware_version >= 2.4.101
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.stop_lite6_gripper(sync=sync)

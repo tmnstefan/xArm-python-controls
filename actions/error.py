@@ -15,13 +15,13 @@ class arm_errors():
             lang: show language, en/cn, degault is en, only available if show is True
 
         Returns:
-            out: tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.
         
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            error_code: See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.
+            error_code (int): See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.
 
-            warn_code: See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.
+            warn_code (int): See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.
         """
         return self.arm.get_err_warn_code(show=show, lang=lang)
     
@@ -30,7 +30,7 @@ class arm_errors():
         Clean the error, need to manually enable motion(arm.motion_enable(True)) and set state(arm.set_state(state=0)) after error cleaned
 
         Returns:
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_error()
     
@@ -42,11 +42,11 @@ class arm_errors():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
             
-            err_info: [servo_id, theoratival tau, actual tau]
+            err_info (list): [servo_id, theoratival tau, actual tau]
         """
         return self.arm.get_c31_error_info()
     
@@ -58,11 +58,11 @@ class arm_errors():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            err_info: [servo_id, angle]
+            err_info (list): [servo_id, angle]
         """
         return self.arm.get_c37_error_info(is_radian)
     
@@ -74,11 +74,11 @@ class arm_errors():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out (tuple[int, tuple]): tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
 
             code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            err_info (tuple): [(servo_id, angle), ...]
+            err_info (list): [[servo_id, angle], ...]
         """
         return self.arm.get_c23_error_info(is_radian)
     
@@ -90,11 +90,11 @@ class arm_errors():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            err_info: [servo_id, speed]
+            err_info (list): [servo_id, speed]
         """
         return self.arm.get_c24_error_info(is_radian)
     
@@ -107,11 +107,11 @@ class arm_errors():
             2. Only available in mode 1
 
         Returns:
-            out: tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            err_info: [max_linear_speed, curr_linear_speed]
+            err_info (list): [max_linear_speed, curr_linear_speed]
         """
         return self.arm.get_c60_error_info()
     
@@ -123,11 +123,11 @@ class arm_errors():
             Only available if firmware_version >= 2.4.0
 
         Returns:
-            out: tuple((code, err_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.
 
-            err_info: [(servo_id, angle), ...]
+            err_info (list): [(servo_id, angle), ...]
         """
         return self.arm.get_c38_error_info(is_radian)
     

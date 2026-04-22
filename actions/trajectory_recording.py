@@ -14,11 +14,11 @@ class trajectory_recording():
             2. Only valid during recording or after recording but before saving
 
         Returns:
-            out: tuple((code, seconds)), returned result is only corrent when code is 0.
+            out (tuple[int, float]): tuple((code, seconds)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            seconds: The actual duration of the recorded trajectory
+            seconds (float): The actual duration of the recorded trajectory
         """
         ret = self.arm.get_common_info(50, return_val=True)
         return ret
@@ -46,7 +46,7 @@ class trajectory_recording():
             timeout: Timeout waiting for saving to complete
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.save_record_trajectory(filename, wait=wait, timeout=timeout, **kwargs)
     
@@ -59,7 +59,7 @@ class trajectory_recording():
             2. set joint teaching mode: set_mode(2);set_state(0)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.start_record_trajectory()
 
@@ -84,7 +84,7 @@ class trajectory_recording():
                 5. Empty the trajectory in memory after saving
     
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.stop_record_trajectory(filename=filename, **kwargs)
     
@@ -103,7 +103,7 @@ class trajectory_recording():
             timeout: Timeout waiting for loading to complete
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.load_trajectory(filename, wait=wait, timeout=timeout, **kwargs)
     
@@ -128,7 +128,7 @@ class trajectory_recording():
             double_speed: double speed, only support 1/2/4, default is 1, only available if version > 1.2.11
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.playback_trajectory(times=times, filename=filename, wait=wait, double_speed=double_speed, **kwargs)
     
@@ -137,11 +137,11 @@ class trajectory_recording():
         Get trajectory read/write status
 
         Returns:
-            out: (code, status)
+            out (tuple[int, int]): (code, status)
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status:
+            status (int):
 
                 0: no read/write
 
@@ -167,7 +167,7 @@ class trajectory_recording():
             name: trajectory name
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm._studio.delete_trajectory(name)
     
@@ -179,11 +179,11 @@ class trajectory_recording():
             rate: speed rate, only 1/2/4
 
         Returns:
-            out: tuple((code, speed_info)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, speed_info)), returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            speed_info: [result_code, servo_id, servo_speed]
+            speed_info (list): [result_code, servo_id, servo_speed]
 
                 result_code: 0: Pass, -1: Fail, >0: abnormal(1:Trajectory not loaded or incorrect status;2:The input magnification is incorrect)
 

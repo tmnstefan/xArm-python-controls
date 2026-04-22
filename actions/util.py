@@ -41,7 +41,7 @@ class arm_utilities():
                     ex: arm.set_servo_attach(servo_id=8)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_attach(servo_id=servo_id)
 
@@ -60,7 +60,7 @@ class arm_utilities():
 
                     ex: arm.set_servo_detach(servo_id=8)
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_detach(servo_id=servo_id)
 
@@ -69,7 +69,7 @@ class arm_utilities():
         Clean the warn
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_warn()
 
@@ -81,7 +81,7 @@ class arm_utilities():
             1. This interface will clear the current settings and restore to the system default settings
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_conf()
 
@@ -94,7 +94,7 @@ class arm_utilities():
             2. The clean_conf interface can restore system default settings
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.save_conf()
     
@@ -103,11 +103,11 @@ class arm_utilities():
         checks verification
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status:
+            status (int):
                 0: verified
                 other: not verified
         """
@@ -123,7 +123,7 @@ class arm_utilities():
                 2: reboot
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.system_control(value=value)
 
@@ -138,8 +138,8 @@ class arm_utilities():
             on: True/False
                 such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)
         
-        Return:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+        Returns:
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_reduced_mode(on)
     
@@ -205,7 +205,7 @@ class arm_utilities():
             name: blockly app name
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm._studio.delete_blockly_app(name)   
     
@@ -221,7 +221,7 @@ class arm_utilities():
         Returns: 
             out: Hexadecimal data_list or code
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
         """
         return self.arm.send_hex_cmd(datas, **kwargs)
@@ -234,6 +234,6 @@ class arm_utilities():
             path: gcode file path
         
         Returns: 
-            code: returned result is only corrent when code is 0.
+            code (int): returned result is only corrent when code is 0.
         """
         return self.arm.run_gcode_app(path, **kwargs)

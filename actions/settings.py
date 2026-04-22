@@ -20,7 +20,7 @@ class arm_settings():
                 - 6: deceleration stop state
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_state(state=state)
 
@@ -66,7 +66,7 @@ class arm_settings():
                 2. only available if set_mode(2)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_mode(mode=mode, detection_param=detection_param)
     
@@ -80,7 +80,7 @@ class arm_settings():
             servo_id: 1-(Number of axes), None(8)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.motion_enable(servo_id=servo_id, enable=enable)
     
@@ -94,7 +94,7 @@ class arm_settings():
             wait: wait or not, default is False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_pause_time(sltime=sltime, wait=wait)
     
@@ -103,9 +103,11 @@ class arm_settings():
         Get the xArm firmware version
 
         Returns:
-            out: tuple((code, version)), returned result is only corrent when code is 0.
+            out (tuple[int, str]): tuple((code, version)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            version (str): firmware version, such as '6,9, ,XX0000,v2.4.0'
         """
         return self.arm.get_version()
     
@@ -114,11 +116,11 @@ class arm_settings():
         Get state
 
         Returns:
-            out: tuple((code, state)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, state)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            state: state
+            state (int): state
                 - 1: in motion
                 - 2: sleeping
                 - 3: suspended
@@ -131,7 +133,7 @@ class arm_settings():
         Check if the arm is moving or not
 
         Returns:
-            out: True/False
+            out (bool): True/False
         """
         return self.arm.get_is_moving()
     
@@ -140,9 +142,11 @@ class arm_settings():
         Get the cmd count in cache
 
         Returns:
-            out: tuple((code, cmd_num)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, cmd_num)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            cmd_num (int): command count in cache
         """
         return self.arm.get_cmdnum()
     
@@ -158,9 +162,9 @@ class arm_settings():
             is_radian: if the returned value (only roll/pitch/yaw) is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, [x, y, z, roll, pitch, yaw])), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, [x, y, z, roll, pitch, yaw])), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_position(is_radian=is_radian)
     
@@ -181,9 +185,9 @@ class arm_settings():
             is_radian: the returned value is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
+            out (tuple[int, list | float]): tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_servo_angle(servo_id=servo_id, is_radian=is_radian, is_real=is_real)
     
@@ -195,9 +199,9 @@ class arm_settings():
             is_radian: if the returned value (only rx/ry/rz) is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_position_aa(is_radian=is_radian)
     
@@ -221,11 +225,11 @@ class arm_settings():
             is_radian: if the roll/rx/pitch/ry/yaw/rz of pose1/pose2/return_pose is in radians or not
 
         Returns:
-            out: tuple((code, pose)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, pose)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            pose: [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
+            pose (list[float]): [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
         """
         return self.arm.get_pose_offset(pose1, pose2, orient_type_in=orient_type_in, orient_type_out=orient_type_out, is_radian=is_radian)
     
@@ -248,7 +252,7 @@ class arm_settings():
             wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_offset(offset, is_radian=is_radian, wait=wait, **kwargs)
 
@@ -266,7 +270,7 @@ class arm_settings():
             jerk: jerk (mm/s^3)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_jerk(jerk)
 
@@ -283,7 +287,7 @@ class arm_settings():
             acc: max acceleration (mm/s^2)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_maxacc(acc)
 
@@ -302,7 +306,7 @@ class arm_settings():
             is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_joint_jerk(jerk, is_radian=is_radian)
 
@@ -321,7 +325,7 @@ class arm_settings():
             is_radian: if the jerk is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_joint_maxacc(acc, is_radian=is_radian)
 
@@ -342,7 +346,7 @@ class arm_settings():
             wait: whether to wait for the command to be executed or for the robotic arm to stop
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_tcp_load(weight, center_of_gravity, wait=wait, **kwargs)
 
@@ -361,7 +365,7 @@ class arm_settings():
             wait: reversed
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_collision_sensitivity(value, wait=wait)
 
@@ -380,7 +384,7 @@ class arm_settings():
             wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_teach_sensitivity(value, wait=wait)
 
@@ -399,7 +403,7 @@ class arm_settings():
             wait: Whether to wait for the robotic arm to stop or clear all previous queued commands before applying the setting.
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_gravity_direction(direction=direction, wait=wait)
 
@@ -420,7 +424,7 @@ class arm_settings():
             is_radian: if the base_tilt_deg/rotation_deg is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_mount_direction(base_tilt_deg, rotation_deg, is_radian=is_radian)
 
@@ -445,11 +449,11 @@ class arm_settings():
                 Note: only available if firmware_version >= 2.7.103
 
         Returns:
-            out: tuple((code, angles)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, angles)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            angles: [angle-1(rad or °), angle-2, ..., angle-(Number of axes)] or []
+            angles (list[float]): [angle-1(rad or °), angle-2, ..., angle-(Number of axes)] or []
 
                 Note: the returned angle value is radians if return_is_radian is True, else °
         """
@@ -467,11 +471,11 @@ class arm_settings():
             return_is_radian: the returned value is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, pose)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, pose)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            pose: [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)] or []
+            pose (list[float]): [x(mm), y(mm), z(mm), roll(rad or °), pitch(rad or °), yaw(rad or °)] or []
 
                 Note: the roll/pitch/yaw value is radians if return_is_radian is True, else °
         """
@@ -491,7 +495,7 @@ class arm_settings():
             fault_tolerance_radius: fault tolerance radius
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
         """
         return self.arm.set_tgpio_digital_with_xyz(ionum, value, xyz, fault_tolerance_radius)
 
@@ -509,7 +513,7 @@ class arm_settings():
             fault_tolerance_radius: fault tolerance radius
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.  
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.  
         """
         return self.arm.set_cgpio_digital_with_xyz(ionum, value, xyz, fault_tolerance_radius)
 
@@ -527,7 +531,7 @@ class arm_settings():
             fault_tolerance_radius: fault tolerance radius
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.  
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.  
         """
         return self.arm.set_cgpio_analog_with_xyz(ionum, value, xyz, fault_tolerance_radius)
 
@@ -539,7 +543,7 @@ class arm_settings():
             on_off: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.config_io_reset_when_stop(1, on_off)
 
@@ -551,7 +555,7 @@ class arm_settings():
             on_off: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.config_io_reset_when_stop(0, on_off)
     
@@ -565,7 +569,7 @@ class arm_settings():
                 - 1: electric current
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_report_tau_or_i(tau_or_i=tau_or_i)
 
@@ -574,11 +578,11 @@ class arm_settings():
         Get the reported torque or electric current
         
         Returns:
-            out: tuple((code, tau_or_i))
+            out (tuple[int, int]): tuple((code, tau_or_i))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            tau_or_i: 
+            tau_or_i (int): 
                 - 0: torque
                 - 1: electric current
         """
@@ -592,7 +596,7 @@ class arm_settings():
             on_off: enable or not
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_self_collision_detection(on_off)
 
@@ -664,7 +668,7 @@ class arm_settings():
             kwargs: additional parameters
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_collision_tool_model(tool_type, *args, **kwargs)
     
@@ -673,9 +677,11 @@ class arm_settings():
         Gets the xArm sn
 
         Returns:
-            out: tuple((code, sn)), returned result is only corrent when code is 0.
+            out (tuple[int, str]): tuple((code, sn)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            sn (str): the xArm sn
         """
         return self.arm.get_robot_sn()
     
@@ -687,11 +693,11 @@ class arm_settings():
             1. This interface relies on Firmware 1.2.0 or above
 
         Returns:
-            out: tuple((code, mode))
+            out (tuple[int, int]): tuple((code, mode))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            mode: 0 or 1, 1 means the reduced mode is on. 0 means the reduced mode is not on
+            mode (int): 0 or 1, 1 means the reduced mode is on. 0 means the reduced mode is not on
         """
         return self.arm.get_reduced_mode()
 
@@ -706,11 +712,11 @@ class arm_settings():
             is_radian: if the max_joint_speed of the states is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, states))
+            out (tuple[int, list]): tuple((code, states))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            states: [....]
+            states (list): [....]
     
                 if version > 1.2.11:
                 
@@ -761,7 +767,7 @@ class arm_settings():
             speed: speed (mm/s)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_reduced_max_tcp_speed(speed)
 
@@ -779,7 +785,7 @@ class arm_settings():
             is_radian: the speed is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_reduced_max_joint_speed(speed, is_radian=is_radian)
 
@@ -795,7 +801,7 @@ class arm_settings():
             boundary: [x_max, x_min, y_max, y_min, z_max, z_min]
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_reduced_tcp_boundary(boundary)
 
@@ -813,7 +819,7 @@ class arm_settings():
             is_radian: the param joint_range are in radians or not, defaults to self.default_is_radian
 
         Returns:
-
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_reduced_joint_range(joint_range, is_radian=is_radian)
 
@@ -828,7 +834,7 @@ class arm_settings():
             on: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_fense_mode(on)
     
@@ -843,7 +849,7 @@ class arm_settings():
             on: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_collision_rebound(on)
     
@@ -862,7 +868,7 @@ class arm_settings():
             wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed/cleared before setting
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_world_offset(offset, is_radian=is_radian, wait=wait)
 
@@ -876,11 +882,11 @@ class arm_settings():
             is_radian: roll/pitch/yaw value is radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, limit)), returned result is only corrent when code is 0.
+            out (tuple[int, bool]): tuple((code, limit)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            limit: True/False/None, limit or not, or failed
+            limit (bool): True/False/None, limit or not, or failed
         """
         return self.arm.is_tcp_limit(pose, is_radian=is_radian)
     
@@ -894,11 +900,11 @@ class arm_settings():
             is_radian: angle value is radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, limit)), returned result is only corrent when code is 0.
+            out (tuple[int, bool]): tuple((code, limit)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            limit: True/False/None, limit or not, or failed
+            limit (bool): True/False/None, limit or not, or failed
         """
         return self.arm.is_joint_limit(joint, is_radian=is_radian)
     
@@ -912,9 +918,9 @@ class arm_settings():
             lang: language, en/cn, default is en
 
         Returns:
-            out: tuple((code, servo_info_list)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, servo_info_list)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_servo_debug_msg(show=show, lang=lang)
     
@@ -923,9 +929,11 @@ class arm_settings():
         Get gripper version, only for debug
 
         Returns:
-            out: (code, version)
+            out (tuple[int, str]): tuple((code, version))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            version (str): gripper version
         """
         return self.arm.get_gripper_version()
 
@@ -937,9 +945,11 @@ class arm_settings():
             servo_id: servo id(1~7)
 
         Returns:
-            out: (code, version)
+            out (tuple[int, str]): tuple((code, version))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            version (str): servo version
         """
         return self.arm.get_servo_version(servo_id=servo_id)
 
@@ -948,9 +958,11 @@ class arm_settings():
         Get tool gpio version, only for debug
 
         Returns:
-            out: (code, version)
+            out (tuple[int, str]): tuple((code, version))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            version (str): tool gpio version
         """
         return self.arm.get_tgpio_version()
     
@@ -959,9 +971,11 @@ class arm_settings():
         Get harmonic type, only for debug
 
         Returns:
-            out: (code, type)
+            out (tuple[int, int]): (code, type)
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            type (int): harmonic type
         """
         return self.arm.get_harmonic_type(servo_id=servo_id)
 
@@ -970,9 +984,11 @@ class arm_settings():
         Get harmonic types, only for debug
 
         Returns:
-            out: (code, types)
+            out (tuple[int, list]): (code, types)
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            types (list): list of harmonic types
         """
         return self.arm.get_hd_types()
     
@@ -981,7 +997,7 @@ class arm_settings():
         Reset counter value
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_counter_reset()
 
@@ -993,7 +1009,7 @@ class arm_settings():
             val: reversed
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_counter_increase(val)
     
@@ -1002,11 +1018,11 @@ class arm_settings():
         Get joint torque
         
         Returns:
-            out: tuple((code, joints_torque))
+            out (tuple[int, list]): tuple((code, joints_torque))
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            joints_torque: joint torque
+            joints_torque (list): joint torque
         """
         return self.arm.get_joints_torque()
     
@@ -1030,7 +1046,7 @@ class arm_settings():
             enable: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_baud_checkset_enable(enable)
 
@@ -1048,7 +1064,7 @@ class arm_settings():
             baud: checkset baud value, less than or equal to 0 means disable checkset
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_checkset_default_baud(type_, baud)
 
@@ -1064,11 +1080,11 @@ class arm_settings():
                 - 4: linear motor
 
         Returns:
-            out: tuple((code, baud))
+            out (tuple[int, int]): (code, baud)
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            baud: the checkset baud value
+            baud (int): the checkset baud value
         """
         return self.arm.get_checkset_default_baud(type_)
     
@@ -1176,7 +1192,7 @@ class arm_settings():
             on_off: True/False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_simulation_robot(on_off)
     
@@ -1188,11 +1204,11 @@ class arm_settings():
             board_id: int
 
         Returns:
-            out: (code, version)
+            out (tuple[int, str]): (code, version)
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            version: base board version
+            version (str): base board version
         """
         return self.arm.get_base_board_version(board_id)
     
@@ -1209,11 +1225,11 @@ class arm_settings():
                 Note: this parameter is only available on the lite6 model manipulator, and this parameter must be specified for the lite6 model manipulator
 
         Returns:
-            out: tuple((code, load)) returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, load)) returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            load: [mass, x_centroid, y_centroid, z_centroid]
+            load (list): [mass, x_centroid, y_centroid, z_centroid]
 
         """
         return self.arm.iden_tcp_load(estimated_mass)
@@ -1223,11 +1239,11 @@ class arm_settings():
         Get the initial point from studio
         
         Returns:
-            out: tuple((code, point)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, point)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            point: initial point, [J1, J2, ..., J7]
+            point (list): initial point, [J1, J2, ..., J7]
         """
         return self.arm._studio.get_initial_point()
     
@@ -1239,7 +1255,7 @@ class arm_settings():
             point: initial point, [J1, J2, ..., J7]
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details. 
         """
         return self.arm._studio.set_initial_point(point)
     
@@ -1248,11 +1264,11 @@ class arm_settings():
         Get the mount degrees from studio
 
         Returns:
-            out: tuple((code, degrees)), returned result is only corrent when code is 0.
+            ou (tuple[int, list]): tuple((code, degrees)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            degrees: mount degrees, [tilt angle, rotate angle]
+            degrees (list): mount degrees, [tilt angle, rotate angle]
         """
         return self.arm._studio.get_mount_direction()
     
@@ -1267,7 +1283,7 @@ class arm_settings():
             on_off: whether motion is continuous or not, True: continuous, defaults to False
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_cartesian_velo_continuous(on_off)
 
@@ -1282,7 +1298,7 @@ class arm_settings():
             on_off: whether to allow or not, True: allow, default is False
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_allow_approx_motion(on_off)
     
@@ -1294,7 +1310,7 @@ class arm_settings():
             1. only available if firmware_version >= 1.9.0
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_allow_approx_motion()
     
@@ -1309,15 +1325,15 @@ class arm_settings():
             is_radian: if the returned value(position and velocity) is in radians or not, defaults to self.default_is_radian
 
         Returns:
-            out: tuple((code, [position, velocity, effort])), returned result is only corrent when code is 0.
+            out (tuple[int, [list]]): tuple((code, [position, velocity, effort])), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            position: the angles of joints, like [angle-1, ..., angle-7]
+            position (list[float]): the angles of joints, like [angle-1, ..., angle-7]
 
-            velocity: the velocities of joints, like [velo-1, ..., velo-7]
+            velocity (list[float]): the velocities of joints, like [velo-1, ..., velo-7]
 
-            effort: the efforts of joints, like [effort-1, ..., effort-7]
+            effort (list[float]): the efforts of joints, like [effort-1, ..., effort-7]
         """
         return self.arm.get_joint_states(is_radian=is_radian, num=num)
     
@@ -1332,11 +1348,11 @@ class arm_settings():
             sn: sn value
 
         Returns:
-            out: tuple((code, result)) returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, result)) returned result is only corrent when code is 0.
 
-            code:  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            result: 
+            result (int): 
                 - 0: success
                 - -1: failure
         """
@@ -1415,7 +1431,7 @@ class arm_settings():
                 - only_check_type == 3: Only check the self-collision without moving, use the intermediate state as the starting planning path, and check whether the path has self-collision (the intermediate state will be updated at this time)
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_only_check_type(only_check_type)
     
@@ -1427,11 +1443,11 @@ class arm_settings():
             1. only available if firmware_version >= 2.0.0
         
         Returns:
-            out: tuple((code, dh_params)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, dh_params)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            dh_params: DH parameters
+            dh_params (list[float]): DH parameters
 
                 - dh_params[0:4]: DH parameters of Joint-1
 
@@ -1462,7 +1478,7 @@ class arm_settings():
                 - 4: Use the default DH parameters and delete the DH parameters of the configuration file
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_dh_params(dh_params, flag) 
     
@@ -1484,7 +1500,7 @@ class arm_settings():
                 - 4: feedback when the non-motion task is triggered
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_feedback_type(feedback_type)
     
@@ -1500,7 +1516,7 @@ class arm_settings():
             factor: speed limit factor
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_spd_limit_factor(factor)
     
@@ -1515,7 +1531,7 @@ class arm_settings():
             num: history num
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_cmd_mat_history_num(num)
     
@@ -1530,7 +1546,7 @@ class arm_settings():
             num: history num
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_fdb_mat_history_num(num)
     
@@ -1542,11 +1558,11 @@ class arm_settings():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, factor)), returned result is only corrent when code is 0.
+            out (tuple[int, float]): tuple((code, factor)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            factor: linear speed limit factor
+            factor (float): linear speed limit factor
         """
         return self.arm.get_linear_spd_limit_factor()
     
@@ -1558,11 +1574,11 @@ class arm_settings():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, num)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, num)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            num: cmd mat history num
+            num (int): cmd mat history num
         """
         return self.arm.get_cmd_mat_history_num()
     
@@ -1574,11 +1590,11 @@ class arm_settings():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, num)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, num)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            num: fdb mat history num
+            num (int): fdb mat history num
         """
         return self.arm.get_fdb_mat_history_num()
     
@@ -1590,11 +1606,11 @@ class arm_settings():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status: 1 means poe is valid, 0 means poe is invalid
+            status (int): 1 means poe is valid, 0 means poe is invalid
         """
         return self.arm.get_poe_status()
     
@@ -1606,11 +1622,11 @@ class arm_settings():
             Only available if firmware_version >= 2.3.0
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status: 1 means in identifying, 0 means not in identifying
+            status (int): 1 means in identifying, 0 means not in identifying
         """
         return self.arm.get_iden_status()    
     
@@ -1639,7 +1655,7 @@ class arm_settings():
             frequency: the frequency of communication with the external device
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_external_device_monitor_params(dev_type, frequency)
     
@@ -1651,10 +1667,10 @@ class arm_settings():
             1. only available if firmware_version >= 2.7.100
 
         Returns:
-            out: tuple((code, params)), returned result is only corrent when code is 0.
+            out tuple[int, int]: tuple((code, params)), returned result is only corrent when code is 0.
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            params: [dev_type, frequency]
+            params (int): [dev_type, frequency]
         """
         return self.arm.get_external_device_monitor_params()

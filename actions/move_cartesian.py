@@ -110,7 +110,7 @@ class cartesian_control():
                 4. if there is no suitable IK, a C40 error will be triggered
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 code < 0: the last_used_position/last_used_tcp_speed/last_used_tcp_acc will not be modified
                 
@@ -188,7 +188,7 @@ class cartesian_control():
             kwargs: reserved
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
                 code < 0: the last_used_angles/last_used_joint_speed/last_used_joint_acc will not be modified
 
                 code >= 0: the last_used_angles/last_used_joint_speed/last_used_joint_acc will be modified
@@ -211,9 +211,11 @@ class cartesian_control():
             is_radian: the returned value is in radians or not, default is self.default_is_radian
 
         Returns:
-            out: tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
+            out tuple[int, float | list[float]]: tuple((code, angle list if servo_id is None or 8 else angle)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            angle (float | list[float]): angle or list of angles depending on servo_id, unit depends on is_radian
         """
         return self.arm.get_servo_angle(servo_id=servo_id, is_radian=is_radian, is_real=is_real)
 
@@ -239,7 +241,7 @@ class cartesian_control():
             kwargs: reserved
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_angle_j(angles, speed=speed, mvacc=mvacc, mvtime=mvtime, is_radian=is_radian, **kwargs)
     
@@ -263,7 +265,7 @@ class cartesian_control():
             kwargs: reserved
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_servo_cartesian(mvpose, speed=speed, mvacc=mvacc, mvtime=mvtime, is_radian=is_radian,
                                              is_tool_coord=is_tool_coord, **kwargs)
@@ -301,7 +303,7 @@ class cartesian_control():
             kwargs: reserved
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 code < 0: the last_used_tcp_speed/last_used_tcp_acc will not be modified
 
@@ -337,7 +339,7 @@ class cartesian_control():
             timeout: maximum waiting time(unit: second), default is None(no timeout), only valid if wait is True
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.move_gohome(speed=speed, mvacc=mvacc, mvtime=mvtime, is_radian=is_radian, wait=wait, timeout=timeout, **kwargs)
     
@@ -410,7 +412,7 @@ class cartesian_control():
                     4. if there is no suitable IK, a C40 error will be triggered
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_position_aa(axis_angle_pose, speed=speed, mvacc=mvacc, mvtime=mvtime,
                                          is_radian=is_radian, is_tool_coord=is_tool_coord, relative=relative,
@@ -437,7 +439,7 @@ class cartesian_control():
             relative: relative move or not
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
 
         return self.arm.set_servo_cartesian_aa(axis_angle_pose, speed=speed, mvacc=mvacc, is_radian=is_radian,
@@ -468,7 +470,7 @@ class cartesian_control():
                 duration < 0: default value, only used to be compatible with the old protocol, equivalent to 0
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.vc_set_joint_velocity(speeds, is_radian=is_radian, is_sync=is_sync, duration=duration, **kwargs)
 
@@ -497,7 +499,7 @@ class cartesian_control():
                 duration < 0: default value, only used to be compatible with the old protocol, equivalent to 0
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.vc_set_cartesian_velocity(speeds, is_radian=is_radian, is_tool_coord=is_tool_coord, duration=duration, **kwargs)
     
@@ -509,11 +511,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
         
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, dict]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code:  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int):  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status: status, like
+            status (dict): status, like
                 {
                     'pos': 0,
                     'status': 0,
@@ -534,11 +536,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, position)) returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, position)) returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            position: position
+            position (int): position
         """
         return self.arm.get_linear_motor_pos()
 
@@ -550,11 +552,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code:  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int):  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status: status
+            status (int): status
 
                 status & 0x00: motion finish
 
@@ -572,11 +574,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, error)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, error)), returned result is only corrent when code is 0.
 
-            code:  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int):  See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            error: See the [Linear Motor Error Code Documentation](./xarm_api_code.md#linear-motor-error-code) for details.
+            error (int): See the [Linear Motor Error Code Documentation](./xarm_api_code.md#linear-motor-error-code) for details.
         """
         return self.arm.get_linear_motor_error()
 
@@ -588,11 +590,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status:
+            status (int):
 
                 0: linear motor is not enabled
 
@@ -608,11 +610,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
         
         Returns:
-            out: tuple((code, status)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            status:
+            status (int):
 
                 0: linear motor is not on zero
 
@@ -628,9 +630,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, sci1)), returned result is only corrent when code is 0.
+            out (tuple[int, int]): tuple((code, sci1)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            sci1 (int): sci1 value
         """
         return self.arm.get_linear_motor_sci()
 
@@ -642,11 +646,11 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
 
         Returns:
-            out: tuple((code, sco)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, sco)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            sco: [sco0, sco1]
+            sco (list[int]): [sco0, sco1]
         """
         return self.arm.get_linear_motor_sco()
     
@@ -658,7 +662,7 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.clean_linear_motor_error()
 
@@ -673,7 +677,7 @@ class cartesian_control():
             enable: enable or not
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_motor_enable(enable)
 
@@ -688,7 +692,7 @@ class cartesian_control():
             speed: Integer between 1 and 1000mm/s.
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_motor_speed(speed)
 
@@ -708,7 +712,7 @@ class cartesian_control():
                 auto_enable: enable after back to origin or not, default is True
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_motor_back_origin(wait=wait, **kwargs)
 
@@ -735,7 +739,7 @@ class cartesian_control():
             timeout: wait timeout, seconds, default is 100s.
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_motor_pos(pos, speed=speed, wait=wait, timeout=timeout, **kwargs)
 
@@ -747,7 +751,7 @@ class cartesian_control():
             1. only available if firmware_version >= 1.8.0
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_linear_motor_stop()
     
@@ -827,7 +831,7 @@ class cartesian_control():
                 4. if there is no suitable IK, a C40 error will be triggered
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 code < 0: the last_used_tcp_speed/last_used_tcp_acc will not be modified
 
@@ -885,17 +889,17 @@ class cartesian_control():
             2. This interface relies on Firmware 1.2.0 or above
 
         Returns:
-            out: tuple((code, trajectories))
+            out (tuple[int, list]): tuple((code, trajectories))
             
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
             
-            trajectories: [{
+            trajectories (list): [{
 
                 'name'- name, The name of the trajectory
 
                 'duration'- duration, The duration of the trajectory (seconds)
 
-            }]
+                }]
         """
         return self.arm.get_trajectories()
     
@@ -914,7 +918,7 @@ class cartesian_control():
             wait: whether to wait for the robotic arm to stop or all previous queue commands to be executed or cleared before setting
 
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_world_offset(offset, is_radian=is_radian, wait=wait)
     
@@ -934,11 +938,11 @@ class cartesian_control():
             is_radian: if the roll/rx/pitch/ry/yaw/rz of pose1/pose2/return_pose is radian or not
 
         Returns:
-            out: tuple((code, pose)), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, pose)), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
-            pose: [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
+            pose (list[float]): [x(mm), y(mm), z(mm), roll/rx(rad or °), pitch/ry(rad or °), yaw/rz(rad or °)]
         """
         return self.arm.get_pose_offset(pose1, pose2, orient_type_in=orient_type_in, orient_type_out=orient_type_out,
                                          is_radian=is_radian)
@@ -951,9 +955,9 @@ class cartesian_control():
             is_radian: the returned value (only rx/ry/rz) is in radians or not, default is self.default_is_radian
 
         Returns:
-            out: tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
+            out (tuple[int, list]): tuple((code, [x, y, z, rx, ry, rz])), returned result is only corrent when code is 0.
 
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.get_position_aa(is_radian=is_radian)
     
@@ -968,6 +972,6 @@ class cartesian_control():
             on_off: continuous or not, True means continuous, default is False
         
         Returns:
-            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
         """
         return self.arm.set_cartesian_velo_continuous(on_off)

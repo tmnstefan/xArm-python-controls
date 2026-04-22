@@ -1,0 +1,19 @@
+---
+Name: Corning 96 Well Plate
+Description: Corning 96 well plate, with 8 rows and 12 columns, all measurements in mm
+footprint:
+  length: 127.76
+  width: 85.47
+  height: 14.22
+well measurements:
+  depth: 10.67
+  diameter: 6.86
+spacing:
+  x-offset: 14.37
+  y-offset: 11.23
+  x-spacing: 9.00
+  y-spacing: 9.00
+dimensions:
+  row_num: 8
+  column_num: 12
+...

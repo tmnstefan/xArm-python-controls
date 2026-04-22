@@ -1,0 +1,19 @@
+---
+Name: Corning 24 Well Plate
+Description: Corning 24 well plate, with 4 rows and 6 columns, all measurements in mm
+footprint:
+  length: 127.76
+  width: 85.47
+  height: 20.27
+well measurements:
+  depth: 17.40
+  diameter: 16.26
+spacing:
+  x-offset: 17.46
+  y-offset: 13.78
+  x-spacing: 19.30
+  y-spacing: 19.30
+dimensions:
+  row_num: 4
+  column_num: 6
+...

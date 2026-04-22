@@ -1,0 +1,19 @@
+---
+Name: Corning 48 Well Plate
+Description: Corning 48 well plate, with 8 columns and 6 rows, all measurements in mm
+footprint:
+  length: 127.89
+  width: 85.60
+  height: 20.02
+well measurements:
+  depth: 17.40
+  diameter: 11.10
+spacing:
+  x-offset: 18.16
+  y-offset: 10.08
+  x-spacing: 13.08
+  y-spacing: 13.08
+dimensions:
+  row_num: 6
+  column_num: 8
+...

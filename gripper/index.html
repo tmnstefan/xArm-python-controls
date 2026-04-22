@@ -2024,7 +2024,13 @@
 <span class="normal">604</span>
 <span class="normal">605</span>
 <span class="normal">606</span>
-<span class="normal">607</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">gripper_control</span><span class="p">():</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">gripper_control</span><span class="p">():</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arm</span><span class="p">:</span><span class="n">XArmAPI</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arm</span> <span class="o">=</span> <span class="n">arm</span>
@@ -2040,7 +2046,7 @@
 <span class="sd">                Note: such as code = arm.set_gripper_enable(True) to turn on the Gripper</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_enable</span><span class="p">(</span><span class="n">enable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2054,7 +2060,7 @@
 <span class="sd">                Note: such as code = arm.set_gripper_mode(0)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2066,7 +2072,7 @@
 <span class="sd">            speed: speed</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2086,7 +2092,7 @@
 <span class="sd">            timeout: wait time, unit: second, default is 10s</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">auto_enable</span><span class="o">=</span><span class="n">auto_enable</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2095,9 +2101,11 @@
 <span class="sd">        Get the gripper position (pulse)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">            pos (int): gripper position</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2106,11 +2114,11 @@
 <span class="sd">        Get the gripper error code</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_code)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, err_code)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_code: See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.</span>
+<span class="sd">            err_code (int): See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_err_code</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2119,7 +2127,7 @@
 <span class="sd">        Clean the gripper error</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_gripper_error</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2131,11 +2139,11 @@
 <span class="sd">            1. Only available if gripper_version &gt;= 3.4.3</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, status)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            status:</span>
+<span class="sd">            status (int):</span>
 <span class="sd">                status &amp; 0x03 == 0: stop state</span>
 
 <span class="sd">                status &amp; 0x03 == 1: move state </span>
@@ -2149,9 +2157,11 @@
 <span class="sd">        Get the position (mm) of the xArm Gripper G2</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">            pos (int): gripper position (mm)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_g2_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2171,7 +2181,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 10s, only valid if wait is True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_g2_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2187,7 +2197,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_enable</span><span class="p">(</span><span class="n">enable</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
@@ -2199,7 +2209,7 @@
 <span class="sd">            speed: speed</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
 
@@ -2218,7 +2228,7 @@
 <span class="sd">                1: position loop mode</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_control_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
@@ -2234,7 +2244,7 @@
 <span class="sd">            force: gripper force between 10 and 100</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_force</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
@@ -2244,9 +2254,11 @@
 <span class="sd">        Get the position (mm) of the BIO Gripper G2</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">            pos (int): bio gripper g2 position (mm)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_bio_gripper_g2_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2286,7 +2298,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">open_bio_gripper</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2302,7 +2314,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">close_bio_gripper</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2311,11 +2323,11 @@
 <span class="sd">        Get the status of the bio gripper</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, status))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, status))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            status: status</span>
+<span class="sd">            status (int): status</span>
 <span class="sd">                status &amp; 0x03 == 0: stop</span>
 
 <span class="sd">                status &amp; 0x03 == 1: motion</span>
@@ -2337,11 +2349,11 @@
 <span class="sd">        Get the error code of the bio gripper</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, error_code))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, error_code))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            error_code: See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. </span>
+<span class="sd">            error_code (int): See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_bio_gripper_error</span><span class="p">()</span>
 
@@ -2350,7 +2362,7 @@
 <span class="sd">        Clean the error code of the bio gripper</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_bio_gripper_error</span><span class="p">()</span>
 
@@ -2359,11 +2371,11 @@
 <span class="sd">        Reset the robotiq gripper (clear previous activation if any)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation</span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_reset</span><span class="p">()</span>
 
@@ -2377,11 +2389,11 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation </span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_set_activate</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
@@ -2401,11 +2413,11 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation </span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_set_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2423,11 +2435,11 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation </span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_open</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2445,11 +2457,11 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation</span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_close</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2474,11 +2486,11 @@
 <span class="sd">            register 0x07D2: Register POSITION and register CURRENT</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, robotiq_response))</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            robotiq_response: See the robotiq documentation</span>
+<span class="sd">            robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_get_status</span><span class="p">(</span><span class="n">number_of_registers</span><span class="o">=</span><span class="n">number_of_registers</span><span class="p">)</span>
 
@@ -2494,11 +2506,11 @@
 <span class="sd">                2: Contact Connection</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, state)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, state)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            state: state of the Vacuum Gripper</span>
+<span class="sd">            state (int): state of the Vacuum Gripper</span>
 
 <span class="sd">                -1: Vacuum Gripper is off  </span>
 
@@ -2538,7 +2550,7 @@
 <span class="sd">                2: Contact Connection</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_vacuum_gripper</span><span class="p">(</span><span class="n">on</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">delay_sec</span><span class="o">=</span><span class="n">delay_sec</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="n">hardware_version</span><span class="p">)</span>
 
@@ -2552,7 +2564,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_dhpgc_gripper_activate</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
@@ -2572,7 +2584,7 @@
 <span class="sd">            timeout: maximum waiting time(unit: second), default is 5s, only available if wait=True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_dhpgc_gripper_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -2590,7 +2602,7 @@
 <span class="sd">                1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details. </span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">open_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 
@@ -2608,7 +2620,7 @@
 <span class="sd">                1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">close_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 
@@ -2626,7 +2638,7 @@
 <span class="sd">                1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">stop_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2670,6 +2682,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2683,19 +2696,19 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">clean_bio_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">clean_bio_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clean the error code of the bio gripper</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_bio_gripper_error</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -2729,6 +2742,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2742,19 +2756,19 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
 <span class="normal"> 96</span>
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
-<span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">clean_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">clean_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Clean the gripper error</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_gripper_error</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2848,6 +2862,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2861,13 +2876,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">275</span>
 <span class="normal">276</span>
 <span class="normal">277</span>
 <span class="normal">278</span>
@@ -2875,7 +2884,13 @@
 <span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
-<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close_bio_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close_bio_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Close the bio gripper</span>
 
@@ -2887,7 +2902,7 @@
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">close_bio_gripper</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2962,6 +2977,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2975,13 +2991,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">573</span>
-<span class="normal">574</span>
-<span class="normal">575</span>
-<span class="normal">576</span>
-<span class="normal">577</span>
-<span class="normal">578</span>
-<span class="normal">579</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">579</span>
 <span class="normal">580</span>
 <span class="normal">581</span>
 <span class="normal">582</span>
@@ -2991,7 +3001,13 @@
 <span class="normal">586</span>
 <span class="normal">587</span>
 <span class="normal">588</span>
-<span class="normal">589</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">close_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Close the gripper of Lite6 series robotic arms</span>
 
@@ -3005,7 +3021,7 @@
 <span class="sd">            1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">close_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3039,6 +3055,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3048,6 +3065,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3057,6 +3075,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>error_code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3070,27 +3089,27 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">317</span>
 <span class="normal">318</span>
 <span class="normal">319</span>
 <span class="normal">320</span>
 <span class="normal">321</span>
-<span class="normal">322</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the error code of the bio gripper</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, error_code))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, error_code))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        error_code: See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. </span>
+<span class="sd">        error_code (int): See the [Bio Gripper Error Code Documentation](./xarm_api_code.md#bio-gripper-error-code) for details. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_bio_gripper_error</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -3124,6 +3143,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3133,10 +3153,21 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>pos</code></td>            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>bio gripper g2 position (mm)</p>
               </div>
             </td>
           </tr>
@@ -3146,23 +3177,27 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
-<span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the position (mm) of the BIO Gripper G2</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">        pos (int): bio gripper g2 position (mm)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_bio_gripper_g2_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3196,6 +3231,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3205,6 +3241,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3214,6 +3251,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>status</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3234,13 +3272,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
 <span class="normal">294</span>
@@ -3258,16 +3290,22 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">306</span>
 <span class="normal">307</span>
 <span class="normal">308</span>
-<span class="normal">309</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_bio_gripper_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the status of the bio gripper</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, status))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, status))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        status: status</span>
+<span class="sd">        status (int): status</span>
 <span class="sd">            status &amp; 0x03 == 0: stop</span>
 
 <span class="sd">            status &amp; 0x03 == 1: motion</span>
@@ -3314,6 +3352,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3323,6 +3362,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3332,6 +3372,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>err_code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3345,9 +3386,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span>
 <span class="normal">85</span>
@@ -3356,16 +3395,18 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">88</span>
 <span class="normal">89</span>
 <span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_err_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_err_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the gripper error code</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_code)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, err_code)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_code: See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.</span>
+<span class="sd">        err_code (int): See the [Gripper Error Code Documentation](./xarm_api_code.md#gripper-error-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_err_code</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3399,6 +3440,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3408,10 +3450,21 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>pos</code></td>            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>gripper position (mm)</p>
               </div>
             </td>
           </tr>
@@ -3421,23 +3474,27 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
-<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the position (mm) of the xArm Gripper G2</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">        pos (int): gripper position (mm)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_g2_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3471,6 +3528,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3480,10 +3538,21 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+<td><code>pos</code></td>            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>gripper position</p>
               </div>
             </td>
           </tr>
@@ -3502,14 +3571,18 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the gripper position (pulse)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, pos)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, pos)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+
+<span class="sd">        pos (int): gripper position</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_gripper_position</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3550,6 +3623,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3559,6 +3633,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3568,6 +3643,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>status</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3583,9 +3659,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
@@ -3602,7 +3676,9 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
-<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_gripper_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the status of the xArm Gripper</span>
 
@@ -3610,11 +3686,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        1. Only available if gripper_version &gt;= 3.4.3</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, status)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        status:</span>
+<span class="sd">        status (int):</span>
 <span class="sd">            status &amp; 0x03 == 0: stop state</span>
 
 <span class="sd">            status &amp; 0x03 == 1: move state </span>
@@ -3685,6 +3761,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3694,6 +3771,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3703,6 +3781,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>state</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3719,13 +3798,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">461</span>
-<span class="normal">462</span>
-<span class="normal">463</span>
-<span class="normal">464</span>
-<span class="normal">465</span>
-<span class="normal">466</span>
-<span class="normal">467</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span>
 <span class="normal">470</span>
@@ -3743,7 +3816,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">482</span>
 <span class="normal">483</span>
 <span class="normal">484</span>
-<span class="normal">485</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_vacuum_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_vacuum_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the state of the Vacuum Gripper</span>
 
@@ -3755,11 +3834,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            2: Contact Connection</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, state)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, state)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        state: state of the Vacuum Gripper</span>
+<span class="sd">        state (int): state of the Vacuum Gripper</span>
 
 <span class="sd">            -1: Vacuum Gripper is off  </span>
 
@@ -3859,6 +3938,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3872,13 +3952,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">259</span>
 <span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
@@ -3886,7 +3960,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">264</span>
 <span class="normal">265</span>
 <span class="normal">266</span>
-<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">open_bio_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">open_bio_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open the bio gripper</span>
 
@@ -3898,7 +3978,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">open_bio_gripper</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3973,6 +4053,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3986,13 +4067,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
-<span class="normal">560</span>
-<span class="normal">561</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">561</span>
 <span class="normal">562</span>
 <span class="normal">563</span>
 <span class="normal">564</span>
@@ -4002,7 +4077,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">568</span>
 <span class="normal">569</span>
 <span class="normal">570</span>
-<span class="normal">571</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">open_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">open_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open the gripper of Lite6 series robotic arms</span>
 
@@ -4016,7 +4097,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details. </span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">open_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4125,6 +4206,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4134,6 +4216,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4143,6 +4226,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4156,13 +4240,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">416</span>
 <span class="normal">417</span>
 <span class="normal">418</span>
 <span class="normal">419</span>
@@ -4176,7 +4254,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">427</span>
 <span class="normal">428</span>
 <span class="normal">429</span>
-<span class="normal">430</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Close the robotiq gripper</span>
 
@@ -4190,11 +4274,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation</span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_close</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4268,6 +4352,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4277,6 +4362,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4286,6 +4372,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4299,13 +4386,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">438</span>
 <span class="normal">439</span>
 <span class="normal">440</span>
 <span class="normal">441</span>
@@ -4326,7 +4407,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">456</span>
 <span class="normal">457</span>
 <span class="normal">458</span>
-<span class="normal">459</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_registers</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_registers</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reading the status of robotiq gripper</span>
 
@@ -4347,11 +4434,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        register 0x07D2: Register POSITION and register CURRENT</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation</span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_get_status</span><span class="p">(</span><span class="n">number_of_registers</span><span class="o">=</span><span class="n">number_of_registers</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4460,6 +4547,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4469,6 +4557,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4478,6 +4567,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4491,13 +4581,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">394</span>
 <span class="normal">395</span>
 <span class="normal">396</span>
 <span class="normal">397</span>
@@ -4511,7 +4595,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">405</span>
 <span class="normal">406</span>
 <span class="normal">407</span>
-<span class="normal">408</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open the robotiq gripper</span>
 
@@ -4525,11 +4615,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation </span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_open</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4563,6 +4653,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4572,6 +4663,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4581,6 +4673,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4594,27 +4687,27 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
 <span class="normal">342</span>
 <span class="normal">343</span>
-<span class="normal">344</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reset the robotiq gripper (clear previous activation if any)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation</span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_reset</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -4693,6 +4786,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4702,6 +4796,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4711,6 +4806,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4724,13 +4820,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
 <span class="normal">355</span>
@@ -4740,7 +4830,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">359</span>
 <span class="normal">360</span>
 <span class="normal">361</span>
-<span class="normal">362</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_set_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_set_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Activate the robotiq gripper if it is not already active</span>
 
@@ -4750,11 +4846,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation </span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_set_activate</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4878,6 +4974,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4887,6 +4984,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4896,6 +4994,7 @@ status &amp; 0x03 == 0: stop</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>robotiq_response</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4909,13 +5008,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span>
-<span class="normal">369</span>
-<span class="normal">370</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">370</span>
 <span class="normal">371</span>
 <span class="normal">372</span>
 <span class="normal">373</span>
@@ -4931,7 +5024,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">383</span>
 <span class="normal">384</span>
 <span class="normal">385</span>
-<span class="normal">386</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">robotiq_set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mh">0xFF</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Go to the position with determined speed and force.</span>
 
@@ -4947,11 +5046,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 5, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, robotiq_response))</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, robotiq_response))</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        robotiq_response: See the robotiq documentation </span>
+<span class="sd">        robotiq_response (int): See the robotiq documentation </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">robotiq_set_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5024,6 +5123,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5037,11 +5137,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
@@ -5055,7 +5151,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
-<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_control_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_control_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the bio gripper control mode</span>
 
@@ -5070,7 +5170,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            1: position loop mode</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_control_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
@@ -5165,6 +5265,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5178,11 +5279,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
@@ -5192,7 +5289,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_enable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enable the bio gripper</span>
 
@@ -5204,7 +5305,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_enable</span><span class="p">(</span><span class="n">enable</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5275,6 +5376,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5288,11 +5390,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
 <span class="normal">209</span>
@@ -5302,7 +5400,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
-<span class="normal">216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">):</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the bio gripper force</span>
 
@@ -5313,7 +5415,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        force: gripper force between 10 and 100</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_force</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
@@ -5469,13 +5571,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
@@ -5491,7 +5587,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">248</span>
 <span class="normal">249</span>
 <span class="normal">250</span>
-<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the position of BIO Gripper G2</span>
 
@@ -5575,6 +5677,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5588,17 +5691,17 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
-<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_bio_gripper_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the speed of the bio gripper</span>
 
@@ -5606,7 +5709,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        speed: speed</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_bio_gripper_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5685,6 +5788,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5698,19 +5802,19 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">521</span>
-<span class="normal">522</span>
-<span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">527</span>
 <span class="normal">528</span>
 <span class="normal">529</span>
 <span class="normal">530</span>
 <span class="normal">531</span>
 <span class="normal">532</span>
-<span class="normal">533</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_dhpgc_gripper_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_dhpgc_gripper_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Activate the DH-PGC-140-50 gripper if it is not already active</span>
 
@@ -5720,7 +5824,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 3, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_dhpgc_gripper_activate</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5844,6 +5948,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5857,13 +5962,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">535</span>
-<span class="normal">536</span>
-<span class="normal">537</span>
-<span class="normal">538</span>
-<span class="normal">539</span>
-<span class="normal">540</span>
-<span class="normal">541</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">541</span>
 <span class="normal">542</span>
 <span class="normal">543</span>
 <span class="normal">544</span>
@@ -5875,7 +5974,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">550</span>
 <span class="normal">551</span>
 <span class="normal">552</span>
-<span class="normal">553</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_dhpgc_gripper_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_dhpgc_gripper_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the position of the DH-PGC-140-50 gripper</span>
 
@@ -5891,7 +5996,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 5s, only available if wait=True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_dhpgc_gripper_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5956,6 +6061,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5991,7 +6097,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            Note: such as code = arm.set_gripper_enable(True) to turn on the Gripper</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_enable</span><span class="p">(</span><span class="n">enable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6115,6 +6221,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6128,11 +6235,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
@@ -6146,7 +6249,11 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
-<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_gripper_g2_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the position of the xArm Gripper G2</span>
 
@@ -6162,7 +6269,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: maximum waiting time(unit: second), default is 10s, only valid if wait is True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_g2_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6227,6 +6334,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6262,7 +6370,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            Note: such as code = arm.set_gripper_mode(0)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_mode</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6386,6 +6494,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6433,7 +6542,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        timeout: wait time, unit: second, default is 10s</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_position</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">speed</span><span class="p">,</span> <span class="n">auto_enable</span><span class="o">=</span><span class="n">auto_enable</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6497,6 +6606,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6528,7 +6638,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">        speed: speed</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_gripper_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6679,6 +6789,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6692,13 +6803,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">487</span>
-<span class="normal">488</span>
-<span class="normal">489</span>
-<span class="normal">490</span>
-<span class="normal">491</span>
-<span class="normal">492</span>
-<span class="normal">493</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">493</span>
 <span class="normal">494</span>
 <span class="normal">495</span>
 <span class="normal">496</span>
@@ -6724,7 +6829,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">516</span>
 <span class="normal">517</span>
 <span class="normal">518</span>
-<span class="normal">519</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_vacuum_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delay_sec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_vacuum_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delay_sec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the Vacuum Gripper ON/OFF</span>
 
@@ -6754,7 +6865,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            2: Contact Connection</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_vacuum_gripper</span><span class="p">(</span><span class="n">on</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">delay_sec</span><span class="o">=</span><span class="n">delay_sec</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">,</span> <span class="n">hardware_version</span><span class="o">=</span><span class="n">hardware_version</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -6829,6 +6940,7 @@ status &amp; 0x03 == 0: stop</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6842,13 +6954,7 @@ status &amp; 0x03 == 0: stop</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\gripper.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span>
-<span class="normal">595</span>
-<span class="normal">596</span>
-<span class="normal">597</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">597</span>
 <span class="normal">598</span>
 <span class="normal">599</span>
 <span class="normal">600</span>
@@ -6858,7 +6964,13 @@ status &amp; 0x03 == 0: stop</p>
 <span class="normal">604</span>
 <span class="normal">605</span>
 <span class="normal">606</span>
-<span class="normal">607</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stop_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stop_lite6_gripper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stop the gripper of Lite6 series robotic arms</span>
 
@@ -6872,7 +6984,7 @@ status &amp; 0x03 == 0: stop</p>
 <span class="sd">            1. only available if firmware_version &gt;= 2.4.101</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">stop_lite6_gripper</span><span class="p">(</span><span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

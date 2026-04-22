@@ -1323,7 +1323,7 @@
 <span class="sd">                    ex: arm.set_servo_attach(servo_id=8)</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_servo_attach</span><span class="p">(</span><span class="n">servo_id</span><span class="o">=</span><span class="n">servo_id</span><span class="p">)</span>
 
@@ -1342,7 +1342,7 @@
 
 <span class="sd">                    ex: arm.set_servo_detach(servo_id=8)</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_servo_detach</span><span class="p">(</span><span class="n">servo_id</span><span class="o">=</span><span class="n">servo_id</span><span class="p">)</span>
 
@@ -1351,7 +1351,7 @@
 <span class="sd">        Clean the warn</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_warn</span><span class="p">()</span>
 
@@ -1363,7 +1363,7 @@
 <span class="sd">            1. This interface will clear the current settings and restore to the system default settings</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_conf</span><span class="p">()</span>
 
@@ -1376,7 +1376,7 @@
 <span class="sd">            2. The clean_conf interface can restore system default settings</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">save_conf</span><span class="p">()</span>
 
@@ -1385,11 +1385,11 @@
 <span class="sd">        checks verification</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, status)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            status:</span>
+<span class="sd">            status (int):</span>
 <span class="sd">                0: verified</span>
 <span class="sd">                other: not verified</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1405,7 +1405,7 @@
 <span class="sd">                2: reboot</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">system_control</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 
@@ -1420,8 +1420,8 @@
 <span class="sd">            on: True/False</span>
 <span class="sd">                such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</span>
 
-<span class="sd">        Return:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_reduced_mode</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
 
@@ -1487,7 +1487,7 @@
 <span class="sd">            name: blockly app name</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">_studio</span><span class="o">.</span><span class="n">delete_blockly_app</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>   
 
@@ -1503,7 +1503,7 @@
 <span class="sd">        Returns: </span>
 <span class="sd">            out: Hexadecimal data_list or code</span>
 
-<span class="sd">            code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">                Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">send_hex_cmd</span><span class="p">(</span><span class="n">datas</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1516,7 +1516,7 @@
 <span class="sd">            path: gcode file path</span>
 
 <span class="sd">        Returns: </span>
-<span class="sd">            code: returned result is only corrent when code is 0.</span>
+<span class="sd">            code (int): returned result is only corrent when code is 0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">run_gcode_app</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1560,6 +1560,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="int">int</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1569,6 +1570,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1578,6 +1580,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>status</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1610,11 +1613,11 @@ other: not verified</p>
 <span class="sd">    checks verification</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, status)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, int]): tuple((code, status)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        status:</span>
+<span class="sd">        status (int):</span>
 <span class="sd">            0: verified</span>
 <span class="sd">            other: not verified</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1657,6 +1660,7 @@ other: not verified</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1688,7 +1692,7 @@ other: not verified</p>
 <span class="sd">        1. This interface will clear the current settings and restore to the system default settings</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_conf</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1722,6 +1726,7 @@ other: not verified</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1747,7 +1752,7 @@ other: not verified</p>
 <span class="sd">    Clean the warn</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_warn</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1910,6 +1915,7 @@ other: not verified</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1941,7 +1947,7 @@ other: not verified</p>
 <span class="sd">        name: blockly app name</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">_studio</span><span class="o">.</span><span class="n">delete_blockly_app</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>   
 </code></pre></div></td></tr></table></div>
@@ -2339,6 +2345,7 @@ other: not verified</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2370,7 +2377,7 @@ other: not verified</p>
 <span class="sd">        path: gcode file path</span>
 
 <span class="sd">    Returns: </span>
-<span class="sd">        code: returned result is only corrent when code is 0.</span>
+<span class="sd">        code (int): returned result is only corrent when code is 0.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">run_gcode_app</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2479,6 +2486,7 @@ other: not verified</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2512,7 +2520,7 @@ other: not verified</p>
 <span class="sd">        2. The clean_conf interface can restore system default settings</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">save_conf</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -2600,6 +2608,7 @@ other: not verified</p>
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2641,7 +2650,7 @@ Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception c
 <span class="sd">    Returns: </span>
 <span class="sd">        out: Hexadecimal data_list or code</span>
 
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">            Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">send_hex_cmd</span><span class="p">(</span><span class="n">datas</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -2703,10 +2712,28 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
     </table>
 
 
-<details class="return" open>
-  <summary>Return</summary>
-  <p>code: See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
-</details>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>actions\util.py</code></summary>
@@ -2735,8 +2762,8 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
 <span class="sd">        on: True/False</span>
 <span class="sd">            such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</span>
 
-<span class="sd">    Return:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_reduced_mode</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2809,6 +2836,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2856,7 +2884,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
 <span class="sd">                ex: arm.set_servo_attach(servo_id=8)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_servo_attach</span><span class="p">(</span><span class="n">servo_id</span><span class="o">=</span><span class="n">servo_id</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -2917,7 +2945,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
       </tbody>
     </table>
         <p>Returns:
-    code: See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
+    code (int): See the <a href="../xarm_api_code/#api-code">API Code Documentation</a> for details.</p>
 
 
             <details class="mkdocstrings-source">
@@ -2954,7 +2982,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
 
 <span class="sd">                ex: arm.set_servo_detach(servo_id=8)</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">set_servo_detach</span><span class="p">(</span><span class="n">servo_id</span><span class="o">=</span><span class="n">servo_id</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3019,6 +3047,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3054,7 +3083,7 @@ such as: Turn on the reduced mode : code=arm.set_reduced_mode(True)</p>
 <span class="sd">            2: reboot</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](./xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">system_control</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

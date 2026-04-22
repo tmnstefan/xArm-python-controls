@@ -1030,13 +1030,13 @@
 <span class="sd">            lang: show language, en/cn, degault is en, only available if show is True</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            error_code: See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.</span>
+<span class="sd">            error_code (int): See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.</span>
 
-<span class="sd">            warn_code: See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.</span>
+<span class="sd">            warn_code (int): See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_err_warn_code</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
 
@@ -1045,7 +1045,7 @@
 <span class="sd">        Clean the error, need to manually enable motion(arm.motion_enable(True)) and set state(arm.set_state(state=0)) after error cleaned</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_error</span><span class="p">()</span>
 
@@ -1057,11 +1057,11 @@
 <span class="sd">            Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info: [servo_id, theoratival tau, actual tau]</span>
+<span class="sd">            err_info (list): [servo_id, theoratival tau, actual tau]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c31_error_info</span><span class="p">()</span>
 
@@ -1073,11 +1073,11 @@
 <span class="sd">            Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info: [servo_id, angle]</span>
+<span class="sd">            err_info (list): [servo_id, angle]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c37_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 
@@ -1089,11 +1089,11 @@
 <span class="sd">            Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out (tuple[int, tuple]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
 <span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info (tuple): [(servo_id, angle), ...]</span>
+<span class="sd">            err_info (list): [[servo_id, angle], ...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c23_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 
@@ -1105,11 +1105,11 @@
 <span class="sd">            Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info: [servo_id, speed]</span>
+<span class="sd">            err_info (list): [servo_id, speed]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c24_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 
@@ -1122,11 +1122,11 @@
 <span class="sd">            2. Only available in mode 1</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info: [max_linear_speed, curr_linear_speed]</span>
+<span class="sd">            err_info (list): [max_linear_speed, curr_linear_speed]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c60_error_info</span><span class="p">()</span>
 
@@ -1138,11 +1138,11 @@
 <span class="sd">            Only available if firmware_version &gt;= 2.4.0</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">            out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">            code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">            code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">            err_info: [(servo_id, angle), ...]</span>
+<span class="sd">            err_info (list): [(servo_id, angle), ...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c38_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 
@@ -1202,6 +1202,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1227,7 +1228,7 @@
 <span class="sd">    Clean the error, need to manually enable motion(arm.motion_enable(True)) and set state(arm.set_state(state=0)) after error cleaned</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">clean_error</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1266,7 +1267,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
-                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="tuple">tuple</span>]</code>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1286,11 +1287,11 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
-                  <code><span title="tuple">tuple</span></code>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>[(servo_id, angle), ...]</p>
+                <p>[[servo_id, angle], ...]</p>
               </div>
             </td>
           </tr>
@@ -1322,11 +1323,11 @@
 <span class="sd">        Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out (tuple[int, tuple]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
 <span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info (tuple): [(servo_id, angle), ...]</span>
+<span class="sd">        err_info (list): [[servo_id, angle], ...]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c23_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1365,6 +1366,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1374,6 +1376,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1383,6 +1386,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1418,11 +1422,11 @@
 <span class="sd">        Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info: [servo_id, speed]</span>
+<span class="sd">        err_info (list): [servo_id, speed]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c24_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1461,6 +1465,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1470,6 +1475,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1479,6 +1485,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1514,11 +1521,11 @@
 <span class="sd">        Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info: [servo_id, theoratival tau, actual tau]</span>
+<span class="sd">        err_info (list): [servo_id, theoratival tau, actual tau]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c31_error_info</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1557,6 +1564,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1566,6 +1574,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1575,6 +1584,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1610,11 +1620,11 @@
 <span class="sd">        Only available if firmware_version &gt;= 2.3.0</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info: [servo_id, angle]</span>
+<span class="sd">        err_info (list): [servo_id, angle]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c37_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1653,6 +1663,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1662,6 +1673,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1671,6 +1683,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1706,11 +1719,11 @@
 <span class="sd">        Only available if firmware_version &gt;= 2.4.0</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info: [(servo_id, angle), ...]</span>
+<span class="sd">        err_info (list): [(servo_id, angle), ...]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c38_error_info</span><span class="p">(</span><span class="n">is_radian</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1848,6 +1861,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1857,6 +1871,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1866,6 +1881,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>err_info</code></td>            <td>
+                  <code><span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1903,11 +1919,11 @@
 <span class="sd">        2. Only available in mode 1</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, err_info)), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, err_info)), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        err_info: [max_linear_speed, curr_linear_speed]</span>
+<span class="sd">        err_info (list): [max_linear_speed, curr_linear_speed]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_c60_error_info</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
@@ -1986,6 +2002,7 @@
       <tbody>
           <tr class="doc-section-item">
 <td><code>out</code></td>            <td>
+                  <code><span title="tuple">tuple</span>[<span title="int">int</span>, <span title="list">list</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1995,6 +2012,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2004,6 +2022,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>error_code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2013,6 +2032,7 @@
           </tr>
           <tr class="doc-section-item">
 <td><code>warn_code</code></td>            <td>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2054,13 +2074,13 @@
 <span class="sd">        lang: show language, en/cn, degault is en, only available if show is True</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        out: tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.</span>
+<span class="sd">        out (tuple[int, list]): tuple((code, [error_code, warn_code])), returned result is only corrent when code is 0.</span>
 
-<span class="sd">        code: See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
+<span class="sd">        code (int): See the [API Code Documentation](xarm_api_code.md#api-code) for details.</span>
 
-<span class="sd">        error_code: See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.</span>
+<span class="sd">        error_code (int): See the [Controller Error Code Documentation](./xarm_api_code.md#controller-error-code) for details.</span>
 
-<span class="sd">        warn_code: See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.</span>
+<span class="sd">        warn_code (int): See the [Controller Warn Code Documentation](./xarm_api_code.md#controller-warn-code) for details.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">arm</span><span class="o">.</span><span class="n">get_err_warn_code</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>

@@ -20,6 +20,8 @@ class read_write_control():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
+
+            bits: values read from the registers
         """
         return self.arm.read_coil_bits(addr, quantity)
 
@@ -38,6 +40,8 @@ class read_write_control():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
+
+            bits: values read from the registers
         """
         return self.arm.read_input_bits(addr, quantity)
     
@@ -58,6 +62,8 @@ class read_write_control():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
+            
+            bits: values read from the registers
         """
         return self.arm.read_holding_registers(addr, quantity, is_signed)
     
@@ -78,6 +84,8 @@ class read_write_control():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
+
+            bits: values read from the registers
         """
         return self.arm.read_input_registers(addr, quantity, is_signed)
     
@@ -184,5 +192,7 @@ class read_write_control():
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
                 Note: code 129~144 means modbus tcp exception, the actual modbus tcp exception code is (code-0x80), refer to [Standard Modbus TCP](./UF_ModbusTCP_Manual.md)
+
+            regs:
         """
         return self.arm.write_and_read_holding_registers(r_addr, r_quantity, w_addr, w_regs, is_signed)

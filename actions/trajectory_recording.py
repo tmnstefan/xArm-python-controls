@@ -136,7 +136,9 @@ class trajectory_recording():
         """
         Get trajectory read/write status
 
-        Returns: (code, status)
+        Returns:
+            out: (code, status)
+            
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
 
             status:

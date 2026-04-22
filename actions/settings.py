@@ -1191,6 +1191,8 @@ class arm_settings():
             out: (code, version)
 
             code: See the [API Code Documentation](./xarm_api_code.md#api-code) for details.
+
+            version: base board version
         """
         return self.arm.get_base_board_version(board_id)
     

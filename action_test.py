@@ -137,11 +137,28 @@ def pick_film(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length
     time.sleep(1)
     arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
     time.sleep(1)
-    #gripper.set_vacuum_gripper(on=True, wait=True)
+    gripper.set_vacuum_gripper(on=True, wait=True)
     time.sleep(1)
-    #arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-    #arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-    #gripper.set_vacuum_gripper(on=False, wait=True)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    gripper.set_vacuum_gripper(on=False, wait=True)
+    time.sleep(1)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+
+def pick_ball(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length:float):
+    gripper = gripper_control(arm)
+    arm_movement = cartesian_control(arm)
+    # move to above film, move down to film, turn on gripper, move back up with film
+    simple_move(arm, x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0)
+    time.sleep(1)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    time.sleep(1)
+    gripper.set_vacuum_gripper(on=True, wait=True)
+    time.sleep(1)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=film_x, y=film_y + 56, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    arm_movement.set_position(x=film_x, y=film_y + 56, z=film_z + tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    gripper.set_vacuum_gripper(on=False, wait=True)
     time.sleep(1)
     arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
@@ -153,7 +170,11 @@ def place_film(arm:XArmAPI, place_x:float, place_y:float, place_z:float, tool_le
     time.sleep(1)
     arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
     time.sleep(1)
-    #gripper.set_vacuum_gripper(on=False, wait=True)
+    gripper.set_vacuum_gripper(on=False, wait=True)
+    arm_movement.set_servo_angle(servo_id=5, angle=4, speed=200, relative=True, is_radian=False)
+    arm_movement.set_servo_angle(servo_id=5, angle=-4, speed=200, relative=True, is_radian=False)
+    arm_movement.set_servo_angle(servo_id=5, angle=4, speed=200, relative=True, is_radian=False)
+    arm_movement.set_servo_angle(servo_id=5, angle=-4, speed=200, relative=True, is_radian=False)
     time.sleep(1)
     arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
@@ -191,8 +212,12 @@ arm.motion_enable(True)
 
 arm.set_state(0)
 print(errors.get_err_warn_code())
-move_film_grid(arm=arm, film_x=240, film_y=-165, film_z=7, plate_x=270, plate_y=0, plate_z=20, row_num=3, column_num=4, tool_length=60)
-#pick_film(arm=arm, film_x=245, film_y=-165, film_z=10, tool_length=60)
+#move_film_grid(arm=arm, film_x=240, film_y=-165, film_z=8, plate_x=270, plate_y=0, plate_z=20, row_num=3, column_num=4, tool_length=60)
+
+#picks up a ball, grid is 
+pick_ball(arm=arm, film_x=257, film_y=-60, film_z=28, tool_length=60)
+
+
 time.sleep(1)
 #place_film(arm=arm, place_x=270, place_y=0, place_z=15, tool_length=60)
 #movement.set_position(x=270, y=0, z=100)

@@ -13,7 +13,7 @@ import numpy as np
 import time
 import yaml
 
-arm = XArmAPI('127.0.0.1')
+arm = XArmAPI('192.168.1.159')
 def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
     # set up arm
     arm_util = arm_utilities(arm)
@@ -129,7 +129,83 @@ def draw_vial_grid(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, tray_t
             time.sleep(1)
             plus_draw(arm, draw_z=tray_z, tool_length=tool_length)
 
-#tests, includes error handling for incorrect tray type
+def pick_film(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length:float):
+    gripper = gripper_control(arm)
+    arm_movement = cartesian_control(arm)
+    # move to above film, move down to film, turn on gripper, move back up with film
+    simple_move(arm, x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0)
+    time.sleep(1)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    time.sleep(1)
+    #gripper.set_vacuum_gripper(on=True, wait=True)
+    time.sleep(1)
+    #arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    #arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    #gripper.set_vacuum_gripper(on=False, wait=True)
+    time.sleep(1)
+    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+
+def place_film(arm:XArmAPI, place_x:float, place_y:float, place_z:float, tool_length:float):
+    gripper = gripper_control(arm)
+    arm_movement = cartesian_control(arm)
+    # move to above placement point, move down to point, turn off gripper, move back up without film
+    simple_move(arm, x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0)
+    time.sleep(1)
+    arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+    time.sleep(1)
+    #gripper.set_vacuum_gripper(on=False, wait=True)
+    time.sleep(1)
+    arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+
+def move_film_grid(arm:XArmAPI, film_x:float, film_y:float, film_z:float, plate_x:float, plate_y:float, plate_z:float, row_num:int, column_num:int, tool_length:int=100):
+    '''path = f"vial_tray_{tray_type}.yml"
+    # make sure entered tray type is valid, if so open relevant file
+    try:
+        with open(path, "r") as f:
+            tray_data = yaml.safe_load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {path}, please ensure you have input the correct tray type")
+    row_num = tray_data['dimensions']['row_num']
+    column_num = tray_data['dimensions']['column_num']'''
+    for row in range(0, row_num): # move to each vial in tray and draw a cross at that location
+        
+        for column in range(0, column_num):
+            pick_film(arm=arm, film_x=film_x, film_y=film_y, film_z=film_z, tool_length=tool_length)
+            time.sleep(1)
+            place_film(arm=arm, place_x=plate_x + (31 * column), place_y=plate_y - (31 * row), place_z=plate_z, tool_length=tool_length)
+        film_z -= 1
+#simple_move(arm=arm, x=100, y=100, z=100)
+util = arm_utilities(arm=arm)
+setting = arm_settings(arm)
+movement = cartesian_control(arm)
+errors = arm_errors(arm)
+util.connect()
+current = setting.get_position()[1]
+arm.set_mode(0)
+arm.set_state(0)
+print(util.check_verification())
+print(errors.get_err_warn_code())
+util.clean_warn()
+errors.clean_error()
+arm.motion_enable(True)
+
+arm.set_state(0)
+print(errors.get_err_warn_code())
+move_film_grid(arm=arm, film_x=240, film_y=-165, film_z=7, plate_x=270, plate_y=0, plate_z=20, row_num=3, column_num=4, tool_length=60)
+#pick_film(arm=arm, film_x=245, film_y=-165, film_z=10, tool_length=60)
+time.sleep(1)
+#place_film(arm=arm, place_x=270, place_y=0, place_z=15, tool_length=60)
+#movement.set_position(x=270, y=0, z=100)
+#arm.set_vacuum_gripper(True)
+time.sleep(2)
+#arm.set_vacuum_gripper(False)
+util.clean_warn()
+util.disconnect()
+"top left plate: (x=270, y=0, z=60)"
+"second plate down on left (x=240, y=0, z=60)"
+"plate holder distances: 30x30mm"
+"plate stack: (x=245, y=-165, z=66)"
+'''#tests, includes error handling for incorrect tray type
 draw_vial_grid(arm, tray_x=0, tray_y=200, tray_z=100, tray_type=12, tool_length=80)
 
 draw_vial_grid(arm, tray_x=0, tray_y=200, tray_z=100, tray_type=5, tool_length=80)
@@ -154,7 +230,7 @@ time.sleep(0.5)
 # tests for dealing with large angle changes
 simple_move(arm, x=-200, y=-300, z=-50, roll=180, pitch=0, yaw=0)
 time.sleep(0.5)
-simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)
+simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)'''
 
 # attempt to use set_servo_angle for movement, does not work
 '''def move_to_safe_position(arm:XArmAPI):
@@ -180,30 +256,6 @@ simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)
 
 simple_move(arm, x=-100, y=-200, z=200, roll=180, pitch=0, yaw=0)
 move_to_safe_position(arm)'''
-
-def pick_film(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length:float):
-    gripper = gripper_control(arm)
-    arm_movement = cartesian_control(arm)
-    # move to above film, move down to film, turn on gripper, move back up with film
-    simple_move(arm, x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0)
-    time.sleep(1)
-    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-    time.sleep(1)
-    gripper.set_vacuum_gripper(on=True, wait=True)
-    time.sleep(1)
-    arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-
-def place_film(arm:XArmAPI, place_x:float, place_y:float, place_z:float, tool_length:float):
-    gripper = gripper_control(arm)
-    arm_movement = cartesian_control(arm)
-    # move to above placement point, move down to point, turn off gripper, move back up without film
-    simple_move(arm, x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0)
-    time.sleep(1)
-    arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-    time.sleep(1)
-    gripper.set_vacuum_gripper(on=False, wait=True)
-    time.sleep(1)
-    arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
 def film_side_flip(arm:XArmAPI, stand_x:float, stand_y:float, stand_z:float, angle:float, tool_length:float):
     arm_movement = cartesian_control(arm)
@@ -285,11 +337,11 @@ def film_stand_flip(arm:XArmAPI, stand_x:float, stand_y:float, stand_z:float, an
     gripper.set_vacuum_gripper(on=True, wait=True)
     arm_movement.set_position(x=stand_x - (np.cos(np.radians(angle)) * 50), y=stand_y - (np.sin(np.radians(angle)) * 50), z=stand_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)    
 
-pick_film(arm, film_x=200, film_y=0, film_z=20, tool_length=80)
-print(arm.get_vacuum_gripper())
-time.sleep(3)
-film_side_flip(arm, stand_x=300, stand_y=0, stand_z=300, angle=0, tool_length=80)
-film_upright_flip(arm, stand_x=300, stand_y=0, stand_z=300, angle=0, tool_length=80)
+#pick_film(arm, film_x=200, film_y=0, film_z=20, tool_length=80)
+#print(arm.get_vacuum_gripper())
+#time.sleep(3)
+#film_side_flip(arm, stand_x=300, stand_y=0, stand_z=300, angle=0, tool_length=80)
+#film_upright_flip(arm, stand_x=300, stand_y=0, stand_z=300, angle=0, tool_length=80)
 #film_stand_flip(arm, stand_x=300, stand_y=0, stand_z=300, angle=0, tool_length=80)
 
 #film_stand_flip(arm, stand_x=0, stand_y=375, stand_z=300, angle=90, tool_length=80)

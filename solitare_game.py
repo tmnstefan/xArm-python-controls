@@ -81,14 +81,26 @@ class solitare():
 
     def check_valid_moves(self, horizontal_index:int, vertical_index:int):
         out = []
-        if self.ball_positions[vertical_index][horizontal_index + 2] == 0 and self.ball_positions[vertical_index][horizontal_index + 1] == 1:
-            out.append((vertical_index, horizontal_index + 2))
-        if self.ball_positions[vertical_index][horizontal_index - 2] == 0 and self.ball_positions[vertical_index][horizontal_index - 1] == 1:
-            out.append((vertical_index, horizontal_index - 2))
-        if self.ball_positions[vertical_index + 2][horizontal_index] == 0 and self.ball_positions[vertical_index + 1][horizontal_index] == 1:
-            out.append((vertical_index + 2, horizontal_index))
-        if self.ball_positions[vertical_index + 2][horizontal_index] == 0 and self.ball_positions[vertical_index + 1][horizontal_index] == 1:
-            out.append((vertical_index + 2, horizontal_index))
+        try:
+            if self.ball_positions[vertical_index][horizontal_index + 2] == 0 and self.ball_positions[vertical_index][horizontal_index + 1] == 1:
+                out.append((vertical_index, horizontal_index + 2))
+        except Exception as e:
+            pass
+        try:
+            if self.ball_positions[vertical_index][horizontal_index - 2] == 0 and self.ball_positions[vertical_index][horizontal_index - 1] == 1:
+                out.append((vertical_index, horizontal_index - 2))
+        except Exception as e:
+            pass
+        try:
+            if self.ball_positions[vertical_index + 2][horizontal_index] == 0 and self.ball_positions[vertical_index + 1][horizontal_index] == 1:
+                out.append((vertical_index + 2, horizontal_index))
+        except Exception as e:
+            pass
+        try:
+            if self.ball_positions[vertical_index - 2][horizontal_index] == 0 and self.ball_positions[vertical_index - 1][horizontal_index] == 1:
+                out.append((vertical_index - 2, horizontal_index))
+        except Exception as e:
+            pass
         return out
     
     def check_grid(self):
@@ -109,7 +121,7 @@ class solitare():
         ball_z = base_pos[2]
         target_x = base_pos[0] - (self.grid_separation * end_vertical)
         target_y = base_pos[1] + (self.grid_separation * end_horizontal)
-        self.simple_move(x=ball_x, y=ball_y, z=ball_z)
+        self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
         time.sleep(1)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         time.sleep(1)
@@ -124,5 +136,21 @@ class solitare():
         self.ball_positions[end_vertical][end_horizontal] = 1
         self.ball_positions[start_vertical][start_horizontal] = 0
 
-    def remove_captured_ball(self, vertical:int, horizontal:int, prison_x:float, prison_y:float, prison_z:float):
-        ...
+    def remove_captured_ball(self, center_pos:list[float], vertical:int, horizontal:int, prison_x:float, prison_y:float, prison_z:float):
+        base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] - (self.grid_separation * 3), center_pos[2]]
+        ball_x = base_pos[0] - (self.grid_separation * vertical)
+        ball_y = base_pos[1] + (self.grid_separation * horizontal)
+        ball_z = base_pos[2]
+        self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
+        time.sleep(1)
+        self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+        time.sleep(1)
+        self.gripper.set_vacuum_gripper(on=True, wait=True)
+        time.sleep(1)
+        self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+        self.movement.set_position(x=prison_x, y=prison_y, z=prison_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+        self.movement.set_position(x=prison_x, y=prison_y, z=prison_z + self.tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+        self.gripper.set_vacuum_gripper(on=False, wait=True)
+        time.sleep(1)
+        self.movement.set_position(x=prison_x, y=prison_y, z=prison_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
+        self.ball_positions[vertical][horizontal] = 0

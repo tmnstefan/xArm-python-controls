@@ -54,13 +54,13 @@ class solitare_ui:
         # Standard peg solitaire board layout (7x7 with specific empty spaces)
         self.peg_buttons = []
         self.board_layout = [
-            [0, 0, 1, 1, 1, 0, 0],
-            [0, 0, 1, 1, 1, 0, 0],
+            [-1, -1, 1, 1, 1, -1, -1],
+            [-1, -1, 1, 1, 1, -1, -1],
             [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-            [0, 0, 1, 1, 1, 0, 0],
-            [0, 0, 1, 1, 1, 0, 0]
+            [-1, -1, 1, 1, 1, -1, -1],
+            [-1, -1, 1, 1, 1, -1, -1]
         ]
         
         # Create board buttons
@@ -87,11 +87,27 @@ class solitare_ui:
                         bd=2,
                         command=lambda r=row, c=col: self.peg_clicked(r, c)
                     )
+                    self.board_buttons[(row, col)] = btn
+                    btn.grid(row=row, column=col, padx=2, pady=2)
+                    button_row.append(btn)
+                if self.board_layout[row][col] == 0:
+                    btn = tk.Button(
+                        board_frame,
+                        width=4,
+                        height=2,
+                        bg="#FFFFFF",
+                        activebackground="#B6B6B6",
+                        relief=tk.RAISED,
+                        state=tk.DISABLED,
+                        bd=2,
+                        command=lambda r=row, c=col: self.peg_destination_clicked(r, c)
+                    )
                     #if row == 3 and col == 3:
                         #btn.configure(bg="#B6B6B6",activebackground="#A7A6A6", relief=tk.FLAT)
                     self.board_buttons[(row, col)] = btn
                     btn.grid(row=row, column=col, padx=2, pady=2)
                     button_row.append(btn)
+                    
                 else:
                     # Create invisible placeholder for layout consistency
                     placeholder = tk.Frame(board_frame, width=4, height=2)
@@ -102,25 +118,62 @@ class solitare_ui:
     
     def peg_clicked(self, row, col):
         """Handle peg button clicks"""
+        self.selected_position = [row, col]
         if self.game == None:
             pass
         else:
             valid = self.game.check_valid_moves(horizontal_index=col, vertical_index=row)
-            if valid.count != 0:
-                self.selected_position = [col, row]
+            if len(valid) != 0:
+                print(f"valid spots: {valid.count}")
+                self.selected_position = [row, col]
                 for button_row in self.peg_buttons:
                     for button in button_row:
                         if button != None:
                             button.configure(state=tk.DISABLED)
                 for index in valid:
                     print(f"index: {index}")
-                    self.board_buttons[(index[1], index[0])].configure(state=tk.ACTIVE,
-                                                                        bg="#FFFFFF",
-                                                                        activebackground="#B6B6B6", 
-                                                                        command=lambda r=row, c=col: self.peg_destination_clicked(r, c))
+                    self.board_buttons[(index[0], index[1])].configure(state=tk.ACTIVE,
+                                                                        bg="#BEDCFF",
+                                                                        activebackground="#7CA4FC", 
+                                                                        command=lambda r=index[0], c=index[1]: self.peg_destination_clicked(r, c))
     
     def peg_destination_clicked(self, row, column):
-        ...
+        if self.game == None:
+            pass
+        else:
+            captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
+            print(f"start pos: {self.selected_position}")
+            print(f"captured pos: {captured_position}")
+            print(f"end pos: {[row, column]}")
+            self.game.move_ball(center_pos=[257, -4, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
+            self.game.remove_captured_ball(center_pos=[257, -4, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=180, prison_y=50, prison_z=40)
+            self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
+                                                                        bg="#FFFFFF",
+                                                                        activebackground="#B6B6B6", 
+                                                                        command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.peg_destination_clicked(r, c))
+            self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
+                                                                        bg="#FFFFFF",
+                                                                        activebackground="#B6B6B6", 
+                                                                        command=lambda r=captured_position[0], c=captured_position[1]: self.peg_destination_clicked(r, c))
+            self.board_buttons[(row, column)].configure(state=tk.ACTIVE,
+                                                                        bg="#AD9745",
+                                                                        activebackground="#9C883E", 
+                                                                        command=lambda r=row, c=column: self.peg_clicked(r, c))
+            for i in range(7):
+                for j in range(7):
+                    try:
+                        if self.board_buttons[(i, j)].cget("bg") == "#AD9745":
+                            self.board_buttons[(i, j)].configure(state=tk.ACTIVE)
+                        if self.board_buttons[(i, j)].cget("bg") == "#BEDCFF":
+                            self.board_buttons[(i, j)].configure(bg="#AD9745", activebackground="#9C883E", state=tk.ACTIVE, command=lambda r=i, c=j: self.peg_clicked(r, c))
+                    except Exception as e:
+                        print(e)
+            score_text = self.current_score.cget("text")
+            try:
+                score = int(score_text) + 1
+                self.current_score.configure(text=f"{score}")
+            except Exception as e:
+                pass
 
     def connect_to_ip(self):
         """Connect to the specified IP address"""

@@ -214,7 +214,7 @@ arm.set_state(0)
 print(errors.get_err_warn_code())
 #move_film_grid(arm=arm, film_x=240, film_y=-165, film_z=8, plate_x=270, plate_y=0, plate_z=20, row_num=3, column_num=4, tool_length=60)
 
-#picks up a ball, grid is 
+#picks up a ball, grid is 28x28
 pick_ball(arm=arm, film_x=257, film_y=-60, film_z=28, tool_length=60)
 
 

@@ -28,7 +28,7 @@ class solitare():
         self.settings.set_collision_rebound(on=True)
         
         #grid separation in mm
-        self.grid_separation = 28
+        self.grid_separation = 29
         self.tool_length = tool_length
         
         #self.ball_positions = np.full(shape=(6, 6), fill_value=-1)
@@ -115,12 +115,12 @@ class solitare():
     
     def move_ball(self, center_pos:list[float], start_vertical:int, start_horizontal:int, end_vertical:int, end_horizontal:int):
         # using top left corner of grid as base pos
-        base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] - (self.grid_separation * 3), center_pos[2]]
+        base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] + (self.grid_separation * 3), center_pos[2]]
         ball_x = base_pos[0] - (self.grid_separation * start_vertical)
-        ball_y = base_pos[1] + (self.grid_separation * start_horizontal)
+        ball_y = base_pos[1] - (self.grid_separation * start_horizontal)
         ball_z = base_pos[2]
         target_x = base_pos[0] - (self.grid_separation * end_vertical)
-        target_y = base_pos[1] + (self.grid_separation * end_horizontal)
+        target_y = base_pos[1] - (self.grid_separation * end_horizontal)
         self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
         time.sleep(1)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
@@ -137,9 +137,9 @@ class solitare():
         self.ball_positions[start_vertical][start_horizontal] = 0
 
     def remove_captured_ball(self, center_pos:list[float], vertical:int, horizontal:int, prison_x:float, prison_y:float, prison_z:float):
-        base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] - (self.grid_separation * 3), center_pos[2]]
+        base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] + (self.grid_separation * 3), center_pos[2]]
         ball_x = base_pos[0] - (self.grid_separation * vertical)
-        ball_y = base_pos[1] + (self.grid_separation * horizontal)
+        ball_y = base_pos[1] - (self.grid_separation * horizontal)
         ball_z = base_pos[2]
         self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
         time.sleep(1)

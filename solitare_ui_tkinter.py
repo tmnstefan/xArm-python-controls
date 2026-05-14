@@ -142,8 +142,8 @@ class solitare_ui:
         else:
             # set positions for balls that need to be moved and move them
             captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
-            self.game.move_ball(center_pos=[257, -4, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
-            self.game.remove_captured_ball(center_pos=[257, -4, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
+            self.game.move_ball(center_pos=[257, -3, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
+            self.game.remove_captured_ball(center_pos=[257, -3, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
             # show movement on board
             self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
                                                                         bg="#FFFFFF",

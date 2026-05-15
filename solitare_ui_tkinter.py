@@ -1,7 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
+from xml.parsers.expat import model
 import numpy as np
 import time
+import numpy as np
+import gymnasium as gym
+from gymnasium.envs.registration import register
+from stable_baselines3 import DQN
 
 class solitare_ui:
     def __init__(self, root):
@@ -9,6 +14,7 @@ class solitare_ui:
         self.root.title("Peg Solitaire")
         self.root.geometry("700x600")
         self.game = None
+        self.training = False
         
         # Create main container
         main_frame = ttk.Frame(root)
@@ -42,6 +48,9 @@ class solitare_ui:
         
         self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 14, "bold"))
         self.best_score.pack(anchor=tk.W, pady=(0, 20))
+
+        train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
+        train_btn.pack(anchor=tk.W, pady=(0, 20))
         
         # Reset button
         reset_btn = ttk.Button(left_frame, text="Reset", command=self.reset_scores)
@@ -114,6 +123,34 @@ class solitare_ui:
             
             self.peg_buttons.append(button_row)
     
+    def train_agent(self):
+        """Train the agent using the current game state"""
+        if self.game is None:
+            print("Please connect to the game first.")
+            return
+        
+        self.training = True
+        # training logic
+        from solitare_env import solitare_rl_env
+        from stable_baselines3 import PPO
+        env = solitare_rl_env(ui=self)
+
+        model = PPO("MlpPolicy", env, verbose=1, learning_rate=0.0003, gamma=0.99, ent_coef=0.1, policy_kwargs=dict(net_arch=[512, 512]))
+        model.learn(total_timesteps=10000000, log_interval=4)
+        model.save("solitaire_agent")
+        model = PPO.load("solitaire_agent", env=env)
+
+        obs, info = env.reset()
+        self._run_model_loop(model, env, obs)
+
+    def _run_model_loop(self, model, env, obs):
+        action, _ = model.predict(obs, deterministic=True)
+        obs, reward, terminated, truncated, info = env.step(action)
+        if terminated or truncated:
+            obs, info = env.reset()
+        self.root.update_idletasks()
+        self.root.after(500, lambda: self._run_model_loop(model, env, obs))
+
     def button_clicked(self, row, col):
         """Handle button clicks"""
         self.selected_position = [row, col]
@@ -142,21 +179,25 @@ class solitare_ui:
         else:
             # set positions for balls that need to be moved and move them
             captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
-            self.game.move_ball(center_pos=[257, -3, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
-            self.game.remove_captured_ball(center_pos=[257, -3, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
+            if not self.training:
+                self.game.move_ball(center_pos=[257, -3, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
+                self.game.remove_captured_ball(center_pos=[257, -3, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
             # show movement on board
-            self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
-                                                                        bg="#FFFFFF",
-                                                                        activebackground="#B6B6B6", 
-                                                                        command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.button_destination_clicked(r, c))
-            self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
-                                                                        bg="#FFFFFF",
-                                                                        activebackground="#B6B6B6", 
-                                                                        command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
-            self.board_buttons[(row, column)].configure(state=tk.NORMAL,
-                                                                        bg="#AD9745",
-                                                                        activebackground="#9C883E", 
-                                                                        command=lambda r=row, c=column: self.button_clicked(r, c))
+            if (self.selected_position[0], self.selected_position[1]) in self.board_buttons:
+                self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
+                                                                            bg="#FFFFFF",
+                                                                            activebackground="#B6B6B6", 
+                                                                            command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.button_destination_clicked(r, c))
+            if (captured_position[0], captured_position[1]) in self.board_buttons:
+                self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
+                                                                            bg="#FFFFFF",
+                                                                            activebackground="#B6B6B6", 
+                                                                            command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
+            if (row, column) in self.board_buttons:
+                self.board_buttons[(row, column)].configure(state=tk.NORMAL,
+                                                                            bg="#AD9745",
+                                                                            activebackground="#9C883E", 
+                                                                            command=lambda r=row, c=column: self.button_clicked(r, c))
             # change buttons that were highlighted as move options back to their regular colours
             for i in range(7):
                 for j in range(7):
@@ -208,9 +249,18 @@ class solitare_ui:
             pass
         else:
             # move to reasonable base position and modify session best score
-            self.game.simple_move(x=257, y=-4, z=200)
-            best = self.current_score.cget("text")
-            self.best_score.configure(text=best)
+            if not self.training:
+                self.game.simple_move(x=257, y=-4, z=200)
+            try:
+                current = int(self.current_score.cget("text"))
+            except Exception:
+                current = 0
+            try:
+                best = int(self.best_score.cget("text"))
+            except Exception:
+                best = 0
+            if current > best:
+                self.best_score.configure(text=str(current))
             self.current_score.config(text="0")
             for i in range (7):
                 for j in range (7):

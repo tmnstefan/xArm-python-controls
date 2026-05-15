@@ -40,6 +40,15 @@ class solitare():
                                [-1, -1, 1, 1, 1, -1, -1], 
                                [-1, -1, 1, 1, 1, -1, -1]]
 
+    def reset_board(self):
+        self.ball_positions = [[-1, -1, 1, 1, 1, -1, -1], 
+                               [-1, -1, 1, 1, 1, -1, -1], 
+                               [1, 1, 1, 1, 1, 1, 1], 
+                               [1, 1, 1, 0, 1, 1, 1], 
+                               [1, 1, 1, 1, 1, 1, 1], 
+                               [-1, -1, 1, 1, 1, -1, -1], 
+                               [-1, -1, 1, 1, 1, -1, -1]]
+
     def simple_move(self, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
         # set up arm
         current_pos = self.settings.get_position(is_radian=False)[1]
@@ -81,27 +90,43 @@ class solitare():
 
     def check_valid_moves(self, horizontal_index:int, vertical_index:int):
         out = []
-        try:
-            if self.ball_positions[vertical_index][horizontal_index + 2] == 0 and self.ball_positions[vertical_index][horizontal_index + 1] == 1:
+        if vertical_index < 0 or horizontal_index < 0:
+            return out
+        if vertical_index >= len(self.ball_positions) or horizontal_index >= len(self.ball_positions[vertical_index]):
+            return out
+        if self.ball_positions[vertical_index][horizontal_index] != 1:
+            return out
+
+        # right
+        if horizontal_index + 2 < len(self.ball_positions[vertical_index]):
+            if self.ball_positions[vertical_index][horizontal_index + 1] == 1 and self.ball_positions[vertical_index][horizontal_index + 2] == 0:
                 out.append((vertical_index, horizontal_index + 2))
-        except Exception as e:
-            pass
-        try:
-            if self.ball_positions[vertical_index][horizontal_index - 2] == 0 and self.ball_positions[vertical_index][horizontal_index - 1] == 1:
+
+        # left
+        if horizontal_index - 2 >= 0:
+            if self.ball_positions[vertical_index][horizontal_index - 1] == 1 and self.ball_positions[vertical_index][horizontal_index - 2] == 0:
                 out.append((vertical_index, horizontal_index - 2))
-        except Exception as e:
-            pass
-        try:
-            if self.ball_positions[vertical_index + 2][horizontal_index] == 0 and self.ball_positions[vertical_index + 1][horizontal_index] == 1:
+
+        # down
+        if vertical_index + 2 < len(self.ball_positions):
+            if self.ball_positions[vertical_index + 1][horizontal_index] == 1 and self.ball_positions[vertical_index + 2][horizontal_index] == 0:
                 out.append((vertical_index + 2, horizontal_index))
-        except Exception as e:
-            pass
-        try:
-            if self.ball_positions[vertical_index - 2][horizontal_index] == 0 and self.ball_positions[vertical_index - 1][horizontal_index] == 1:
+
+        # up
+        if vertical_index - 2 >= 0:
+            if self.ball_positions[vertical_index - 1][horizontal_index] == 1 and self.ball_positions[vertical_index - 2][horizontal_index] == 0:
                 out.append((vertical_index - 2, horizontal_index))
-        except Exception as e:
-            pass
+
         return out
+    
+    def check_all_valid_moves(self):
+        valid = []
+        for i in range(7):
+            for j in range(7):
+                moves = self.check_valid_moves(horizontal_index=j, vertical_index=i)
+                for move in moves:
+                    valid.append((i, j, move[0], move[1]))
+        return valid
     
     def check_grid(self):
         complete = False

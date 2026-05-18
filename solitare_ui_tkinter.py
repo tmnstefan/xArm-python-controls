@@ -7,6 +7,7 @@ import numpy as np
 import gymnasium as gym
 from gymnasium.envs.registration import register
 from stable_baselines3 import DQN
+import os
 
 class solitare_ui:
     def __init__(self, root):
@@ -15,6 +16,7 @@ class solitare_ui:
         self.root.geometry("700x600")
         self.game = None
         self.training = False
+        self.center_pos = [254.0, -3.0, 28.0]
         
         # Create main container
         main_frame = ttk.Frame(root)
@@ -51,6 +53,10 @@ class solitare_ui:
 
         train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
         train_btn.pack(anchor=tk.W, pady=(0, 20))
+        
+        # Run on Robot button (disabled until a trained model is available)
+        self.run_btn = ttk.Button(left_frame, text="Run on Robot", command=self.run_on_robot, state=tk.DISABLED)
+        self.run_btn.pack(anchor=tk.W, pady=(0, 20))
         
         # Reset button
         reset_btn = ttk.Button(left_frame, text="Reset", command=self.reset_scores)
@@ -122,7 +128,7 @@ class solitare_ui:
                     button_row.append(None)
             
             self.peg_buttons.append(button_row)
-    
+
     def train_agent(self):
         """Train the agent using the current game state"""
         if self.game is None:
@@ -136,18 +142,26 @@ class solitare_ui:
         env = solitare_rl_env(ui=self)
 
         model = PPO("MlpPolicy", env, verbose=1, learning_rate=0.0003, gamma=0.99, ent_coef=0.1, policy_kwargs=dict(net_arch=[512, 512]))
-        model.learn(total_timesteps=10000000, log_interval=4)
+        model.learn(total_timesteps=1000, log_interval=4)
         model.save("solitaire_agent")
         model = PPO.load("solitaire_agent", env=env)
 
         obs, info = env.reset()
-        self._run_model_loop(model, env, obs)
+        #self._run_model_loop(model, env, obs)
+        # mark training complete and enable Run button
+        self.training = False
+        try:
+            self.run_btn.config(state=tk.NORMAL)
+        except Exception:
+            pass
 
     def _run_model_loop(self, model, env, obs):
         action, _ = model.predict(obs, deterministic=True)
+        print(f"[MODEL LOOP] action={action}, current step moves={len(env.valid_moves)}")
         obs, reward, terminated, truncated, info = env.step(action)
         if terminated or truncated:
-            obs, info = env.reset()
+            print(f"[MODEL LOOP] episode ended, stopping robot execution")
+            return
         self.root.update_idletasks()
         self.root.after(500, lambda: self._run_model_loop(model, env, obs))
 
@@ -180,8 +194,11 @@ class solitare_ui:
             # set positions for balls that need to be moved and move them
             captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
             if not self.training:
-                self.game.move_ball(center_pos=[257, -3, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
-                self.game.remove_captured_ball(center_pos=[257, -3, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
+                self.game.move_ball(center_pos=self.center_pos, start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
+                self.game.remove_captured_ball(center_pos=self.center_pos, vertical=captured_position[0], horizontal=captured_position[1])
+                #print(f"\nMoved ball from {self.selected_position} to {[row, column]}, captured ball at {captured_position}\n")
+                #print(f"[UI MOVE] ball_positions:\n{np.array(self.game.ball_positions)}")
+                #print(f"[UI MOVE] valid moves: {self.game.check_all_valid_moves()}\n")
             # show movement on board
             if (self.selected_position[0], self.selected_position[1]) in self.board_buttons:
                 self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
@@ -235,12 +252,40 @@ class solitare_ui:
             # Enable all game buttons now that game is initialized
             for btn in self.board_buttons.values():
                 btn.config(state=tk.NORMAL)
+            # If a trained model exists, enable the Run button
+            try:
+                if os.path.exists("solitaire_agent.zip"):
+                    self.run_btn.config(state=tk.NORMAL)
+            except Exception:
+                pass
             
             print("All buttons enabled successfully")
             
         except Exception as e:
             print(f"Connection failed: {e}")
         
+
+    def run_on_robot(self):
+        """Load a trained model and run it on the connected robot."""
+        if self.game is None:
+            print("Please connect to the game first.")
+            return
+
+        # Try to load saved model
+        try:
+            from solitare_env import solitare_rl_env
+            from stable_baselines3 import PPO
+
+            env = solitare_rl_env(ui=self)
+            # load model (expects file 'solitaire_agent.zip')
+            model = PPO.load("solitaire_agent", env=env)
+            obs, info = env.reset()
+            # ensure training flag is off
+            self.training = False
+            # start model loop which will use the env to call UI/robot actions
+            self._run_model_loop(model, env, obs)
+        except Exception as e:
+            print(f"Failed to run model on robot: {e}")
 
     def reset_scores(self):
         """Reset the current score"""

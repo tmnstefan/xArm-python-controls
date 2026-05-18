@@ -14,7 +14,7 @@ class solitare_rl_env(gym.Env):
 
     def __init__(self, ui:'solitare_ui'):
         self.ui = ui
-        self.ui.connect_to_ip()
+        #self.ui.connect_to_ip()
         self.ui.reset_scores()
         self.current = 0
         self.runs = 0
@@ -52,6 +52,8 @@ class solitare_rl_env(gym.Env):
                 np.array(self.game.ball_positions).flatten(),        # board array
                 np.array([0, 0, 0, 0]), # current selected space
             ])
+        if self.current >= len(self.valid_moves):
+            self.current = 0
         return np.concatenate([
             np.array(self.game.ball_positions).flatten(),        # board array
             np.array(self.valid_moves[self.current]), # current selected space
@@ -102,7 +104,8 @@ class solitare_rl_env(gym.Env):
         """
         self.runs += 1
         self.valid_moves = self.game.check_all_valid_moves()
-        print(f"\nvalid moves: {self.valid_moves}\n")
+        print(f"\n[STEP START] ball_positions:\n{np.array(self.game.ball_positions)}")
+        print(f"[STEP START] valid moves: {self.valid_moves}\n")
         terminated = False
         truncated = False
         reward = 0
@@ -123,17 +126,20 @@ class solitare_rl_env(gym.Env):
                 #reward -= 33
                 reward += np.sqrt(int(self.ui.current_score.cget("text")) * self.runs)
             else:
-                print(f"\nExecuting move: {self.valid_moves[self.current]}\n")
-                self.ui.button_clicked(self.valid_moves[self.current][0], self.valid_moves[self.current][1])
-                #time.sleep(0.03)
-                self.ui.button_destination_clicked(self.valid_moves[self.current][2], self.valid_moves[self.current][3])
-                #time.sleep(0.03)
-                self.game.ball_positions[self.valid_moves[self.current][0]][self.valid_moves[self.current][1]] = 0
-                self.game.ball_positions[self.valid_moves[self.current][2]][self.valid_moves[self.current][3]] = 1
-                self.game.ball_positions[(self.valid_moves[self.current][0] + self.valid_moves[self.current][2]) // 2][(self.valid_moves[self.current][1] + self.valid_moves[self.current][3]) // 2] = 0    
+                move = self.valid_moves[self.current]
+                print(f"\nExecuting move: {move}\n")
+                self.ui.button_clicked(move[0], move[1])
+                self.ui.button_destination_clicked(move[2], move[3])
+                self.game.ball_positions[move[0]][move[1]] = 0
+                self.game.ball_positions[move[2]][move[3]] = 1
+                self.game.ball_positions[(move[0] + move[2]) // 2][(move[1] + move[3]) // 2] = 0    
                 self.ui.root.update()
                 self.current = 0
                 self.valid_moves = self.game.check_all_valid_moves()
+                print(f"\n[STEP END] ball_positions:\n{np.array(self.game.ball_positions)}")
+                print(f"[STEP END] valid moves: {self.valid_moves}\n")
+                if self.current >= len(self.valid_moves):
+                    self.current = 0
                 #reward += 1
                 #reward += int(self.ui.current_score.cget("text")) * int(self.ui.current_score.cget("text"))
             

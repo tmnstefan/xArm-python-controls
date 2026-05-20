@@ -11,6 +11,7 @@ import os
 
 class solitare_ui:
     def __init__(self, root):
+        
         self.root = root
         self.root.title("Peg Solitaire")
         self.root.geometry("700x600")
@@ -21,7 +22,27 @@ class solitare_ui:
         # Create main container
         main_frame = ttk.Frame(root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
+
+        self.center_entry = tk.Toplevel(root)
+        self.center_entry.title("Set Center Position")
+        self.center_entry.geometry("300x200")
+        self.center_entry.attributes('-topmost', True)
+        self.center_entry.lift()
+        center_label = ttk.Label(self.center_entry, text="Enter Center Position (x, y, z):")
+        center_label.pack(pady=10)
+        self.x_entry = ttk.Entry(self.center_entry, width=30)
+        self.x_entry.pack(pady=5)
+        self.y_entry = ttk.Entry(self.center_entry, width=30)
+        self.y_entry.pack(pady=5)
+        self.z_entry = ttk.Entry(self.center_entry, width=30)
+        self.z_entry.pack(pady=5)
+        self.x_entry.insert(0, "254.0")
+        self.y_entry.insert(0, "-3.0")
+        self.z_entry.insert(0, "28.0")
+        set_center_btn = ttk.Button(self.center_entry, text="Set Center Position", command=self.set_center_position)
+        set_center_btn.pack(pady=10)
+        self.root.wait_window(self.center_entry)
+
         # Left panel
         left_frame = ttk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20))
@@ -53,7 +74,7 @@ class solitare_ui:
 
         train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
         train_btn.pack(anchor=tk.W, pady=(0, 20))
-        
+
         # Run on Robot button (disabled until a trained model is available)
         self.run_btn = ttk.Button(left_frame, text="Run on Robot", command=self.run_on_robot, state=tk.DISABLED)
         self.run_btn.pack(anchor=tk.W, pady=(0, 20))
@@ -129,6 +150,19 @@ class solitare_ui:
             
             self.peg_buttons.append(button_row)
 
+    def set_center_position(self):
+        """Set the center position for the game based on user input"""
+        try:
+            x = float(self.x_entry.get())
+            y = float(self.y_entry.get())
+            z = float(self.z_entry.get())
+            self.center_pos = [x, y, z]
+            print(f"Center position set to: {self.center_pos}")
+            self.center_entry.destroy()
+            self.root.deiconify()
+        except ValueError:
+            print("Invalid input for center position. Please enter numeric values.")
+
     def train_agent(self):
         """Train the agent using the current game state"""
         if self.game is None:
@@ -185,7 +219,7 @@ class solitare_ui:
                                                                         bg="#BEDCFF",
                                                                         activebackground="#7CA4FC", 
                                                                         command=lambda r=index[0], c=index[1]: self.button_destination_clicked(r, c))
-    
+
     def button_destination_clicked(self, row, column):
         """Handle button clicks when selecting destination for"""
         if self.game == None:
@@ -335,7 +369,9 @@ class solitare_ui:
                     except Exception as e:
                         pass
 
-                    
+class solitare_config:
+    def __init__(self):
+        self.state = 0        
 
 if __name__ == "__main__":
     root = tk.Tk()

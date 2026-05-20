@@ -26,7 +26,8 @@ class solitare():
         self.util.clean_warn()
         self.settings.set_state(0)
         self.settings.set_collision_rebound(on=True)
-        
+        self.balls_in_jail = 0
+
         #grid separation in mm
         self.grid_separation = 29
         self.tool_length = tool_length
@@ -48,6 +49,7 @@ class solitare():
                                [1, 1, 1, 1, 1, 1, 1], 
                                [-1, -1, 1, 1, 1, -1, -1], 
                                [-1, -1, 1, 1, 1, -1, -1]]
+        self.balls_in_jail = 0
 
     def simple_move(self, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
         # set up arm
@@ -177,7 +179,8 @@ class solitare():
         while self.gripper.get_vacuum_gripper()[1] != 1:
             self.movement.set_position(x=0, y=0, z=-0.5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
         time.sleep(1)
-        prison_pos = self.closest_jail_position(x=ball_x, y=ball_y, center_pos=center_pos)
+        #prison_pos = self.closest_jail_position(x=ball_x, y=ball_y, center_pos=center_pos)
+        prison_pos = self.next_jail_position(center_pos=center_pos)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
@@ -185,6 +188,7 @@ class solitare():
         time.sleep(1)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.ball_positions[vertical][horizontal] = 0
+        self.balls_in_jail += 1
 
     def closest_jail_position(self, x, y, center_pos):
         """Calculate the closest jail position for a captured ball"""
@@ -192,8 +196,18 @@ class solitare():
         change_x = center_pos[0] - x
         change_y = center_pos[1] - y
         print(f"change_x: {change_x}, change_y: {change_y}")
-        closest_position[0] = center_pos[0] + ((change_x) / (np.sqrt(change_x ** 2 + change_y ** 2)) * 125) * -1
-        closest_position[1] = center_pos[1] + ((change_y) / (np.sqrt(change_x ** 2 + change_y ** 2)) * 125) * -1
-        closest_position[2] = 30
+        closest_position[0] = center_pos[0] + ((change_x) / (np.sqrt(change_x ** 2 + change_y ** 2)) * 130) * -1
+        closest_position[1] = center_pos[1] + ((change_y) / (np.sqrt(change_x ** 2 + change_y ** 2)) * 130) * -1
+        closest_position[2] = 25
         print(f"\nclosest jail position: {closest_position}\n")
         return closest_position
+
+    def next_jail_position(self, center_pos):
+        """Calculate the next jail position for a captured ball based on how many balls are already in jail"""
+        angle = (self.balls_in_jail * 10) % 360
+        # Use a single fixed ring for jail positions; do not increase radius per group
+        radius = 130
+        x = center_pos[0] - (radius * np.cos(np.radians(angle)))
+        y = center_pos[1] - (radius * np.sin(np.radians(angle)))
+        z = 25
+        return [x, y, z]

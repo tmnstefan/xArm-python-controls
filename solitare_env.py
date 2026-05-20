@@ -12,7 +12,8 @@ if TYPE_CHECKING:
 
 class solitare_rl_env(gym.Env):
 
-    def __init__(self, ui:'solitare_ui'):
+    def __init__(self, ui:'solitare_ui', is_debug=False):
+        self.is_debug = is_debug
         self.ui = ui
         #self.ui.connect_to_ip()
         self.ui.reset_scores()
@@ -104,8 +105,9 @@ class solitare_rl_env(gym.Env):
         """
         self.runs += 1
         self.valid_moves = self.game.check_all_valid_moves()
-        print(f"\n[STEP START] ball_positions:\n{np.array(self.game.ball_positions)}")
-        print(f"[STEP START] valid moves: {self.valid_moves}\n")
+        if self.is_debug:
+            print(f"\n[STEP START] ball_positions:\n{np.array(self.game.ball_positions)}")
+            print(f"[STEP START] valid moves: {self.valid_moves}\n")
         terminated = False
         truncated = False
         reward = 0
@@ -127,7 +129,8 @@ class solitare_rl_env(gym.Env):
                 reward += np.sqrt(int(self.ui.current_score.cget("text")) * self.runs)
             else:
                 move = self.valid_moves[self.current]
-                print(f"\nExecuting move: {move}\n")
+                if self.is_debug:
+                    print(f"\nExecuting move: {move}\n")
                 self.ui.button_clicked(move[0], move[1])
                 self.ui.button_destination_clicked(move[2], move[3])
                 self.game.ball_positions[move[0]][move[1]] = 0
@@ -136,8 +139,9 @@ class solitare_rl_env(gym.Env):
                 self.ui.root.update()
                 self.current = 0
                 self.valid_moves = self.game.check_all_valid_moves()
-                print(f"\n[STEP END] ball_positions:\n{np.array(self.game.ball_positions)}")
-                print(f"[STEP END] valid moves: {self.valid_moves}\n")
+                if self.is_debug:
+                    print(f"\n[STEP END] ball_positions:\n{np.array(self.game.ball_positions)}")
+                    print(f"[STEP END] valid moves: {self.valid_moves}\n")
                 if self.current >= len(self.valid_moves):
                     self.current = 0
                 #reward += 1
@@ -145,7 +149,8 @@ class solitare_rl_env(gym.Env):
             
         observation = self._get_obs()
         info = self._get_info()
-        print(f"\nlast run reward: {reward}\n")
+        if self.is_debug:
+            print(f"\nlast run reward: {reward}\n")
         return observation, reward, terminated, truncated, info
     
 

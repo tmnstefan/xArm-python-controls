@@ -8,13 +8,14 @@ import gymnasium as gym
 from gymnasium.envs.registration import register
 from stable_baselines3 import DQN
 import os
+import sv_ttk
 
 class solitare_ui:
     def __init__(self, root):
-        
+        sv_ttk.set_theme("dark")
         self.root = root
         self.root.title("Peg Solitaire")
-        self.root.geometry("700x600")
+        self.root.geometry("1000x600")
         self.game = None
         self.training = False
         self.center_pos = [254.0, -3.0, 28.0]
@@ -25,7 +26,7 @@ class solitare_ui:
 
         self.center_entry = tk.Toplevel(root)
         self.center_entry.title("Set Center Position")
-        self.center_entry.geometry("300x200")
+        self.center_entry.geometry("600x400")
         self.center_entry.attributes('-topmost', True)
         self.center_entry.lift()
         center_label = ttk.Label(self.center_entry, text="Enter Center Position (x, y, z):")
@@ -43,12 +44,26 @@ class solitare_ui:
         set_center_btn.pack(pady=10)
         self.root.wait_window(self.center_entry)
 
+        self.ip_entry = tk.Toplevel(root)
+        self.ip_entry.title("Connect to IP")
+        self.ip_entry.geometry("600x400")
+        self.ip_entry.attributes('-topmost', True)
+        self.ip_entry.lift()
+        ip_label = ttk.Label(self.ip_entry, text="IP Address:")
+        ip_label.pack(pady=(0, 5))
+        self.ip_enter = ttk.Entry(self.ip_entry, width=30)
+        self.ip_enter.pack(pady=(0, 20))
+        self.ip_enter.insert(0, "127.0.0.1")
+        connect_btn = ttk.Button(self.ip_entry, text="Connect", command=self.connect_to_ip)
+        connect_btn.pack(pady=10)
+        self.root.wait_window(self.ip_entry)
+
         # Left panel
         left_frame = ttk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20))
         
         # IP Address input
-        ip_label = ttk.Label(left_frame, text="IP Address:")
+        '''ip_label = ttk.Label(left_frame, text="IP Address:")
         ip_label.pack(anchor=tk.W, pady=(0, 5))
         
         self.ip_entry = ttk.Entry(left_frame, width=30)
@@ -56,8 +71,7 @@ class solitare_ui:
         self.ip_entry.insert(0, "127.0.0.1")
         
         connect_btn = ttk.Button(left_frame, text="Connect", command=self.connect_to_ip)
-        connect_btn.pack(anchor=tk.W, pady=(0, 20))
-
+        connect_btn.pack(anchor=tk.W, pady=(0, 20))'''
         # Current Score
         current_label = ttk.Label(left_frame, text="Current Score:")
         current_label.pack(anchor=tk.W, pady=(10, 5))
@@ -72,12 +86,25 @@ class solitare_ui:
         self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 14, "bold"))
         self.best_score.pack(anchor=tk.W, pady=(0, 20))
 
+        no_iterations_label = ttk.Label(left_frame, text="Training Iterations:")
+        no_iterations_label.pack(anchor=tk.W, pady=(10, 5))
+
+        self.no_iterations = ttk.Entry(left_frame, font=("Arial", 14, "bold"))
+        self.no_iterations.pack(anchor=tk.W, pady=(0, 20))
+        self.no_iterations.insert(0, "10000")
+
         train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
         train_btn.pack(anchor=tk.W, pady=(0, 20))
 
         # Run on Robot button (disabled until a trained model is available)
         self.run_btn = ttk.Button(left_frame, text="Run on Robot", command=self.run_on_robot, state=tk.DISABLED)
         self.run_btn.pack(anchor=tk.W, pady=(0, 20))
+
+        try:
+            if os.path.exists("solitaire_agent.zip"):
+                self.run_btn.config(state=tk.NORMAL)
+        except Exception:
+            pass
         
         # Reset button
         reset_btn = ttk.Button(left_frame, text="Reset", command=self.reset_scores)
@@ -119,7 +146,7 @@ class solitare_ui:
                         bg="#AD9745",
                         activebackground="#9C883E",
                         relief=tk.RAISED,
-                        state=tk.DISABLED,
+                        state=tk.NORMAL,
                         bd=2,
                         command=lambda r=row, c=col: self.button_clicked(r, c)
                     )
@@ -134,7 +161,7 @@ class solitare_ui:
                         bg="#FFFFFF",
                         activebackground="#B6B6B6",
                         relief=tk.RAISED,
-                        state=tk.DISABLED,
+                        state=tk.NORMAL,
                         bd=2,
                         command=lambda r=row, c=col: self.button_destination_clicked(r, c)
                     )
@@ -176,7 +203,13 @@ class solitare_ui:
         env = solitare_rl_env(ui=self)
 
         model = PPO("MlpPolicy", env, verbose=1, learning_rate=0.0003, gamma=0.99, ent_coef=0.1, policy_kwargs=dict(net_arch=[512, 512]))
-        model.learn(total_timesteps=1000, log_interval=4)
+        try:
+            iterations = int(self.no_iterations.get())
+        except ValueError:
+            print("Invalid input for training iterations. Please enter a numeric value.")
+            self.training = False
+            return
+        model.learn(total_timesteps=iterations, log_interval=4)
         model.save("solitaire_agent")
         model = PPO.load("solitaire_agent", env=env)
 
@@ -268,7 +301,7 @@ class solitare_ui:
 
     def connect_to_ip(self):
         """Connect to the specified IP address"""
-        ip = self.ip_entry.get()
+        ip = self.ip_enter.get()
         if not ip.strip():
             print("Please enter a valid IP address")
             return
@@ -284,14 +317,9 @@ class solitare_ui:
             print(f"Game instance created: {self.game}")
             
             # Enable all game buttons now that game is initialized
-            for btn in self.board_buttons.values():
-                btn.config(state=tk.NORMAL)
             # If a trained model exists, enable the Run button
-            try:
-                if os.path.exists("solitaire_agent.zip"):
-                    self.run_btn.config(state=tk.NORMAL)
-            except Exception:
-                pass
+            self.ip_entry.destroy()
+            self.root.deiconify()
             
             print("All buttons enabled successfully")
             

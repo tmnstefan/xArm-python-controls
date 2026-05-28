@@ -88,7 +88,7 @@ class solitare_ui:
                         command=lambda r=row, c=col: self.button_clicked(r, c)
                     )
                     self.board_buttons[(row, col)] = btn
-                    btn.grid(row=row, column=col, padx=2, pady=2)
+                    btn.grid(row=row, column=col, padx=2, pady=2, sticky="NSEW")
                     button_row.append(btn)
                 if self.board_layout[row][col] == 0:
                     btn = tk.Button(
@@ -103,7 +103,7 @@ class solitare_ui:
                         command=lambda r=row, c=col: self.button_destination_clicked(r, c)
                     )
                     self.board_buttons[(row, col)] = btn
-                    btn.grid(row=row, column=col, padx=2, pady=2)
+                    btn.grid(row=row, column=col, padx=2, pady=2, sticky="NSEW")
                     button_row.append(btn)
                     
                 else:

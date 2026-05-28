@@ -1,25 +1,69 @@
 import tkinter as tk
 from tkinter import ttk
+from xml.parsers.expat import model
 import numpy as np
 import time
+import numpy as np
+import gymnasium as gym
+from gymnasium.envs.registration import register
+from stable_baselines3 import DQN
+import os
+import sv_ttk
 
 class solitare_ui:
     def __init__(self, root):
+        sv_ttk.set_theme("dark")
         self.root = root
         self.root.title("Peg Solitaire")
-        self.root.geometry("700x600")
+        self.root.geometry("1000x600")
         self.game = None
+        self.training = False
+        self.center_pos = [254.0, -3.0, 28.0]
         
         # Create main container
         main_frame = ttk.Frame(root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
+
+        self.center_entry = tk.Toplevel(root)
+        self.center_entry.title("Set Center Position")
+        self.center_entry.geometry("600x400")
+        self.center_entry.attributes('-topmost', True)
+        self.center_entry.lift()
+        center_label = ttk.Label(self.center_entry, text="Enter Center Position (x, y, z):")
+        center_label.pack(pady=10)
+        self.x_entry = ttk.Entry(self.center_entry, width=30)
+        self.x_entry.pack(pady=5)
+        self.y_entry = ttk.Entry(self.center_entry, width=30)
+        self.y_entry.pack(pady=5)
+        self.z_entry = ttk.Entry(self.center_entry, width=30)
+        self.z_entry.pack(pady=5)
+        self.x_entry.insert(0, "254.0")
+        self.y_entry.insert(0, "-3.0")
+        self.z_entry.insert(0, "28.0")
+        set_center_btn = ttk.Button(self.center_entry, text="Set Center Position", command=self.set_center_position)
+        set_center_btn.pack(pady=10)
+        self.root.wait_window(self.center_entry)
+
+        self.ip_entry = tk.Toplevel(root)
+        self.ip_entry.title("Connect to IP")
+        self.ip_entry.geometry("600x400")
+        self.ip_entry.attributes('-topmost', True)
+        self.ip_entry.lift()
+        ip_label = ttk.Label(self.ip_entry, text="IP Address:")
+        ip_label.pack(pady=(0, 5))
+        self.ip_enter = ttk.Entry(self.ip_entry, width=30)
+        self.ip_enter.pack(pady=(0, 20))
+        self.ip_enter.insert(0, "127.0.0.1")
+        connect_btn = ttk.Button(self.ip_entry, text="Connect", command=self.connect_to_ip)
+        connect_btn.pack(pady=10)
+        self.root.wait_window(self.ip_entry)
+
         # Left panel
         left_frame = ttk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20))
         
         # IP Address input
-        ip_label = ttk.Label(left_frame, text="IP Address:")
+        '''ip_label = ttk.Label(left_frame, text="IP Address:")
         ip_label.pack(anchor=tk.W, pady=(0, 5))
         
         self.ip_entry = ttk.Entry(left_frame, width=30)
@@ -27,8 +71,7 @@ class solitare_ui:
         self.ip_entry.insert(0, "127.0.0.1")
         
         connect_btn = ttk.Button(left_frame, text="Connect", command=self.connect_to_ip)
-        connect_btn.pack(anchor=tk.W, pady=(0, 20))
-
+        connect_btn.pack(anchor=tk.W, pady=(0, 20))'''
         # Current Score
         current_label = ttk.Label(left_frame, text="Current Score:")
         current_label.pack(anchor=tk.W, pady=(10, 5))
@@ -42,6 +85,26 @@ class solitare_ui:
         
         self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 14, "bold"))
         self.best_score.pack(anchor=tk.W, pady=(0, 20))
+
+        no_iterations_label = ttk.Label(left_frame, text="Training Iterations:")
+        no_iterations_label.pack(anchor=tk.W, pady=(10, 5))
+
+        self.no_iterations = ttk.Entry(left_frame, font=("Arial", 14, "bold"))
+        self.no_iterations.pack(anchor=tk.W, pady=(0, 20))
+        self.no_iterations.insert(0, "10000")
+
+        train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
+        train_btn.pack(anchor=tk.W, pady=(0, 20))
+
+        # Run on Robot button (disabled until a trained model is available)
+        self.run_btn = ttk.Button(left_frame, text="Run on Robot", command=self.run_on_robot, state=tk.DISABLED)
+        self.run_btn.pack(anchor=tk.W, pady=(0, 20))
+
+        try:
+            if os.path.exists("solitaire_agent.zip"):
+                self.run_btn.config(state=tk.NORMAL)
+        except Exception:
+            pass
         
         # Reset button
         reset_btn = ttk.Button(left_frame, text="Reset", command=self.reset_scores)
@@ -83,7 +146,7 @@ class solitare_ui:
                         bg="#AD9745",
                         activebackground="#9C883E",
                         relief=tk.RAISED,
-                        state=tk.DISABLED,
+                        state=tk.NORMAL,
                         bd=2,
                         command=lambda r=row, c=col: self.button_clicked(r, c)
                     )
@@ -98,7 +161,7 @@ class solitare_ui:
                         bg="#FFFFFF",
                         activebackground="#B6B6B6",
                         relief=tk.RAISED,
-                        state=tk.DISABLED,
+                        state=tk.NORMAL,
                         bd=2,
                         command=lambda r=row, c=col: self.button_destination_clicked(r, c)
                     )
@@ -113,7 +176,62 @@ class solitare_ui:
                     button_row.append(None)
             
             self.peg_buttons.append(button_row)
-    
+
+    def set_center_position(self):
+        """Set the center position for the game based on user input"""
+        try:
+            x = float(self.x_entry.get())
+            y = float(self.y_entry.get())
+            z = float(self.z_entry.get())
+            self.center_pos = [x, y, z]
+            print(f"Center position set to: {self.center_pos}")
+            self.center_entry.destroy()
+            self.root.deiconify()
+        except ValueError:
+            print("Invalid input for center position. Please enter numeric values.")
+
+    def train_agent(self):
+        """Train the agent using the current game state"""
+        if self.game is None:
+            print("Please connect to the game first.")
+            return
+        
+        self.training = True
+        # training logic
+        from solitare_env import solitare_rl_env
+        from stable_baselines3 import PPO
+        env = solitare_rl_env(ui=self)
+
+        model = PPO("MlpPolicy", env, verbose=1, learning_rate=0.0003, gamma=0.99, ent_coef=0.1, policy_kwargs=dict(net_arch=[512, 512]))
+        try:
+            iterations = int(self.no_iterations.get())
+        except ValueError:
+            print("Invalid input for training iterations. Please enter a numeric value.")
+            self.training = False
+            return
+        model.learn(total_timesteps=iterations, log_interval=4)
+        model.save("solitaire_agent")
+        model = PPO.load("solitaire_agent", env=env)
+
+        obs, info = env.reset()
+        #self._run_model_loop(model, env, obs)
+        # mark training complete and enable Run button
+        self.training = False
+        try:
+            self.run_btn.config(state=tk.NORMAL)
+        except Exception:
+            pass
+
+    def _run_model_loop(self, model, env, obs):
+        action, _ = model.predict(obs, deterministic=True)
+        print(f"[MODEL LOOP] action={action}, current step moves={len(env.valid_moves)}")
+        obs, reward, terminated, truncated, info = env.step(action)
+        if terminated or truncated:
+            print(f"[MODEL LOOP] episode ended, stopping robot execution")
+            return
+        self.root.update_idletasks()
+        self.root.after(500, lambda: self._run_model_loop(model, env, obs))
+
     def button_clicked(self, row, col):
         """Handle button clicks"""
         self.selected_position = [row, col]
@@ -134,7 +252,7 @@ class solitare_ui:
                                                                         bg="#BEDCFF",
                                                                         activebackground="#7CA4FC", 
                                                                         command=lambda r=index[0], c=index[1]: self.button_destination_clicked(r, c))
-    
+
     def button_destination_clicked(self, row, column):
         """Handle button clicks when selecting destination for"""
         if self.game == None:
@@ -142,21 +260,28 @@ class solitare_ui:
         else:
             # set positions for balls that need to be moved and move them
             captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
-            self.game.move_ball(center_pos=[257, -4, 28], start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
-            self.game.remove_captured_ball(center_pos=[257, -4, 28], vertical=captured_position[0], horizontal=captured_position[1], prison_x=165, prison_y=82, prison_z=30)
+            if not self.training:
+                self.game.move_ball(center_pos=self.center_pos, start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
+                self.game.remove_captured_ball(center_pos=self.center_pos, vertical=captured_position[0], horizontal=captured_position[1])
+                #print(f"\nMoved ball from {self.selected_position} to {[row, column]}, captured ball at {captured_position}\n")
+                #print(f"[UI MOVE] ball_positions:\n{np.array(self.game.ball_positions)}")
+                #print(f"[UI MOVE] valid moves: {self.game.check_all_valid_moves()}\n")
             # show movement on board
-            self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
-                                                                        bg="#FFFFFF",
-                                                                        activebackground="#B6B6B6", 
-                                                                        command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.button_destination_clicked(r, c))
-            self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
-                                                                        bg="#FFFFFF",
-                                                                        activebackground="#B6B6B6", 
-                                                                        command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
-            self.board_buttons[(row, column)].configure(state=tk.NORMAL,
-                                                                        bg="#AD9745",
-                                                                        activebackground="#9C883E", 
-                                                                        command=lambda r=row, c=column: self.button_clicked(r, c))
+            if (self.selected_position[0], self.selected_position[1]) in self.board_buttons:
+                self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
+                                                                            bg="#FFFFFF",
+                                                                            activebackground="#B6B6B6", 
+                                                                            command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.button_destination_clicked(r, c))
+            if (captured_position[0], captured_position[1]) in self.board_buttons:
+                self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
+                                                                            bg="#FFFFFF",
+                                                                            activebackground="#B6B6B6", 
+                                                                            command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
+            if (row, column) in self.board_buttons:
+                self.board_buttons[(row, column)].configure(state=tk.NORMAL,
+                                                                            bg="#AD9745",
+                                                                            activebackground="#9C883E", 
+                                                                            command=lambda r=row, c=column: self.button_clicked(r, c))
             # change buttons that were highlighted as move options back to their regular colours
             for i in range(7):
                 for j in range(7):
@@ -176,7 +301,7 @@ class solitare_ui:
 
     def connect_to_ip(self):
         """Connect to the specified IP address"""
-        ip = self.ip_entry.get()
+        ip = self.ip_enter.get()
         if not ip.strip():
             print("Please enter a valid IP address")
             return
@@ -192,14 +317,37 @@ class solitare_ui:
             print(f"Game instance created: {self.game}")
             
             # Enable all game buttons now that game is initialized
-            for btn in self.board_buttons.values():
-                btn.config(state=tk.NORMAL)
+            # If a trained model exists, enable the Run button
+            self.ip_entry.destroy()
+            self.root.deiconify()
             
             print("All buttons enabled successfully")
             
         except Exception as e:
             print(f"Connection failed: {e}")
         
+
+    def run_on_robot(self):
+        """Load a trained model and run it on the connected robot."""
+        if self.game is None:
+            print("Please connect to the game first.")
+            return
+
+        # Try to load saved model
+        try:
+            from solitare_env import solitare_rl_env
+            from stable_baselines3 import PPO
+
+            env = solitare_rl_env(ui=self)
+            # load model (expects file 'solitaire_agent.zip')
+            model = PPO.load("solitaire_agent", env=env)
+            obs, info = env.reset()
+            # ensure training flag is off
+            self.training = False
+            # start model loop which will use the env to call UI/robot actions
+            self._run_model_loop(model, env, obs)
+        except Exception as e:
+            print(f"Failed to run model on robot: {e}")
 
     def reset_scores(self):
         """Reset the current score"""
@@ -208,9 +356,18 @@ class solitare_ui:
             pass
         else:
             # move to reasonable base position and modify session best score
-            self.game.simple_move(x=257, y=-4, z=200)
-            best = self.current_score.cget("text")
-            self.best_score.configure(text=best)
+            if not self.training:
+                self.game.simple_move(x=257, y=-4, z=200)
+            try:
+                current = int(self.current_score.cget("text"))
+            except Exception:
+                current = 0
+            try:
+                best = int(self.best_score.cget("text"))
+            except Exception:
+                best = 0
+            if current > best:
+                self.best_score.configure(text=str(current))
             self.current_score.config(text="0")
             for i in range (7):
                 for j in range (7):
@@ -240,7 +397,9 @@ class solitare_ui:
                     except Exception as e:
                         pass
 
-                    
+class solitare_config:
+    def __init__(self):
+        self.state = 0        
 
 if __name__ == "__main__":
     root = tk.Tk()

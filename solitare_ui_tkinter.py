@@ -14,7 +14,7 @@ class solitare_ui:
     def __init__(self, root):
         sv_ttk.set_theme("dark")
         self.root = root
-        self.root.title("Peg Solitaire")
+        self.root.title("Peg Solitaire high runs camera angle 1 attempt 2")
         self.root.geometry("1000x600")
         self.game = None
         self.training = False
@@ -199,19 +199,20 @@ class solitare_ui:
         self.training = True
         # training logic
         from solitare_env import solitare_rl_env
-        from stable_baselines3 import PPO
-        env = solitare_rl_env(ui=self)
+        from stable_baselines3 import DQN
+        env = solitare_rl_env(ui=self, is_debug=False)
 
-        model = PPO("MlpPolicy", env, verbose=1, learning_rate=0.0003, gamma=0.99, ent_coef=0.1, policy_kwargs=dict(net_arch=[512, 512]))
+        model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.00001, gamma=0.99, policy_kwargs=dict(net_arch=[512, 512]))
         try:
             iterations = int(self.no_iterations.get())
+            print(f"Training for {iterations} iterations...")
         except ValueError:
             print("Invalid input for training iterations. Please enter a numeric value.")
             self.training = False
             return
         model.learn(total_timesteps=iterations, log_interval=4)
         model.save("solitaire_agent")
-        model = PPO.load("solitaire_agent", env=env)
+        model = DQN.load("solitaire_agent", env=env) # low runs camera angle 1
 
         obs, info = env.reset()
         #self._run_model_loop(model, env, obs)
@@ -247,7 +248,7 @@ class solitare_ui:
                         if button != None:
                             button.configure(state=tk.DISABLED)
                 for index in valid:
-                    print(f"index: {index}")
+                    #print(f"index: {index}")
                     self.board_buttons[(index[0], index[1])].configure(state=tk.NORMAL,
                                                                         bg="#BEDCFF",
                                                                         activebackground="#7CA4FC", 
@@ -291,7 +292,8 @@ class solitare_ui:
                         if self.board_buttons[(i, j)].cget("bg") == "#BEDCFF":
                             self.board_buttons[(i, j)].configure(state=tk.DISABLED, bg="#FFFFFF", activebackground="#B6B6B6", command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
                     except Exception as e:
-                        print(e)
+                        #print(e)
+                        pass
             score_text = self.current_score.cget("text")
             try: # increment score
                 score = int(score_text) + 1
@@ -336,11 +338,11 @@ class solitare_ui:
         # Try to load saved model
         try:
             from solitare_env import solitare_rl_env
-            from stable_baselines3 import PPO
+            from stable_baselines3 import DQN
 
             env = solitare_rl_env(ui=self)
             # load model (expects file 'solitaire_agent.zip')
-            model = PPO.load("solitaire_agent", env=env)
+            model = DQN.load("solitaire_agent", env=env)
             obs, info = env.reset()
             # ensure training flag is off
             self.training = False

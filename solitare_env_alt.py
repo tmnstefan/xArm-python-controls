@@ -1,7 +1,7 @@
 import os
 import time
 from collections import defaultdict
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, cast
 import numpy as np
 import gymnasium as gym
 import math
@@ -22,17 +22,16 @@ class solitare_rl_env(gym.Env):
         
         obs_low = np.concatenate([
             np.full((7, 7), -1).flatten(),        # board array
-            np.full(2, 0),         # current selected space
-            np.full(2, 0),       # space to move to
         ])
 
         obs_high = np.concatenate([
             np.full((7, 7), 1).flatten(),        # board array
-            np.full(2, 6),         # current selected space
-            np.full(2, 6),       # space to move to
         ])
         self.observation_space = gym.spaces.Box(low=obs_low, high=obs_high, dtype=np.int64)
-        self.action_space = gym.spaces.Discrete(2)  # 0: select next move, 1: execute move
+        self.action_space = gym.spaces.Discrete(7 * 7 * 4)
+        self._action_rows = 7
+        self._action_cols = 7
+        self._action_dirs = 4
 
         if self.ui.game != None:
             self.game = self.ui.game
@@ -42,22 +41,32 @@ class solitare_rl_env(gym.Env):
         self.valid_moves = self.game.check_all_valid_moves()
 
     
+    def _decode_action(self, action):
+        """Convert a flat DQN-style action index into (row, col, direction)."""
+        if isinstance(action, (tuple, list, np.ndarray)):
+            action_array = np.asarray(action, dtype=np.int64)
+            if action_array.shape == (3,):
+                return tuple(int(x) for x in action_array)
+
+        action_space = cast(gym.spaces.Discrete, self.action_space)
+        action_index = int(np.asarray(action).item())
+        if action_index < 0 or action_index >= action_space.n:
+            raise ValueError(f"Action {action_index} is out of range for action space size {action_space.n}.")
+
+        direction = action_index % self._action_dirs
+        action_index //= self._action_dirs
+        source_col = action_index % self._action_cols
+        source_row = action_index // self._action_cols
+        return source_row, source_col, direction
+
     def _get_obs(self):
         """Convert internal state to observation format.
 
         Returns:
             dict: Observation with agent and target positions
         """
-        if len(self.valid_moves) == 0:
-            return np.concatenate([
-                np.array(self.game.ball_positions).flatten(),        # board array
-                np.array([0, 0, 0, 0]), # current selected space
-            ])
-        if self.current >= len(self.valid_moves):
-            self.current = 0
         return np.concatenate([
             np.array(self.game.ball_positions).flatten(),        # board array
-            np.array(self.valid_moves[self.current]), # current selected space
         ])
     
 
@@ -103,51 +112,69 @@ class solitare_rl_env(gym.Env):
         Returns:
             tuple: (observation, reward, terminated, truncated, info)
         """
-        self.runs += 1
+        
         self.valid_moves = self.game.check_all_valid_moves()
+        source_row, source_col, direction = self._decode_action(action)
+
         if self.is_debug:
             print(f"\n[STEP START] ball_positions:\n{np.array(self.game.ball_positions)}")
             print(f"[STEP START] valid moves: {self.valid_moves}\n")
+            print(f"[STEP START] action: {action} -> decoded: ({source_row}, {source_col}, {direction})\n")
+            #time.sleep(0.2)
         terminated = False
         truncated = False
         reward = 0
+        #time.sleep(0.05)
+        self.runs += 1
+
+        if direction == 0:  # up
+            dest_row, dest_col = source_row - 2, source_col
+        elif direction == 1:  # down
+            dest_row, dest_col = source_row + 2, source_col
+        elif direction == 2:  # left
+            dest_row, dest_col = source_row, source_col - 2
+        elif direction == 3:  # right
+            dest_row, dest_col = source_row, source_col + 2
+        else:
+            raise Exception(f"Invalid direction: {direction}")
         
-        if action == 0:
-            if len(self.valid_moves) == 0:
-                terminated = True
-                #reward -= 33
-                reward += np.sqrt(int(self.ui.current_score.cget("text")) * self.runs)
+        valid_destinations = self.game.check_valid_moves(horizontal_index=source_col, vertical_index=source_row)
+        if len(self.valid_moves) == 0:
+            terminated = True
+            self.valid_moves = self.game.check_all_valid_moves()
+            if int(self.ui.current_score.cget("text")) == 32:
+                reward += 100
             else:
-                if self.current >= len(self.valid_moves) - 1:
-                    action = 1
-                    self.current = np.random.randint(0, len(self.valid_moves))
-                else:
-                    self.current += 1
-        if action == 1:
-            if len(self.valid_moves) == 0:
-                terminated = True
-                #reward -= 33
-                reward += np.sqrt(int(self.ui.current_score.cget("text")) * self.runs)
-            else:
-                move = self.valid_moves[self.current]
+                reward -= 100
+        elif self.runs >= 1000:
+            terminated = True
+            self.valid_moves = self.game.check_all_valid_moves()
+            reward -= 32 * 32
+        else:
+            if (dest_row, dest_col) in valid_destinations:
+                self.runs += 1
                 if self.is_debug:
-                    print(f"\nExecuting move: {move}\n")
-                self.ui.button_clicked(move[0], move[1])
-                self.ui.button_destination_clicked(move[2], move[3])
-                self.game.ball_positions[move[0]][move[1]] = 0
-                self.game.ball_positions[move[2]][move[3]] = 1
-                self.game.ball_positions[(move[0] + move[2]) // 2][(move[1] + move[3]) // 2] = 0    
+                    print(f"\nExecuting move: ({source_row}, {source_col}) to ({dest_row}, {dest_col})\n")
+                self.ui.button_clicked(source_row, source_col)
+                self.ui.button_destination_clicked(dest_row, dest_col)
+                self.game.ball_positions[source_row][source_col] = 0
+                self.game.ball_positions[dest_row][dest_col] = 1
+                self.game.ball_positions[(source_row + dest_row) // 2][(source_col + dest_col) // 2] = 0    
                 self.ui.root.update()
                 self.current = 0
                 self.valid_moves = self.game.check_all_valid_moves()
+                reward += 1
+                #reward += int(self.ui.current_score.cget("text")) * int(self.ui.current_score.cget("text"))
+                #if reward < 30:
+                #    reward = 30
                 if self.is_debug:
                     print(f"\n[STEP END] ball_positions:\n{np.array(self.game.ball_positions)}")
                     print(f"[STEP END] valid moves: {self.valid_moves}\n")
-                if self.current >= len(self.valid_moves):
-                    self.current = 0
-                #reward += 1
-                #reward += int(self.ui.current_score.cget("text")) * int(self.ui.current_score.cget("text"))
-            
+            else:
+                reward -= 2
+                if self.is_debug:
+                    print(f"\nInvalid move: ({source_row}, {source_col}) to ({dest_row}, {dest_col})\n")
+                #terminated = True
         observation = self._get_obs()
         info = self._get_info()
         if self.is_debug:

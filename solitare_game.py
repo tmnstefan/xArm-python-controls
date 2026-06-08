@@ -149,18 +149,18 @@ class solitare():
         target_x = base_pos[0] - (self.grid_separation * end_vertical)
         target_y = base_pos[1] - (self.grid_separation * end_horizontal)
         self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
-        time.sleep(1)
+        time.sleep(0.1)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 5, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         self.gripper.set_vacuum_gripper(on=True, wait=True)
         while self.gripper.get_vacuum_gripper()[1] != 1:
             self.movement.set_position(x=0, y=0, z=-0.5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=target_x, y=target_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=target_x, y=target_y, z=ball_z + self.tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.gripper.set_vacuum_gripper(on=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         
         self.movement.set_position(x=target_x, y=target_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.ball_positions[end_vertical][end_horizontal] = 1
@@ -172,20 +172,20 @@ class solitare():
         ball_y = base_pos[1] - (self.grid_separation * horizontal)
         ball_z = base_pos[2]
         self.simple_move(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20)
-        time.sleep(1)
+        time.sleep(0.1)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 5, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         self.gripper.set_vacuum_gripper(on=True, wait=True)
         while self.gripper.get_vacuum_gripper()[1] != 1:
             self.movement.set_position(x=0, y=0, z=-0.5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         #prison_pos = self.closest_jail_position(x=ball_x, y=ball_y, center_pos=center_pos)
         prison_pos = self.next_jail_position(center_pos=center_pos)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 6, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.gripper.set_vacuum_gripper(on=False, wait=True)
-        time.sleep(1)
+        time.sleep(0.1)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.ball_positions[vertical][horizontal] = 0
         self.balls_in_jail += 1

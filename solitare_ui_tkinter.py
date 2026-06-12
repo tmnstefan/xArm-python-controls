@@ -15,7 +15,7 @@ class solitare_ui:
         sv_ttk.set_theme("dark")
         self.root = root
         self.root.title("Peg Solitaire high runs camera angle 1 attempt 2")
-        self.root.geometry("1000x600")
+        self.root.geometry("1800x900")
         self.game = None
         self.training = False
         self.center_pos = [254.0, -3.0, 28.0]
@@ -73,23 +73,30 @@ class solitare_ui:
         connect_btn = ttk.Button(left_frame, text="Connect", command=self.connect_to_ip)
         connect_btn.pack(anchor=tk.W, pady=(0, 20))'''
         # Current Score
-        current_label = ttk.Label(left_frame, text="Current Score:")
+        current_label = ttk.Label(left_frame, text="Current Score:", font=("Arial", 14, "bold"))
         current_label.pack(anchor=tk.W, pady=(10, 5))
         
-        self.current_score = ttk.Label(left_frame, text="0", font=("Arial", 14, "bold"))
+        self.current_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
         self.current_score.pack(anchor=tk.W, pady=(0, 15))
         
         # Session Best Score
-        best_label = ttk.Label(left_frame, text="Session Best Score:")
+        best_label = ttk.Label(left_frame, text="Session Best Score:", font=("Arial", 14, "bold"))
         best_label.pack(anchor=tk.W, pady=(10, 5))
-        
-        self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 14, "bold"))
+
+        # Last score
+        last_label = ttk.Label(left_frame, text="Last Score:", font=("Arial", 14, "bold"))
+        last_label.pack(anchor=tk.W, pady=(10, 5))
+
+        self.last_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
+        self.last_score.pack(anchor=tk.W, pady=(0, 20))
+
+        self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
         self.best_score.pack(anchor=tk.W, pady=(0, 20))
 
-        no_iterations_label = ttk.Label(left_frame, text="Training Iterations:")
+        no_iterations_label = ttk.Label(left_frame, text="Training Iterations:", font=("Arial", 14, "bold"))
         no_iterations_label.pack(anchor=tk.W, pady=(10, 5))
 
-        self.no_iterations = ttk.Entry(left_frame, font=("Arial", 14, "bold"))
+        self.no_iterations = ttk.Entry(left_frame, font=("Arial", 20, "bold"))
         self.no_iterations.pack(anchor=tk.W, pady=(0, 20))
         self.no_iterations.insert(0, "10000")
 
@@ -111,7 +118,7 @@ class solitare_ui:
         reset_btn.pack(anchor=tk.W, pady=(20, 0))
         
         # Right panel - board
-        right_frame = ttk.LabelFrame(main_frame, text="Peg Solitaire Board", padding=10)
+        right_frame = ttk.LabelFrame(main_frame, text="Peg Solitaire Board", padding=50)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
         
         # board layout
@@ -141,8 +148,8 @@ class solitare_ui:
                 if self.board_layout[row][col] == 1:
                     btn = tk.Button(
                         board_frame,
-                        width=4,
-                        height=2,
+                        width=12,
+                        height=6,
                         bg="#AD9745",
                         activebackground="#9C883E",
                         relief=tk.RAISED,
@@ -156,8 +163,8 @@ class solitare_ui:
                 if self.board_layout[row][col] == 0:
                     btn = tk.Button(
                         board_frame,
-                        width=4,
-                        height=2,
+                        width=12,
+                        height=6,
                         bg="#FFFFFF",
                         activebackground="#B6B6B6",
                         relief=tk.RAISED,
@@ -171,7 +178,7 @@ class solitare_ui:
                     
                 else:
                     # placeholder for layout consistency
-                    placeholder = tk.Frame(board_frame, width=4, height=2)
+                    placeholder = tk.Frame(board_frame, width=12, height=6)
                     placeholder.grid(row=row, column=col, padx=2, pady=2)
                     button_row.append(None)
             
@@ -198,11 +205,11 @@ class solitare_ui:
         
         self.training = True
         # training logic
-        from solitare_env import solitare_rl_env
+        from solitare_env_alt import solitare_rl_env
         from stable_baselines3 import DQN
         env = solitare_rl_env(ui=self, is_debug=False)
 
-        model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.00001, gamma=0.99, policy_kwargs=dict(net_arch=[512, 512]))
+        model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.0001, gamma=0.99, policy_kwargs=dict(net_arch=[512, 512]))
         try:
             iterations = int(self.no_iterations.get())
             print(f"Training for {iterations} iterations...")
@@ -252,6 +259,8 @@ class solitare_ui:
                     self.board_buttons[(index[0], index[1])].configure(state=tk.NORMAL,
                                                                         bg="#BEDCFF",
                                                                         activebackground="#7CA4FC", 
+                                                                        width=12,
+                                                                        height=6,
                                                                         command=lambda r=index[0], c=index[1]: self.button_destination_clicked(r, c))
 
     def button_destination_clicked(self, row, column):
@@ -270,16 +279,22 @@ class solitare_ui:
             # show movement on board
             if (self.selected_position[0], self.selected_position[1]) in self.board_buttons:
                 self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
+                                                                            width=12,
+                                                                            height=6,
                                                                             bg="#FFFFFF",
                                                                             activebackground="#B6B6B6", 
                                                                             command=lambda r=self.selected_position[0], c=self.selected_position[1]: self.button_destination_clicked(r, c))
             if (captured_position[0], captured_position[1]) in self.board_buttons:
                 self.board_buttons[(captured_position[0], captured_position[1])].configure(state=tk.DISABLED,
+                                                                            width=12,
+                                                                            height=6,
                                                                             bg="#FFFFFF",
                                                                             activebackground="#B6B6B6", 
                                                                             command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
             if (row, column) in self.board_buttons:
                 self.board_buttons[(row, column)].configure(state=tk.NORMAL,
+                                                                            width=12,
+                                                                            height=6,
                                                                             bg="#AD9745",
                                                                             activebackground="#9C883E", 
                                                                             command=lambda r=row, c=column: self.button_clicked(r, c))
@@ -288,9 +303,9 @@ class solitare_ui:
                 for j in range(7):
                     try:
                         if self.board_buttons[(i, j)].cget("bg") == "#AD9745":
-                            self.board_buttons[(i, j)].configure(state=tk.NORMAL)
+                            self.board_buttons[(i, j)].configure(state=tk.NORMAL, width=12, height=6)
                         if self.board_buttons[(i, j)].cget("bg") == "#BEDCFF":
-                            self.board_buttons[(i, j)].configure(state=tk.DISABLED, bg="#FFFFFF", activebackground="#B6B6B6", command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
+                            self.board_buttons[(i, j)].configure(state=tk.DISABLED, width=12, height=6, bg="#FFFFFF", activebackground="#B6B6B6", command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
                     except Exception as e:
                         #print(e)
                         pass
@@ -362,6 +377,7 @@ class solitare_ui:
                 self.game.simple_move(x=257, y=-4, z=200)
             try:
                 current = int(self.current_score.cget("text"))
+                self.last_score.configure(text=str(current))
             except Exception:
                 current = 0
             try:
@@ -376,8 +392,8 @@ class solitare_ui:
                     # reset buttons to their initial states
                     try:
                         self.board_buttons[(i, j)].configure(
-                            width=4,
-                            height=2,
+                            width=12,
+                            height=6,
                             bg="#AD9745",
                             activebackground="#9C883E",
                             relief=tk.RAISED,
@@ -387,8 +403,8 @@ class solitare_ui:
                             )
                         if i == 3 and j == 3:
                             self.board_buttons[(i, j)].configure(
-                                width=4,
-                                height=2,
+                                width=12,
+                                height=6,
                                 bg="#FFFFFF",
                                 activebackground="#B6B6B6",
                                 relief=tk.RAISED,

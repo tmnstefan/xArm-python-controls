@@ -1,0 +1,963 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../error/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>API Codes - xArm Python Controls Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#xarmsdk-api-codes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="xArm Python Controls Docs" class="md-header__button md-logo" aria-label="xArm Python Controls Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            xArm Python Controls Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Codes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="xArm Python Controls Docs" class="md-nav__button md-logo" aria-label="xArm Python Controls Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    xArm Python Controls Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Codes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Codes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-warn-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller Warn Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servo-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Servo Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gripper-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gripper Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bio-gripper-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bio Gripper Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linear-motor-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linear Motor Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#six-axis-force-torque-sensor-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Six-axis Force Torque Sensor Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gripper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gripper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../move_cartesian/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cartesian movement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../read_write/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../register_release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Callback
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trajectory_recording/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trajectories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../util/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UF_ModbusTCP_Manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UF Modbus Manual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-warn-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller Warn Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controller-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controller Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#servo-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Servo Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gripper-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gripper Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bio-gripper-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bio Gripper Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linear-motor-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linear Motor Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#six-axis-force-torque-sensor-error-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Six-axis Force Torque Sensor Error Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="xarmsdk-api-codes">xArmSDK API codes</h1>
+<!-- TOC -->
+<p>Taken From Ufactory <a href="https://github.com/xArm-Developer/xArm-Python-SDK/blob/master/doc/api/xarm_api_code.md">GitHub</a></p>
+<p><a href="#xarmsdk-api-code-description">Contents</a></p>
+<ul>
+<li><a href="#xarmsdk-api-code-description">xArmSDK API code description</a></li>
+<li><a href="#api-code">API Code</a></li>
+<li><a href="#controller-warn-code">Controller Warn Code</a></li>
+<li><a href="#controller-error-code">Controller Error Code</a></li>
+<li><a href="#servo-error-code">Servo Error Code</a></li>
+<li><a href="#gripper-error-code">Gripper Error Code</a></li>
+<li><a href="#bio-gripper-error-code">Bio Gripper Error Code</a></li>
+<li><a href="#linear-motor-error-code">Linear Motor Error Code</a></li>
+<li><a href="#six-axis-force-torque-sensor-error-code">Six-axis Force Torque Sensor Error Code</a></li>
+</ul>
+<h2 id="api-code">API Code</h2>
+<ul>
+<li>-12: run blockly app exception</li>
+<li>-11: convert blockly app to pythen exception</li>
+<li>-9: emergency stop</li>
+<li>-8: out of range</li>
+<li>-7: joint angle limit</li>
+<li>-6: cartesian pos limit</li>
+<li>-5: revesed, no use</li>
+<li>-4: command is not exist</li>
+<li>-3: revesed, no use</li>
+<li>-2: xArm is not ready, may be the motion is not enable or not set state</li>
+<li>-1: xArm is disconnect or not connect</li>
+<li>0: success</li>
+<li>1: there are errors that have not been cleared</li>
+<li>2: there are warnings that have not been cleared</li>
+<li>3: get response timeout</li>
+<li>4: tcp reply length error</li>
+<li>5: tcp reply number error</li>
+<li>6: tcp protocol flag error</li>
+<li>7: tcp reply command and send command do not match</li>
+<li>8: send command error, may be network exception</li>
+<li>9: state is not ready to move</li>
+<li>10: the result is invalid</li>
+<li>11: other error</li>
+<li>12: parameter error</li>
+<li>20: host id error</li>
+<li>21: modbus baudrate not supported</li>
+<li>22: modbus baudrate not correct</li>
+<li>23: modbus reply length error</li>
+<li>31: trajectory read/write failed</li>
+<li>32: trajectory read/write timeout</li>
+<li>33: playback trajectory timeout</li>
+<li>34: playback trajectory failed</li>
+<li>41: wait to set suction cup timeout</li>
+<li>80: linear motor has error</li>
+<li>81: linear motor sci is low</li>
+<li>82: linear motor is not init</li>
+<li>100: wait finish timeout</li>
+<li>101: too many consecutive failed tests</li>
+<li>102: end effector has error</li>
+<li>103: end effector is not enabled</li>
+<li>129: (standard modbus tcp)illegal/unsupported function code</li>
+<li>120: (standard modbus tcp)illegal target address</li>
+<li>131: (standard modbus tcp)exection of requested data</li>
+</ul>
+<h2 id="controller-warn-code">Controller Warn Code</h2>
+<ul>
+<li>11: uxbux que is full</li>
+<li>12: parameter error</li>
+<li>13: the instruction does not exist</li>
+<li>14: command has no solution</li>
+<li>15: modbus cmd full</li>
+</ul>
+<h2 id="controller-error-code">Controller Error Code</h2>
+<ul>
+<li>1: The Emergency Stop Button is pushed</li>
+<li>2: The Emergency IO of the Control Box is triggered</li>
+<li>3: The Emergency Stop Button of the Three-state Switch is pressed</li>
+<li>10: Servo motor error</li>
+<li>11: Servo motor 1 error</li>
+<li>12: Servo motor 2 error</li>
+<li>13: Servo motor 3 error</li>
+<li>14: Servo motor 4 error</li>
+<li>15: Servo motor 5 error</li>
+<li>16: Servo motor 6 error</li>
+<li>17: Servo motor 7 error</li>
+<li>18: Force Torque Sensor Communication Error</li>
+<li>19: End Module Communication Error</li>
+<li>21: Kinematic Error</li>
+<li>22: Self-Collision Error</li>
+<li>23: Joints Angle Exceed Limit</li>
+<li>24: Speed Exceeds Limit</li>
+<li>25: Planning Error</li>
+<li>26: Linux RT Error</li>
+<li>27: Command Reply Error</li>
+<li>28: End Module Communication Error</li>
+<li>29: Other Errors</li>
+<li>30: Feedback Speed Exceeds limit</li>
+<li>31: Collision Caused Abnormal Current</li>
+<li>32: Three-point drawing circle calculation error</li>
+<li>33: Controller GPIO error</li>
+<li>34: Recording Timeout</li>
+<li>35: Safety Boundary Limit</li>
+<li>36: The number of delay commands exceeds the limit</li>
+<li>37: Abnormal movement in Manual Mode</li>
+<li>38: Abnormal Joint Angle</li>
+<li>39: Abnormal Communication Between Master and Slave IC of Power Board</li>
+<li>40: No IK available</li>
+<li>50: Six-axis Force Torque Sensor read error</li>
+<li>51: Six-axis Force Torque Sensor set mode error</li>
+<li>52: Six-axis Force Torque Sensor set zero error</li>
+<li>53: Six-axis Force Torque Sensor is overloaded or the reading exceeds the limit</li>
+<li>110: Robot Arm Base Board Communication Error</li>
+<li>111: Control Box External 485 Device Communication Error</li>
+</ul>
+<h2 id="servo-error-code">Servo Error Code</h2>
+<ul>
+<li>10: Current Detection Error</li>
+<li>11: Joint Current Overlimit</li>
+<li>12: Joint Speed Overlimit</li>
+<li>14: Position Command Overlimit</li>
+<li>15: Joints Overheat</li>
+<li>16: Encoder Initialization Error</li>
+<li>17: Single Ring Encoder Error</li>
+<li>18: Multi-turn Encoder Error</li>
+<li>19: Low Battery Voltage</li>
+<li>20: Driver IC Hardware Error</li>
+<li>21: Driver IC Initialization Error</li>
+<li>22: Encoder Configuration Error</li>
+<li>23: Large Motor Position Deviation</li>
+<li>26: Joint N Positive Overrun</li>
+<li>27: Joint N Negative Overrun</li>
+<li>28: Joint Commands Error</li>
+<li>33: Drive Overloaded</li>
+<li>34: Motor Overload</li>
+<li>35: Motor Type Error</li>
+<li>36: Driver Type Error</li>
+<li>39: Joint Voltage Overload</li>
+<li>40: Joint Voltage Insufficient</li>
+<li>49: EEPROM Read and Write Error</li>
+<li>52: Motor Angle Initialization Error</li>
+</ul>
+<h2 id="gripper-error-code">Gripper Error Code</h2>
+<ul>
+<li>9: Gripper Current Detection Error</li>
+<li>11: Gripper Current Overlimit</li>
+<li>12: Gripper Speed Overlimit</li>
+<li>14: Gripper Position Command Overlimit</li>
+<li>15: Gripper EEPROM Read and Write Error</li>
+<li>20: Gripper Driver IC Hardware Error</li>
+<li>21: Gripper Driver IC Initialization Error</li>
+<li>23: Gripper Large Motor Position Deviation</li>
+<li>25: Gripper Command Over Software Limit</li>
+<li>26: Gripper Feedback Position Software Limit</li>
+<li>33: Gripper Drive Overloaded</li>
+<li>34: Gripper Motor Overload</li>
+<li>36: Gripper Driver Type Error</li>
+</ul>
+<h2 id="bio-gripper-error-code">Bio Gripper Error Code</h2>
+<ul>
+<li>11: BIO Gripper Current Overlimit</li>
+<li>12: The object slipped from the BIO Gripper</li>
+</ul>
+<h2 id="linear-motor-error-code">Linear Motor Error Code</h2>
+<ul>
+<li>10: Linear Motor Current Detection Error</li>
+<li>11: Linear Motor Current Overlimit</li>
+<li>12: Linear Motor Speed Overlimit</li>
+<li>13: Linear Motor Large Motor Position Deviation</li>
+<li>14: Linear Motor Position Command Overlimit</li>
+<li>20: Linear Motor Driver IC Hardware Error</li>
+<li>21: Linear Motor Driver IC Initialization Error</li>
+<li>25: Linear Motor Command Over Software Limit</li>
+<li>26: Linear Motor Feedback Position Software Limit</li>
+<li>33: Linear Motor Drive Overloaded</li>
+<li>34: Linear Motor Motor Overload</li>
+<li>35: Linear Motor type error</li>
+<li>36: Linear Motor Driver Type Error</li>
+<li>39: Linear Motor over voltage</li>
+<li>40: Linear Moter undervoltage</li>
+<li>49: Linear Motor EEPROM Read and Write Error</li>
+</ul>
+<h2 id="six-axis-force-torque-sensor-error-code">Six-axis Force Torque Sensor Error Code</h2>
+<ul>
+<li>64: Six-axis Force Torque Sensor Communication Failure</li>
+<li>65: The Data Collected by the Six-axis Force Torque Sensor is Abnormal</li>
+<li>66: Six-axis Force Torque Sensor X-direction Torque Exceeds Limit</li>
+<li>67: Six-axis Force Torque Sensor Y-direction Torque Exceeds Limit</li>
+<li>68: Six-axis Force Torque Sensor Z-direction Torque Exceeds Limitrection</li>
+<li>69: Six-axis Force Torque Sensor Tx Torque Exceeds Limit</li>
+<li>70: Six-axis Force Torque Sensor Ty direction Torque Exceeds Limit</li>
+<li>71: Six-axis Force Torque Sensor Tz direction Torque Exceeds Limit</li>
+<li>73: Six-axis Force Torque Sensor Failed to Initialize</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -324,35 +324,59 @@ policy_kwargs = dict(
         )
 )
 
-ent_coef_fn = lambda progress_remaining: max(0.01, 0.05 * (progress_remaining / 0.4)) if progress_remaining > 0.4 else 0.05
 
-'''def ent_coef_fn(progress_remaining: float) -> float:
-    """Custom entropy coefficient schedule that starts higher and decays more slowly."""
-    decay_start = 0.4
-    if progress_remaining > decay_start:
-        return 0.05  # Higher initial entropy coefficient
-    else:
-        return 0.01 + (progress_remaining / decay_start) * (0.05 - 0.01)
-    initial_coef = 0.05
-    final_coef = 0.01
-    decay_rate = 0.5  # Decay slower than linear
-    return final_coef + (initial_coef - final_coef) * (progress_remaining ** decay_rate)'''
+'''from stable_baselines3.common.callbacks import BaseCallback
+
+import torch as th
+
+class EntropyDecayCallback(BaseCallback):
+    def __init__(self, initial_coef=0.05, final_coef=0.01, decay_start=0.6):
+        super().__init__()
+        self.initial_coef = initial_coef
+        self.final_coef = final_coef
+        self.decay_start = decay_start
+
+    def _on_step(self) -> bool:
+        ppo_model = cast(MaskablePPO, self.model)
+        progress = self.num_timesteps / ppo_model._total_timesteps
+        if progress >= self.decay_start:
+            decay_progress = (progress - self.decay_start) / (1.0 - self.decay_start)
+            new_coef = float(max(self.final_coef, self.initial_coef - (self.initial_coef - self.final_coef) * decay_progress))
+            ppo_model.ent_coef_tensor.data.fill_(new_coef)
+        return True
+    
+entropy_callback = EntropyDecayCallback(
+    initial_coef=0.05,
+    final_coef=0.01,
+    decay_start=0.6  # start decaying at 60% through training
+)'''
+
+def clip_range_schedule(progress_remaining: float) -> float:
+    # Starts at 0.2, decays linearly to 0.05 in the final 40% of training
+    if progress_remaining > 0.4:
+        return 0.2
+    return 0.05 + (progress_remaining / 0.4) * (0.2 - 0.05)
+
+def lr_schedule(progress_remaining: float) -> float:
+    # Decays from 0.0001 to 0.00002 over full training
+    return max(0.00002, progress_remaining * 0.0001)
+
 
 #model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.0003, train_freq=32, gamma=0.99, gradient_steps=-1)
 model = MaskablePPO(
     "MlpPolicy", 
     env, 
     verbose=1, 
-    learning_rate=0.0001, 
+    learning_rate=lr_schedule,
     gamma=0.99, 
-    ent_coef=ent_coef_fn, #type: ignore
+    ent_coef=0.05,
     n_steps=256, 
     batch_size=64, 
     n_epochs=20, 
     vf_coef=0.8, 
     policy_kwargs=policy_kwargs, 
-    clip_range=0.2)
-model.learn(total_timesteps=400000, log_interval=20)
+    clip_range=clip_range_schedule)
+model.learn(total_timesteps=100000, log_interval=20)
 
 # Plot scores after training completes
 if len(base_env.all_scores) > 0:

@@ -11,8 +11,11 @@ from stable_baselines3 import DQN
 import os
 import sv_ttk
 
+"""Main Tkinter UI for playing peg solitaire using the arm both manually and with an RL model that can be trained"""
+
 class solitare_ui:
     def __init__(self, root):
+        # Theming and window setup
         sv_ttk.set_theme("dark")
         self.root = root
         self.root.title("Peg Solitaire")
@@ -25,6 +28,7 @@ class solitare_ui:
         main_frame = ttk.Frame(root)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
+        # Create TopLevel window to force board center to be entered before main ui is loaded
         self.center_entry = tk.Toplevel(root)
         self.center_entry.title("Set Center Position")
         self.center_entry.geometry("600x400")
@@ -45,6 +49,7 @@ class solitare_ui:
         set_center_btn.pack(pady=10)
         self.root.wait_window(self.center_entry)
 
+        # Create TopLevel window to force arm IP to be entered before main ui is loaded
         self.ip_entry = tk.Toplevel(root)
         self.ip_entry.title("Connect to IP")
         self.ip_entry.geometry("600x400")
@@ -84,6 +89,7 @@ class solitare_ui:
         self.last_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
         self.last_score.pack(anchor=tk.W, pady=(0, 20))
 
+        # Number of iterations to train
         no_iterations_label = ttk.Label(left_frame, text="Training Iterations:", font=("Arial", 14, "bold"))
         no_iterations_label.pack(anchor=tk.W, pady=(10, 5))
 
@@ -91,6 +97,7 @@ class solitare_ui:
         self.no_iterations.pack(anchor=tk.W, pady=(0, 20))
         self.no_iterations.insert(0, "10000")
 
+        # Model training button
         train_btn = ttk.Button(left_frame, text="Train Agent", command=self.train_agent)
         train_btn.pack(anchor=tk.W, pady=(0, 20))
 
@@ -98,6 +105,7 @@ class solitare_ui:
         self.run_btn = ttk.Button(left_frame, text="Run on Robot", command=self.run_on_robot, state=tk.DISABLED)
         self.run_btn.pack(anchor=tk.W, pady=(0, 20))
 
+        # If there is a model that has already been trained and saved, load it and allow it to be run
         try:
             if os.path.exists("solitaire_agent.zip"):
                 self.run_btn.config(state=tk.NORMAL)
@@ -133,7 +141,7 @@ class solitare_ui:
         # Store button references
         self.board_buttons = {}
 
-        for row in range(7):
+        for row in range(7): # Create board buttons
             button_row = []
             for col in range(7):
                 if self.board_layout[row][col] == 1:
@@ -168,7 +176,7 @@ class solitare_ui:
                     button_row.append(btn)
                     
                 else:
-                    # placeholder for layout consistency
+                    # Placeholder for layout consistency
                     placeholder = tk.Frame(board_frame, width=12, height=6)
                     placeholder.grid(row=row, column=col, padx=2, pady=2)
                     button_row.append(None)
@@ -211,7 +219,7 @@ class solitare_ui:
         policy_kwargs = dict(
             net_arch=dict(
                 pi=[128, 128, 64],  # actor network
-                vf=[256, 256, 128]   # critic network (larger for better value estimation)
+                vf=[256, 256, 128]   # critic network
                 )
         )
         
@@ -222,7 +230,7 @@ class solitare_ui:
             return 0.01 + (progress_remaining / 0.4) * (0.2 - 0.01)
         
         def lr_schedule(progress_remaining: float) -> float:
-            # Decays from 0.0001 to 0.00002 over full training
+            # Decays from 0.0001 to 0.00002 over training
             return max(0.00002, progress_remaining * 0.0001)
         
         model = MaskablePPO(
@@ -248,10 +256,9 @@ class solitare_ui:
             return
         model.learn(total_timesteps=iterations, log_interval=20)
         model.save("solitaire_agent")
-        model = MaskablePPO.load("solitaire_agent", env=env) # low runs camera angle 1
+        model = MaskablePPO.load("solitaire_agent", env=env)
 
         obs, info = env.reset()
-        #self._run_model_loop(model, env, obs)
         # mark training complete and enable Run button
         self.training = False
         try:
@@ -276,7 +283,7 @@ class solitare_ui:
         if self.game == None:
             pass
         else:
-            # check for if any valid moves exist, if so highlight buttons corresponding to moves
+            # check if valid moves exist, if so highlight corresponding buttons
             valid = self.game.check_valid_moves(horizontal_index=col, vertical_index=row)
             if len(valid) != 0:
                 self.selected_position = [row, col]
@@ -285,7 +292,6 @@ class solitare_ui:
                         if button != None:
                             button.configure(state=tk.DISABLED)
                 for index in valid:
-                    #print(f"index: {index}")
                     self.board_buttons[(index[0], index[1])].configure(state=tk.NORMAL,
                                                                         bg="#BEDCFF",
                                                                         activebackground="#7CA4FC", 
@@ -294,18 +300,18 @@ class solitare_ui:
                                                                         command=lambda r=index[0], c=index[1]: self.button_destination_clicked(r, c))
 
     def button_destination_clicked(self, row, column):
-        """Handle button clicks when selecting destination for"""
+        """Handle button clicks when selecting destination for move"""
         if self.game == None:
             pass
         else:
-            # set positions for balls that need to be moved and move them
+            # set positions for balls to be moved and move with arm
             captured_position = [int((row - self.selected_position[0]) / 2) + self.selected_position[0] , int((column - self.selected_position[1]) / 2) + self.selected_position[1]]
             if not self.training:
                 self.game.move_ball(center_pos=self.center_pos, start_vertical=self.selected_position[0], start_horizontal=self.selected_position[1], end_vertical=row, end_horizontal=column)
                 self.game.remove_captured_ball(center_pos=self.center_pos, vertical=captured_position[0], horizontal=captured_position[1])
-                #print(f"\nMoved ball from {self.selected_position} to {[row, column]}, captured ball at {captured_position}\n")
-                #print(f"[UI MOVE] ball_positions:\n{np.array(self.game.ball_positions)}")
-                #print(f"[UI MOVE] valid moves: {self.game.check_all_valid_moves()}\n")
+                '''print(f"\nMoved ball from {self.selected_position} to {[row, column]}, captured ball at {captured_position}\n")
+                print(f"[UI MOVE] ball_positions:\n{np.array(self.game.ball_positions)}")
+                print(f"[UI MOVE] valid moves: {self.game.check_all_valid_moves()}\n")'''
             # show movement on board
             if (self.selected_position[0], self.selected_position[1]) in self.board_buttons:
                 self.board_buttons[(self.selected_position[0], self.selected_position[1])].configure(state=tk.DISABLED,
@@ -328,7 +334,7 @@ class solitare_ui:
                                                                             bg="#AD9745",
                                                                             activebackground="#9C883E", 
                                                                             command=lambda r=row, c=column: self.button_clicked(r, c))
-            # change buttons that were highlighted as move options back to their regular colours
+            # Buttons that were highlighted as valid moves back to their regular colours
             for i in range(7):
                 for j in range(7):
                     try:
@@ -337,10 +343,9 @@ class solitare_ui:
                         if self.board_buttons[(i, j)].cget("bg") == "#BEDCFF":
                             self.board_buttons[(i, j)].configure(state=tk.DISABLED, width=12, height=6, bg="#FFFFFF", activebackground="#B6B6B6", command=lambda r=captured_position[0], c=captured_position[1]: self.button_destination_clicked(r, c))
                     except Exception as e:
-                        #print(e)
                         pass
             score_text = self.current_score.cget("text")
-            try: # increment score
+            try:
                 score = int(score_text) + 1
                 self.current_score.configure(text=f"{score}")
             except Exception as e:
@@ -360,11 +365,9 @@ class solitare_ui:
             # Create XArmAPI connection and Solitaire instance
             arm = XArmAPI(port=ip)
             self.game = solitare(arm=arm)
-            print(f"Connected to: {ip}")
-            print(f"Game instance created: {self.game}")
-            
-            # Enable all game buttons now that game is initialized
-            # If a trained model exists, enable the Run button
+            '''print(f"Connected to: {ip}")
+            print(f"Game instance created: {self.game}")'''
+
             self.ip_entry.destroy()
             self.root.deiconify()
             
@@ -380,7 +383,6 @@ class solitare_ui:
             print("Please connect to the game first.")
             return
 
-        # Try to load saved model
         try:
             from solitare_env_alt import solitare_rl_env
             from sb3_contrib import MaskablePPO
@@ -388,12 +390,12 @@ class solitare_ui:
 
             env = solitare_rl_env(ui=self, is_debug=False)
             
-            # load model (expects file 'solitaire_agent.zip')
+            # load model
             model = MaskablePPO.load("solitaire_agent", env=env)
             obs, info = env.reset()
             # ensure training flag is off
             self.training = False
-            # start model loop which will use the env to call UI/robot actions
+            # start model loop
             self._run_model_loop(model, env, obs)
         except Exception as e:
             print(f"Failed to run model on robot: {e}")
@@ -404,9 +406,9 @@ class solitare_ui:
         if self.game == None:
             pass
         else:
-            # move to reasonable base position and modify session best score
+            # move to base position, modify score labels
             if not self.training:
-                self.game.simple_move(x=257, y=-4, z=200)
+                self.game.simple_move(x=self.center_pos[0], y=self.center_pos[1], z=self.center_pos[2] + 100)
             try:
                 current = int(self.current_score.cget("text"))
                 self.last_score.configure(text=str(current))
@@ -421,7 +423,7 @@ class solitare_ui:
             self.current_score.config(text="0")
             for i in range (7):
                 for j in range (7):
-                    # reset buttons to their initial states
+                    # reset buttons
                     try:
                         self.board_buttons[(i, j)].configure(
                             width=12,

@@ -13,8 +13,11 @@ import numpy as np
 import time
 import yaml
 
-arm = XArmAPI('192.168.1.159')
+"""Testing for a variety of new functions for the arm, not all of the functions work"""
+
+arm = XArmAPI('127.0.0.1')
 def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
+    """Mildly improved motion handling compared to default motion functions"""
     # set up arm
     arm_util = arm_utilities(arm)
     arm_movement = cartesian_control(arm)
@@ -61,7 +64,8 @@ def simple_move(arm:XArmAPI, x:float, y:float, z:float, roll = None, pitch = Non
         simple_move(arm, x, y, z, roll, pitch, yaw)
 
 
-def move_to_vial_old(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int, x_spacing:float, y_spacing:float, x_offset:float, y_offset:float): # old way to move to a vial
+def move_to_vial_old(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int, x_spacing:float, y_spacing:float, x_offset:float, y_offset:float):
+    """Old method of moving to a vial on a tray with known spacing"""
     arm_util = arm_utilities(arm)
     setting = arm_settings(arm)
     arm_util.connect()
@@ -71,7 +75,8 @@ def move_to_vial_old(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_
     row_pos = tray_x + y_offset + (row_num - 1) * y_spacing
     simple_move(arm, x=row_pos, y=column_pos, z=tray_z + 100, roll=180, pitch=0, yaw=0)
 
-def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int, tray_type:int): # move to above a given vial index for specified tray type
+def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:int, column_num:int, tray_type:int):
+    """Move to above a given vial index for specified tray type"""
     path = f"vial_tray_{tray_type}.yml"
     # make sure entered tray type is valid, if so open relevant file
     try: 
@@ -99,7 +104,8 @@ def move_to_vial(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, row_num:
     row_pos = tray_x + y_offset + (row_num - 1) * y_spacing
     simple_move(arm, x=row_pos, y=column_pos, z=tray_z + height + 100, roll=180, pitch=0, yaw=0)
 
-def plus_draw(arm:XArmAPI, draw_z:float, tool_length:float): # very crude way of drawing a cross onto a surface that makes a few too many assumptions
+def plus_draw(arm:XArmAPI, draw_z:float, tool_length:float):
+    """Crude way of drawing a cross onto a surface"""
     arm_movement = cartesian_control(arm)
     arm_movement.set_position(z=draw_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
     arm_movement.set_position(x=5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
@@ -114,6 +120,7 @@ def plus_draw(arm:XArmAPI, draw_z:float, tool_length:float): # very crude way of
 
 
 def draw_vial_grid(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, tray_type:int, tool_length:int=100):
+    """Draw a "grid" at the positions where vials would be on a tray"""
     path = f"vial_tray_{tray_type}.yml"
     # make sure entered tray type is valid, if so open relevant file
     try:
@@ -130,6 +137,7 @@ def draw_vial_grid(arm:XArmAPI, tray_x:float, tray_y:float, tray_z:float, tray_t
             plus_draw(arm, draw_z=tray_z, tool_length=tool_length)
 
 def pick_film(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length:float):
+    """Pick up film"""
     gripper = gripper_control(arm)
     arm_movement = cartesian_control(arm)
     # move to above film, move down to film, turn on gripper, move back up with film
@@ -146,9 +154,10 @@ def pick_film(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length
     arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
 def pick_ball(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length:float):
+    """Pick up peg solitaire ball, predecessor to main solitaire functions"""
     gripper = gripper_control(arm)
     arm_movement = cartesian_control(arm)
-    # move to above film, move down to film, turn on gripper, move back up with film
+    # move to above ball, move down to ball, turn on gripper, move back up with ball
     simple_move(arm, x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0)
     time.sleep(1)
     arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
@@ -163,6 +172,7 @@ def pick_ball(arm:XArmAPI, film_x:float, film_y:float, film_z:float, tool_length
     arm_movement.set_position(x=film_x, y=film_y, z=film_z + tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
 def place_film(arm:XArmAPI, place_x:float, place_y:float, place_z:float, tool_length:float):
+    """Place film at a desired location"""
     gripper = gripper_control(arm)
     arm_movement = cartesian_control(arm)
     # move to above placement point, move down to point, turn off gripper, move back up without film
@@ -179,6 +189,7 @@ def place_film(arm:XArmAPI, place_x:float, place_y:float, place_z:float, tool_le
     arm_movement.set_position(x=place_x, y=place_y, z=place_z + tool_length + 50, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
 
 def move_film_grid(arm:XArmAPI, film_x:float, film_y:float, film_z:float, plate_x:float, plate_y:float, plate_z:float, row_num:int, column_num:int, tool_length:int=100):
+    """Move a film from a specified index in a tray"""
     '''path = f"vial_tray_{tray_type}.yml"
     # make sure entered tray type is valid, if so open relevant file
     try:
@@ -195,6 +206,8 @@ def move_film_grid(arm:XArmAPI, film_x:float, film_y:float, film_z:float, plate_
             time.sleep(1)
             place_film(arm=arm, place_x=plate_x + (31 * column), place_y=plate_y - (31 * row), place_z=plate_z, tool_length=tool_length)
         film_z -= 1
+
+"""Variety of old and new tests"""
 #simple_move(arm=arm, x=100, y=100, z=100)
 util = arm_utilities(arm=arm)
 setting = arm_settings(arm)
@@ -282,6 +295,9 @@ simple_move(arm, x=50, y=350, z=300, roll=180, pitch=0, yaw=0)'''
 
 simple_move(arm, x=-100, y=-200, z=200, roll=180, pitch=0, yaw=0)
 move_to_safe_position(arm)'''
+
+
+"""Functions attempting to allow the arm to pick up and flip a film, WIP"""
 
 def film_side_flip(arm:XArmAPI, stand_x:float, stand_y:float, stand_z:float, angle:float, tool_length:float):
     arm_movement = cartesian_control(arm)

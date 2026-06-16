@@ -1,3 +1,5 @@
+"""Experimental Pygame ui, not currently used"""
+
 import numpy as np
 import time
 import pygame

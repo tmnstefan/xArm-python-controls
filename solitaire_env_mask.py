@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 
+""" Test environment for using action masking and displaying a graph of results once trained"""
 
 class solitare_rl_env(gym.Env):
 

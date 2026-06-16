@@ -14,6 +14,8 @@ from sb3_contrib.common.wrappers import ActionMasker
 if TYPE_CHECKING:
     from solitare_ui_tkinter import solitare_ui
 
+""" Alternate environment, implements Action masking and rewards for isolated pegs and available moves """
+
 class solitare_rl_env(gym.Env):
 
     def __init__(self, ui:'solitare_ui', is_debug=False):
@@ -183,11 +185,10 @@ class solitare_rl_env(gym.Env):
             print(f"\n[STEP START] ball_positions:\n{np.array(self.game.ball_positions)}")
             print(f"[STEP START] valid moves: {self.valid_moves}\n")
             print(f"[STEP START] action: {action} -> decoded: ({source_row}, {source_col}, {direction})\n")
-            #time.sleep(0.2)
+            time.sleep(0.2)
         terminated = False
         truncated = False
         reward = 0
-        #time.sleep(0.05)
         self.runs += 1
 
         if direction == 0:  # up
@@ -255,7 +256,7 @@ gym.register(
     max_episode_steps=100,  # Prevent infinite episodes
 )
 
-
+# code to run test training and display performance graph
 '''from stable_baselines3 import DQN
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker

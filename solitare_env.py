@@ -10,6 +10,8 @@ from gymnasium.envs.registration import register
 if TYPE_CHECKING:
     from solitare_ui_tkinter import solitare_ui
 
+"""Basic RL environment for this variant of solitaire"""
+
 class solitare_rl_env(gym.Env):
 
     def __init__(self, ui:'solitare_ui', is_debug=False):

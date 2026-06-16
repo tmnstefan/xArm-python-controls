@@ -32,7 +32,7 @@ class solitare():
         self.grid_separation = 29
         self.tool_length = tool_length
         
-        #self.ball_positions = np.full(shape=(6, 6), fill_value=-1)
+        # grid setup
         self.ball_positions = [[-1, -1, 1, 1, 1, -1, -1], 
                                [-1, -1, 1, 1, 1, -1, -1], 
                                [1, 1, 1, 1, 1, 1, 1], 
@@ -52,6 +52,7 @@ class solitare():
         self.balls_in_jail = 0
 
     def simple_move(self, x:float, y:float, z:float, roll = None, pitch = None, yaw = None):
+        """Mildly improved motion handling compared to default motion functions"""
         # set up arm
         current_pos = self.settings.get_position(is_radian=False)[1]
         if current_pos[2] < 200: # move to at least 200mm above base height if not already
@@ -91,6 +92,7 @@ class solitare():
             self.simple_move(x, y, z, roll, pitch, yaw)
 
     def check_valid_moves(self, horizontal_index:int, vertical_index:int):
+        """Check valid moves for a given board position"""
         out = []
         if vertical_index < 0 or horizontal_index < 0:
             return out
@@ -122,6 +124,7 @@ class solitare():
         return out
     
     def check_all_valid_moves(self):
+        """Output all valid moves in the current board state"""
         valid = []
         for i in range(7):
             for j in range(7):
@@ -130,17 +133,8 @@ class solitare():
                     valid.append((i, j, move[0], move[1]))
         return valid
     
-    def check_grid(self):
-        complete = False
-        for i in range(7):
-            for j in range(7):
-                output = self.check_valid_moves(i, j)
-                if output.count == 0:
-                    complete = True
-                    break
-        return complete
-    
     def move_ball(self, center_pos:list[float], start_vertical:int, start_horizontal:int, end_vertical:int, end_horizontal:int):
+        """Move a ball between 2 grid indexes"""
         # using top left corner of grid as base pos
         base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] + (self.grid_separation * 3), center_pos[2]]
         ball_x = base_pos[0] - (self.grid_separation * start_vertical)
@@ -167,6 +161,7 @@ class solitare():
         self.ball_positions[start_vertical][start_horizontal] = 0
 
     def remove_captured_ball(self, center_pos:list[float], vertical:int, horizontal:int):
+        """Move a captured ball into a position in the capture zone depending on how many balls have already been captured"""
         base_pos = [center_pos[0] + (self.grid_separation * 3), center_pos[1] + (self.grid_separation * 3), center_pos[2]]
         ball_x = base_pos[0] - (self.grid_separation * vertical)
         ball_y = base_pos[1] - (self.grid_separation * horizontal)
@@ -179,7 +174,6 @@ class solitare():
         while self.gripper.get_vacuum_gripper()[1] != 1:
             self.movement.set_position(x=0, y=0, z=-0.5, roll=0, pitch=0, yaw=0, relative=True, is_radian=False, wait=True)
         time.sleep(0.1)
-        #prison_pos = self.closest_jail_position(x=ball_x, y=ball_y, center_pos=center_pos)
         prison_pos = self.next_jail_position(center_pos=center_pos)
         self.movement.set_position(x=ball_x, y=ball_y, z=ball_z + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)
         self.movement.set_position(x=prison_pos[0], y=prison_pos[1], z=prison_pos[2] + self.tool_length + 20, roll=180, pitch=0, yaw=0, relative=False, is_radian=False, wait=True)

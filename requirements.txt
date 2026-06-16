@@ -1,3 +1,7 @@
 - python
 - xarm-python-sdk
 - numpy
+- stable-baselines-3
+- sb3-contrib
+- gymnasium
+- torch

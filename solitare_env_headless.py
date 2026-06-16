@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.wrappers import ActionMasker
 
+"""Headless file for testing a variety of RL structures and comparing their performance"""
 
 class solitare_rl_env(gym.Env):
 

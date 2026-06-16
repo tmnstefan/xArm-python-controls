@@ -1,11 +1,15 @@
 import os
 import time
 from collections import defaultdict
-from typing import Optional, TYPE_CHECKING, cast
+from typing import Optional, cast, TYPE_CHECKING
 import numpy as np
 import gymnasium as gym
 import math
 from gymnasium.envs.registration import register
+import matplotlib
+import matplotlib.pyplot as plt
+from sb3_contrib import MaskablePPO
+from sb3_contrib.common.wrappers import ActionMasker
 
 if TYPE_CHECKING:
     from solitare_ui_tkinter import solitare_ui
@@ -19,15 +23,20 @@ class solitare_rl_env(gym.Env):
         self.ui.reset_scores()
         self.current = 0
         self.runs = 0
+        self.all_scores = []
         
         obs_low = np.concatenate([
-            np.full((7, 7), -1).flatten(),        # board array
+            np.full((7, 7), -1).flatten(),        # board array (49 values)
+            np.array([0.0]),                       # normalized remaining balls
+            np.array([0]),                       # valid moves
         ])
 
         obs_high = np.concatenate([
-            np.full((7, 7), 1).flatten(),        # board array
+            np.full((7, 7), 1).flatten(),        # board array (49 values)
+            np.array([1.0]),                       # normalized remaining balls
+            np.array([1]),                       # valid moves
         ])
-        self.observation_space = gym.spaces.Box(low=obs_low, high=obs_high, dtype=np.int64)
+        self.observation_space = gym.spaces.Box(low=obs_low, high=obs_high, dtype=np.float32)
         self.action_space = gym.spaces.Discrete(7 * 7 * 4)
         self._action_rows = 7
         self._action_cols = 7
@@ -40,7 +49,55 @@ class solitare_rl_env(gym.Env):
         
         self.valid_moves = self.game.check_all_valid_moves()
 
+    def count_isolated_pegs(self):
+        isolated = 0
+        for row in range(7):
+            for col in range(7):
+                if self.game.ball_positions[row][col] != 1:
+                    continue
+                has_neighbour = False
+                for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    nr, nc = row + dr, col + dc
+                    if 0 <= nr < 7 and 0 <= nc < 7:
+                        if self.game.ball_positions[nr][nc] == 1:
+                            has_neighbour = True
+                            break
+                if not has_neighbour:
+                    isolated += 1
+        return isolated
     
+    def _get_action_mask(self) -> np.ndarray:
+        """Generate a boolean mask of valid actions.
+        
+        Returns:
+            np.ndarray: Boolean array of shape (action_space_size,) where True indicates valid action
+        """
+        action_space = cast(gym.spaces.Discrete, self.action_space)
+        mask = np.zeros(action_space.n, dtype=np.bool_)
+        
+        for source_row in range(7):
+            for source_col in range(7):
+                valid_destinations = self.game.check_valid_moves(horizontal_index=source_col, vertical_index=source_row)
+                
+                for dest_row, dest_col in valid_destinations:
+                    # Determine direction based on source and destination
+                    if dest_row == source_row - 2:  # up
+                        direction = 0
+                    elif dest_row == source_row + 2:  # down
+                        direction = 1
+                    elif dest_col == source_col - 2:  # left
+                        direction = 2
+                    elif dest_col == source_col + 2:  # right
+                        direction = 3
+                    else:
+                        continue
+                    
+                    # Calculate action index from (row, col, direction)
+                    action_index = source_row * (self._action_cols * self._action_dirs) + source_col * self._action_dirs + direction
+                    mask[action_index] = True
+        
+        return mask
+
     def _decode_action(self, action):
         """Convert a flat DQN-style action index into (row, col, direction)."""
         if isinstance(action, (tuple, list, np.ndarray)):
@@ -65,8 +122,13 @@ class solitare_rl_env(gym.Env):
         Returns:
             dict: Observation with agent and target positions
         """
+        remaining_balls = 32 - int(self.ui.current_score.cget("text"))
+        normalized_remaining = remaining_balls / 32.0  # 0 to 1 scale
+        
         return np.concatenate([
-            np.array(self.game.ball_positions).flatten(),        # board array
+            np.array(self.game.ball_positions).flatten().astype(np.float32),  # board array (49 values)
+            np.array([normalized_remaining], dtype=np.float32),           # remaining balls (1 value)
+            np.array([len(self.valid_moves) / 16.0], dtype=np.float32),         # valid moves (1 value)
         ])
     
 
@@ -74,6 +136,7 @@ class solitare_rl_env(gym.Env):
         return {
             "score": int(self.ui.current_score.cget("text")),
             "board state": np.array(self.game.ball_positions).flatten(),
+            "action_mask": self._get_action_mask(),
         }
         
 
@@ -87,10 +150,10 @@ class solitare_rl_env(gym.Env):
         Returns:
             tuple: (observation, info) for the initial state
         """
-        # IMPORTANT: Must call this first to seed the random number generator
+        # seed random number generator
         super().reset(seed=seed)
         self.runs = 0
-        # Randomly place the agent anywhere on the grid
+        self.all_scores.append(int(self.ui.current_score.cget("text")))
         self.ui.reset_scores()
         #self.ui.connect_to_ip()
         self.game.reset_board()
@@ -142,14 +205,14 @@ class solitare_rl_env(gym.Env):
         if len(self.valid_moves) == 0:
             terminated = True
             self.valid_moves = self.game.check_all_valid_moves()
-            if int(self.ui.current_score.cget("text")) == 32:
-                reward += 100
+            if int(self.ui.current_score.cget("text")) == 31:
+                reward += 10
             else:
-                reward -= 100
-        elif self.runs >= 1000:
+                reward -= ((33 - int(self.ui.current_score.cget("text")))/33) * 10
+        elif self.runs >= 150:
             terminated = True
             self.valid_moves = self.game.check_all_valid_moves()
-            reward -= 32 * 32
+            reward -= 10
         else:
             if (dest_row, dest_col) in valid_destinations:
                 self.runs += 1
@@ -157,48 +220,107 @@ class solitare_rl_env(gym.Env):
                     print(f"\nExecuting move: ({source_row}, {source_col}) to ({dest_row}, {dest_col})\n")
                 self.ui.button_clicked(source_row, source_col)
                 self.ui.button_destination_clicked(dest_row, dest_col)
+                
                 self.game.ball_positions[source_row][source_col] = 0
                 self.game.ball_positions[dest_row][dest_col] = 1
                 self.game.ball_positions[(source_row + dest_row) // 2][(source_col + dest_col) // 2] = 0    
-                self.ui.root.update()
                 self.current = 0
                 self.valid_moves = self.game.check_all_valid_moves()
-                reward += 1
-                #reward += int(self.ui.current_score.cget("text")) * int(self.ui.current_score.cget("text"))
-                #if reward < 30:
-                #    reward = 30
+                
+                isolated = self.count_isolated_pegs()
+                reward -= isolated * 0.05
+
+                if int(self.ui.current_score.cget("text")) < 25:
+                    reward += len(self.valid_moves) * 0.003
+                
+                reward += 0.1
                 if self.is_debug:
                     print(f"\n[STEP END] ball_positions:\n{np.array(self.game.ball_positions)}")
                     print(f"[STEP END] valid moves: {self.valid_moves}\n")
             else:
-                reward -= 2
+                reward -= 3
                 if self.is_debug:
                     print(f"\nInvalid move: ({source_row}, {source_col}) to ({dest_row}, {dest_col})\n")
-                #terminated = True
         observation = self._get_obs()
         info = self._get_info()
+        self.ui.root.update()
         if self.is_debug:
             print(f"\nlast run reward: {reward}\n")
         return observation, reward, terminated, truncated, info
     
 
-'''# Register the environment so we can create it with gym.make()
 gym.register(
-    id="bulletsim-delta-v0",
-    entry_point="arm_env_delta:bulletsim_env_delta",
-    max_episode_steps=80,  # Prevent infinite episodes
+    id="solitaire_mask-v0",
+    entry_point="solitaire_env_mask:solitare_rl_env",
+    max_episode_steps=100,  # Prevent infinite episodes
 )
 
 
-from stable_baselines3 import DQN
+'''from stable_baselines3 import DQN
+from sb3_contrib import MaskablePPO
+from sb3_contrib.common.wrappers import ActionMasker
 
-env = gym.make("bulletsim-delta-v0")
+def mask_fn(env):
+    """Extract action mask from environment info."""
+    return env.unwrapped._get_action_mask()
 
-model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.0003, train_freq=20, gamma=0.99, gradient_steps=20)
-model.learn(total_timesteps=10000, log_interval=4)
+env = gym.make("solitaire_mask-v0", is_debug=False)
+env = ActionMasker(env, mask_fn)
+base_env = cast(solitare_rl_env, env.unwrapped)
+policy_kwargs = dict(
+    net_arch=dict(
+        pi=[128, 128, 64],  # actor network
+        vf=[256, 256, 128]   # critic network (larger for better value estimation)
+        )
+)
+
+def clip_range_schedule(progress_remaining: float) -> float:
+    # Starts at 0.2, decays linearly to 0.05 in the final 40% of training
+    if progress_remaining > 0.4:
+        return 0.2
+    return 0.01 + (progress_remaining / 0.4) * (0.2 - 0.01)
+
+def lr_schedule(progress_remaining: float) -> float:
+    # Decays from 0.0001 to 0.00002 over full training
+    return max(0.00002, progress_remaining * 0.0001)
+
+
+#model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.0003, train_freq=32, gamma=0.99, gradient_steps=-1)
+model = MaskablePPO(
+    "MlpPolicy", 
+    env, 
+    verbose=1, 
+    learning_rate=lr_schedule,
+    gamma=0.99, 
+    ent_coef=0.05,
+    n_steps=256, 
+    batch_size=64, 
+    n_epochs=20, 
+    vf_coef=0.8, 
+    policy_kwargs=policy_kwargs, 
+    clip_range=clip_range_schedule)
+model.learn(total_timesteps=300000, log_interval=20)
+
+# Plot scores after training completes
+if len(base_env.all_scores) > 0:
+    plt.figure(figsize=(12, 6))
+    plt.plot(base_env.all_scores, label='Episode Scores', alpha=0.7)
+    plt.xlabel('Episode')
+    plt.ylabel('Score')
+    plt.title('Training Scores Over Episodes')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('training_scores.png')
+    print(f"Score plot saved as 'training_scores.png'")
+    print(f"Total episodes: {len(base_env.all_scores)}")
+    print(f"Max score: {max(base_env.all_scores)}")
+    print(f"Average score: {np.mean(base_env.all_scores):.2f}")
+    plt.show()
+
 model.save("solitare")
 
-model = DQN.load("solitare", env=env)
+model = MaskablePPO.load("solitare", env=env)
 
 obs, info = env.reset()
 while True:

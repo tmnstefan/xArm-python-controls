@@ -163,7 +163,6 @@ class solitare_rl_env(gym.Env):
         # Calculate progress metrics
         remaining_balls = 32 - self.score
         normalized_remaining = remaining_balls / 32.0  # 0 to 1 scale
-        progress = self.score / 32.0  # 0 to 1 scale (progress toward goal)
         
         return np.concatenate([
             np.array(self.ball_positions).flatten().astype(np.float32),  # board array (49 values)
@@ -256,7 +255,7 @@ class solitare_rl_env(gym.Env):
             # Terminal state: no more moves available
             terminated = True
             self.valid_moves = self.check_all_valid_moves()
-            if self.score == 32:
+            if self.score == 31:
                 reward += 10
             else:
                 reward -= ((33 - self.score)/33) * 10
@@ -264,7 +263,7 @@ class solitare_rl_env(gym.Env):
             # Timeout: too many steps without solving
             terminated = True
             self.valid_moves = self.check_all_valid_moves()
-            reward -= 10.0
+            reward -= 10
         else:
             if (dest_row, dest_col) in valid_destinations:
                 # Valid move executed successfully
@@ -324,38 +323,11 @@ policy_kwargs = dict(
         )
 )
 
-
-'''from stable_baselines3.common.callbacks import BaseCallback
-
-import torch as th
-
-class EntropyDecayCallback(BaseCallback):
-    def __init__(self, initial_coef=0.05, final_coef=0.01, decay_start=0.6):
-        super().__init__()
-        self.initial_coef = initial_coef
-        self.final_coef = final_coef
-        self.decay_start = decay_start
-
-    def _on_step(self) -> bool:
-        ppo_model = cast(MaskablePPO, self.model)
-        progress = self.num_timesteps / ppo_model._total_timesteps
-        if progress >= self.decay_start:
-            decay_progress = (progress - self.decay_start) / (1.0 - self.decay_start)
-            new_coef = float(max(self.final_coef, self.initial_coef - (self.initial_coef - self.final_coef) * decay_progress))
-            ppo_model.ent_coef_tensor.data.fill_(new_coef)
-        return True
-    
-entropy_callback = EntropyDecayCallback(
-    initial_coef=0.05,
-    final_coef=0.01,
-    decay_start=0.6  # start decaying at 60% through training
-)'''
-
 def clip_range_schedule(progress_remaining: float) -> float:
     # Starts at 0.2, decays linearly to 0.05 in the final 40% of training
     if progress_remaining > 0.4:
         return 0.2
-    return 0.05 + (progress_remaining / 0.4) * (0.2 - 0.05)
+    return 0.01 + (progress_remaining / 0.4) * (0.2 - 0.01)
 
 def lr_schedule(progress_remaining: float) -> float:
     # Decays from 0.0001 to 0.00002 over full training
@@ -376,7 +348,7 @@ model = MaskablePPO(
     vf_coef=0.8, 
     policy_kwargs=policy_kwargs, 
     clip_range=clip_range_schedule)
-model.learn(total_timesteps=100000, log_interval=20)
+model.learn(total_timesteps=300000, log_interval=20)
 
 # Plot scores after training completes
 if len(base_env.all_scores) > 0:

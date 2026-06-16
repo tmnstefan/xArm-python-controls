@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from typing import cast
 from xml.parsers.expat import model
 import numpy as np
 import time
@@ -14,7 +15,7 @@ class solitare_ui:
     def __init__(self, root):
         sv_ttk.set_theme("dark")
         self.root = root
-        self.root.title("Peg Solitaire high runs camera angle 1 attempt 2")
+        self.root.title("Peg Solitaire")
         self.root.geometry("1800x900")
         self.game = None
         self.training = False
@@ -62,16 +63,6 @@ class solitare_ui:
         left_frame = ttk.Frame(main_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20))
         
-        # IP Address input
-        '''ip_label = ttk.Label(left_frame, text="IP Address:")
-        ip_label.pack(anchor=tk.W, pady=(0, 5))
-        
-        self.ip_entry = ttk.Entry(left_frame, width=30)
-        self.ip_entry.pack(anchor=tk.W, pady=(0, 20))
-        self.ip_entry.insert(0, "127.0.0.1")
-        
-        connect_btn = ttk.Button(left_frame, text="Connect", command=self.connect_to_ip)
-        connect_btn.pack(anchor=tk.W, pady=(0, 20))'''
         # Current Score
         current_label = ttk.Label(left_frame, text="Current Score:", font=("Arial", 14, "bold"))
         current_label.pack(anchor=tk.W, pady=(10, 5))
@@ -83,15 +74,15 @@ class solitare_ui:
         best_label = ttk.Label(left_frame, text="Session Best Score:", font=("Arial", 14, "bold"))
         best_label.pack(anchor=tk.W, pady=(10, 5))
 
+        self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
+        self.best_score.pack(anchor=tk.W, pady=(0, 20))
+
         # Last score
         last_label = ttk.Label(left_frame, text="Last Score:", font=("Arial", 14, "bold"))
         last_label.pack(anchor=tk.W, pady=(10, 5))
 
         self.last_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
         self.last_score.pack(anchor=tk.W, pady=(0, 20))
-
-        self.best_score = ttk.Label(left_frame, text="0", font=("Arial", 20, "bold"))
-        self.best_score.pack(anchor=tk.W, pady=(0, 20))
 
         no_iterations_label = ttk.Label(left_frame, text="Training Iterations:", font=("Arial", 14, "bold"))
         no_iterations_label.pack(anchor=tk.W, pady=(10, 5))
@@ -206,10 +197,48 @@ class solitare_ui:
         self.training = True
         # training logic
         from solitare_env_alt import solitare_rl_env
-        from stable_baselines3 import DQN
-        env = solitare_rl_env(ui=self, is_debug=False)
+        from sb3_contrib import MaskablePPO
+        from sb3_contrib.common.wrappers import ActionMasker
 
-        model = DQN("MlpPolicy", env, verbose=1, learning_rate=0.0001, gamma=0.99, policy_kwargs=dict(net_arch=[512, 512]))
+        def mask_fn(env):
+            """Extract action mask from environment info."""
+            return env.unwrapped._get_action_mask()
+
+        env = solitare_rl_env(ui=self, is_debug=False)
+        env = ActionMasker(env, mask_fn)
+        base_env = cast(solitare_rl_env, env.unwrapped)
+        
+        policy_kwargs = dict(
+            net_arch=dict(
+                pi=[128, 128, 64],  # actor network
+                vf=[256, 256, 128]   # critic network (larger for better value estimation)
+                )
+        )
+        
+        def clip_range_schedule(progress_remaining: float) -> float:
+            # Starts at 0.2, decays linearly to 0.05 in the final 40% of training
+            if progress_remaining > 0.4:
+                return 0.2
+            return 0.01 + (progress_remaining / 0.4) * (0.2 - 0.01)
+        
+        def lr_schedule(progress_remaining: float) -> float:
+            # Decays from 0.0001 to 0.00002 over full training
+            return max(0.00002, progress_remaining * 0.0001)
+        
+        model = MaskablePPO(
+            "MlpPolicy", 
+            env, 
+            verbose=1, 
+            learning_rate=lr_schedule,
+            gamma=0.99, 
+            ent_coef=0.05,
+            n_steps=64, 
+            batch_size=64, 
+            n_epochs=20, 
+            vf_coef=0.8, 
+            policy_kwargs=policy_kwargs, 
+            clip_range=clip_range_schedule)
+        
         try:
             iterations = int(self.no_iterations.get())
             print(f"Training for {iterations} iterations...")
@@ -217,9 +246,9 @@ class solitare_ui:
             print("Invalid input for training iterations. Please enter a numeric value.")
             self.training = False
             return
-        model.learn(total_timesteps=iterations, log_interval=4)
+        model.learn(total_timesteps=iterations, log_interval=20)
         model.save("solitaire_agent")
-        model = DQN.load("solitaire_agent", env=env) # low runs camera angle 1
+        model = MaskablePPO.load("solitaire_agent", env=env) # low runs camera angle 1
 
         obs, info = env.reset()
         #self._run_model_loop(model, env, obs)
@@ -231,8 +260,9 @@ class solitare_ui:
             pass
 
     def _run_model_loop(self, model, env, obs):
-        action, _ = model.predict(obs, deterministic=True)
-        print(f"[MODEL LOOP] action={action}, current step moves={len(env.valid_moves)}")
+        action_mask = env.unwrapped._get_action_mask()
+        action, _ = model.predict(obs, deterministic=True, action_masks=action_mask)
+        print(f"[MODEL LOOP] action={env._decode_action(action)}, current step moves={len(env.valid_moves)}")
         obs, reward, terminated, truncated, info = env.step(action)
         if terminated or truncated:
             print(f"[MODEL LOOP] episode ended, stopping robot execution")
@@ -352,12 +382,14 @@ class solitare_ui:
 
         # Try to load saved model
         try:
-            from solitare_env import solitare_rl_env
-            from stable_baselines3 import DQN
+            from solitare_env_alt import solitare_rl_env
+            from sb3_contrib import MaskablePPO
+            from sb3_contrib.common.wrappers import ActionMasker
 
-            env = solitare_rl_env(ui=self)
+            env = solitare_rl_env(ui=self, is_debug=False)
+            
             # load model (expects file 'solitaire_agent.zip')
-            model = DQN.load("solitaire_agent", env=env)
+            model = MaskablePPO.load("solitaire_agent", env=env)
             obs, info = env.reset()
             # ensure training flag is off
             self.training = False

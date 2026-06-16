@@ -56,7 +56,7 @@ class solitare():
         current_pos = self.settings.get_position(is_radian=False)[1]
         if current_pos[2] < 200: # move to at least 200mm above base height if not already
             self.movement.set_position(x=current_pos[0], y=current_pos[1], z=200, roll=current_pos[3], pitch=current_pos[4], yaw=current_pos[5], is_radian=False, wait=True)
-            time.sleep(1)
+            time.sleep(0.1)
         current_xy = np.array([current_pos[0], current_pos[1]])
         desired_xy = np.array([x, y])
         # https://wumbo.net/formulas/angle-between-two-vectors-2d/
@@ -87,7 +87,7 @@ class solitare():
             move_angle = 0 - int(angle_val)
             self.movement.set_servo_angle(servo_id=1, angle=move_angle, is_radian=False, relative=True, wait=True, timeout=20) # doesnt work in absolute coordinate system so using relative for now
             self.movement.move_gohome(wait=True, timeout=20)
-            time.sleep(5) # arm is annoying and will try to move before fully resetting, this is a fix for that
+            time.sleep(3) # arm is annoying and will try to move before fully resetting, this is a fix for that
             self.simple_move(x, y, z, roll, pitch, yaw)
 
     def check_valid_moves(self, horizontal_index:int, vertical_index:int):

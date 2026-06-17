@@ -3,8 +3,6 @@ from tkinter import ttk
 from typing import cast
 from xml.parsers.expat import model
 import numpy as np
-import time
-import numpy as np
 import gymnasium as gym
 from gymnasium.envs.registration import register
 from stable_baselines3 import DQN
@@ -408,7 +406,7 @@ class solitare_ui:
         else:
             # move to base position, modify score labels
             if not self.training:
-                self.game.simple_move(x=self.center_pos[0], y=self.center_pos[1], z=self.center_pos[2] + 100)
+                self.game.simple_move(x=self.center_pos[0], y=self.center_pos[1], z=self.center_pos[2] + 150)
             try:
                 current = int(self.current_score.cget("text"))
                 self.last_score.configure(text=str(current))
